@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import Sidebar from "./shared/Sidebar";
 import { Box } from "@mui/material";
 import Navbar from "./shared/Navbar";
@@ -8,16 +8,15 @@ import gradientImage from "./assets/gradient.png";
 import AppRoutes from "./AppRoutes";
 import Login from "./modules/auth/containers/Login";
 import SignUp from "./modules/auth/containers/SignUp";
-// import { useDispatch, useSelector } from "react-redux";
 
-// const ProtectedRoute = () => {
-//   const isAuthenticated = verifyToken();
-//   return isAuthenticated.status ? <Outlet /> : <Navigate to="/login" />;
-// };
-// const IsLogged = () => {
-//   const logged = verifyToken();
-//   return !logged.status ? <Outlet /> : <Navigate to="/" />;
-// };
+const ProtectedRoute = () => {
+  const isAuthenticated = localStorage.getItem("token");
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
+const IsLogged = () => {
+  const logged = localStorage.getItem("token");
+  return !logged ? <Outlet /> : <Navigate to="/" />;
+};
 
 function App() {
   const [collapsed, setCollapsed] = useState(true);
@@ -25,36 +24,42 @@ function App() {
   return (
     <div className="font-light font-kanit">
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/*"
-          element={
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
-              <Sidebar open={collapsed} setOpen={setCollapsed} />
-              <Box
-                sx={{
-                  width: collapsed ? "calc(100% - 80px)" : "calc(100% - 270px)",
-                  transition: "width 0.3s ease-in-out",
-                }}
-              >
-                <Navbar />
-                <div
-                  className=""
-                  style={{
-                    backgroundImage: `url(${gradientImage})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    height: "calc(100dvh - 80px)",
-                    width: "100%",
+        <Route element={<IsLogged />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/*"
+            element={
+              <Box sx={{ display: "flex", flexDirection: "row" }}>
+                <Sidebar open={collapsed} setOpen={setCollapsed} />
+                <Box
+                  sx={{
+                    width: collapsed
+                      ? "calc(100% - 80px)"
+                      : "calc(100% - 270px)",
+                    transition: "width 0.3s ease-in-out",
                   }}
                 >
-                  <AppRoutes />
-                </div>
+                  <Navbar />
+                  <div
+                    className=""
+                    style={{
+                      backgroundImage: `url(${gradientImage})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      height: "calc(100dvh - 80px)",
+                      width: "100%",
+                    }}
+                  >
+                    <AppRoutes />
+                  </div>
+                </Box>
               </Box>
-            </Box>
-          }
-        />
+            }
+          />
+        </Route>
       </Routes>
     </div>
   );
