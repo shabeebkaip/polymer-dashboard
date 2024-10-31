@@ -45,16 +45,21 @@ export const editEmployeeApi = async (data, id) => {
   }
 };
 
-export const exportApi = async (searchQuery) => {
-  globalExportService("/employees/template", { search: searchQuery }).then(
-    (response) => {
-      downloadFileType(
-        response.data,
-        `export_employees_${moment().format("MMM DD YYYY, HH:mm:ss")}`,
-        "xlsx"
-      );
-    }
-  );
+export const exportApi = async (toast) => {
+  globalExportService("/employees/template").then((response) => {
+    toast("Employees Exported Successfully", {
+      variant: "success",
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
+    downloadFileType(
+      response.data,
+      `export_employees_${moment().format("MMM DD YYYY, HH:mm:ss")}`,
+      "xlsx"
+    );
+  });
 };
 
 export const importApi = async (data) => {

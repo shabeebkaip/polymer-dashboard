@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { SnackbarProvider } from "notistack";
 
 const theme = createTheme({
   typography: {
@@ -23,8 +24,10 @@ const theme = createTheme({
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <SnackbarProvider autoHideDuration={2000} preventDuplicate dense>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </SnackbarProvider>
   </BrowserRouter>
 );

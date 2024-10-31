@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import logo from "../assets/btc_networks_logo.jpg";
 
 const menuItems = [
@@ -23,9 +23,6 @@ const menuItems = [
 ];
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
-  const [expandedAccordion, setExpandedAccordion] = useState(null);
-  const [hoveredItem, setHoveredItem] = useState(null);
-
   const renderMenuItem = useCallback((item, index) => {
     const isSelected = location.pathname === item.route;
 
@@ -41,8 +38,6 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       <div
         key={index}
         className={itemClasses}
-        onMouseEnter={() => setHoveredItem(index)}
-        onMouseLeave={() => setHoveredItem(null)}
         onClick={() => {
           window.location.href = item.route;
         }}

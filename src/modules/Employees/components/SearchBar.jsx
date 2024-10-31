@@ -28,7 +28,10 @@ const SearchBar = ({ fetchEmployees }) => {
       clearTimeout(handler);
     };
   }, [text]);
-  const handleClear = () => {};
+  const handleClear = () => {
+    setText("");
+    fetchEmployees("");
+  };
   const handleChange = () => {};
 
   return (

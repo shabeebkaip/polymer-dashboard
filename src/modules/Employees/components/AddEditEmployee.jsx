@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,16 +10,18 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { addEmployeeApi, editEmployeeApi } from "../api";
 import { createLogApi } from "../../Logs/api";
+import { enqueueSnackbar } from "notistack";
 
 const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
-  const [data, setData] = React.useState({});
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (item) {
       setData(item);
@@ -28,10 +31,16 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
 
   const handleSave = () => {
     if (mode === "add") {
+      setLoading(true);
       addEmployeeApi(data).then((response) => {
+        setLoading(false);
         if (response.success) {
           closeModal();
           getResponseBack();
+          enqueueSnackbar(response.message, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
           createLogApi({
             user_name: JSON.parse(localStorage.getItem("user")).username,
             activity: `Added ${data.name} to the employees list`,
@@ -39,11 +48,16 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
         }
       });
     } else {
+      setLoading(true);
       editEmployeeApi(data, data._id).then((response) => {
-        console.log(response, "response");
+        setLoading(false);
         if (response.success) {
           closeModal();
           getResponseBack();
+          enqueueSnackbar(response.message, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
           createLogApi({
             user_name: JSON.parse(localStorage.getItem("user")).username,
             activity: `Edited ${data.name}'s details `,
@@ -210,7 +224,11 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
             color="primary"
             variant="contained"
           >
-            Save
+            {loading ? (
+              <CircularProgress size="30px" style={{ color: "#ffffff" }} />
+            ) : (
+              "Save"
+            )}
           </Button>
           <Button
             onClick={() => closeModal()}
