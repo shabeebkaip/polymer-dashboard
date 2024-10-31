@@ -2,9 +2,9 @@ import ActionButton from "../../../shared/ActionButton";
 import addIcon from "../../../assets/tools/create.svg";
 import exportIcon from "../../../assets/tools/export.svg";
 import importIcon from "../../../assets/tools/import.svg";
+import PropTypes from "prop-types";
 
-const Actions = () => {
-  const handleAddEmployee = () => {};
+const Actions = ({ handleAddEmployee }) => {
   return (
     <div className="flex items-center gap-4">
       <ActionButton
@@ -31,5 +31,7 @@ const Actions = () => {
     </div>
   );
 };
-
+Actions.propTypes = {
+  handleAddEmployee: PropTypes.func,
+};
 export default Actions;

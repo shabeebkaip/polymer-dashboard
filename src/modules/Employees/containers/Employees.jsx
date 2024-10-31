@@ -4,11 +4,13 @@ import Title from "../../../shared/Title";
 import { Actions, EmployeesList, SearchBar } from "../components";
 import { getEmployeesApi } from "../api";
 import Loader from "../../../shared/Loader";
+import AddEditEmployee from "../components/AddEditEmployee";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({});
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -35,7 +37,7 @@ const Employees = () => {
       />
       <div className="flex items-center justify-between p-1 mt-4 bg-white rounded-full shadow ">
         <SearchBar />
-        <Actions />
+        <Actions handleAddEmployee={() => setOpen(true)} />
       </div>
 
       {loading ? (
@@ -46,12 +48,16 @@ const Employees = () => {
         <>
           {" "}
           :
-          <EmployeesList employees={employees} />
+          <EmployeesList
+            employees={employees}
+            getResponseBack={() => fetchEmployees()}
+          />
           <PaginationContainer
             totalPages={pagination?.totalPages}
             currentPage={pagination?.currentPage}
             handlePageChange={(page) => fetchEmployees({ page })}
           />
+          <AddEditEmployee open={open} closeModal={() => setOpen(false)} />
         </>
       )}
     </div>

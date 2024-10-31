@@ -2,8 +2,25 @@ import editIcon from "../../../assets/actions/edit.svg";
 import deleteIcon from "../../../assets/actions/delete.svg";
 import moment from "moment";
 import PropTypes from "prop-types";
+import DeleteModal from "../../../shared/DeleteModal";
+import { useState } from "react";
+import { deleteEmployeeApi } from "../api";
+import AddEditEmployee from "./AddEditEmployee";
 
-const EmployeesList = ({ employees }) => {
+const EmployeesList = ({ employees, getResponseBack }) => {
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [editData, setEditData] = useState({});
+  const handleDelete = (id) => {
+    deleteEmployeeApi(id).then((response) => {
+      if (response.success) {
+        setDeleteModal(false);
+        getResponseBack();
+      }
+    });
+  };
+
   const tableHeader = [
     "Employee ID",
     "Name",
@@ -67,10 +84,22 @@ const EmployeesList = ({ employees }) => {
                   <td className="p-4 border-b">{row.gender}</td>
                   <td className="p-4 border-b ">
                     <div className="flex items-center gap-4 ">
-                      <button className="btn">
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          setEditData(row);
+                          setEditModal(true);
+                        }}
+                      >
                         <img src={editIcon} alt="Edit" />
                       </button>
-                      <button className="btn">
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          setDeleteModal(true);
+                          setDeleteId(row._id);
+                        }}
+                      >
                         <img src={deleteIcon} alt="Delete" />
                       </button>
                     </div>
@@ -91,12 +120,26 @@ const EmployeesList = ({ employees }) => {
           </tfoot>
         )}
       </table>
+      <DeleteModal
+        open={deleteModal}
+        closeModal={() => {
+          setDeleteId(null);
+          setDeleteModal(false);
+        }}
+        handleDelete={() => handleDelete(deleteId)}
+      />
+      <AddEditEmployee
+        open={editModal}
+        closeModal={() => setEditModal(false)}
+        item={editData}
+      />
     </div>
   );
 };
 
 EmployeesList.propTypes = {
   employees: PropTypes.array,
+  getResponseBack: PropTypes.func,
 };
 
 export default EmployeesList;
