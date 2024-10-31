@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PaginationContainer from "../../../shared/PaginationContainer";
 import Title from "../../../shared/Title";
 import { Actions, EmployeesList, SearchBar } from "../components";
-import { getEmployeesApi } from "../api";
+import { exportApi, getEmployeesApi, importApi } from "../api";
 import Loader from "../../../shared/Loader";
 import AddEditEmployee from "../components/AddEditEmployee";
 
@@ -29,6 +29,27 @@ const Employees = () => {
       }
     });
   };
+
+  const handleExport = () => {
+    setLoading(true);
+    exportApi();
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  };
+
+  const handleImport = (e) => {
+    console.log(e.target.files[0]);
+    let formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    setLoading(true);
+    importApi(formData).then((response) => {
+      setLoading(false);
+      if (response.success) {
+        fetchEmployees();
+      }
+    });
+  };
   return (
     <div>
       <Title
@@ -37,7 +58,11 @@ const Employees = () => {
       />
       <div className="flex items-center justify-between p-1 mt-4 bg-white rounded-full shadow ">
         <SearchBar />
-        <Actions handleAddEmployee={() => setOpen(true)} />
+        <Actions
+          handleAddEmployee={() => setOpen(true)}
+          handleExport={handleExport}
+          handleImport={handleImport}
+        />
       </div>
 
       {loading ? (

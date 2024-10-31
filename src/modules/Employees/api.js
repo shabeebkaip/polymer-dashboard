@@ -1,5 +1,9 @@
+import moment from "moment";
+import { downloadFileType } from "../../utils";
 import {
   globalDeleteService,
+  globalExportService,
+  globalFileUploadService,
   globalGetService,
   globalPostService,
   globalPutService,
@@ -35,6 +39,27 @@ export const addEmployeeApi = async (data) => {
 export const editEmployeeApi = async (data, id) => {
   try {
     let response = await globalPutService(`/employees/${id}`, data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const exportApi = async (searchQuery) => {
+  globalExportService("/employees/template", { search: searchQuery }).then(
+    (response) => {
+      downloadFileType(
+        response.data,
+        `export_employees_${moment().format("MMM DD YYYY, HH:mm:ss")}`,
+        "xlsx"
+      );
+    }
+  );
+};
+
+export const importApi = async (data) => {
+  try {
+    let response = await globalFileUploadService("/employees/import", data);
     return response.data;
   } catch (err) {
     console.log(err);
