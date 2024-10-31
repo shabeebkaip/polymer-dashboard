@@ -5,7 +5,7 @@ import loginBanner from "../../../assets/1729680960861.jpg";
 import logo from "../../../assets/btc_networks_logo.jpg";
 
 import { useNavigate } from "react-router-dom";
-import { loginApi, signUpApi } from "../api";
+import { signUpApi } from "../api";
 import { createLogApi } from "../../Logs/api";
 
 const Login = () => {

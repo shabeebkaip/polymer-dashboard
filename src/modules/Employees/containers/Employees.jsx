@@ -6,6 +6,7 @@ import { exportApi, getEmployeesApi, importApi } from "../api";
 import Loader from "../../../shared/Loader";
 import AddEditEmployee from "../components/AddEditEmployee";
 import { createLogApi } from "../../Logs/api";
+import PageLoader from "../../../shared/PageLoader";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -61,6 +62,7 @@ const Employees = () => {
   };
   return (
     <div>
+      {loading && <PageLoader />}
       <Title
         title="Employees"
         description="Displaying all employees currently assigned to the BTC department, including their Employee ID, Name, and Email for quick reference."
@@ -75,32 +77,25 @@ const Employees = () => {
           handleImport={handleImport}
         />
       </div>
-
-      {loading ? (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Loader />
-        </div>
-      ) : (
-        <>
-          {" "}
-          :
-          <EmployeesList
-            employees={employees}
-            getResponseBack={() => fetchEmployees()}
-          />
-          <PaginationContainer
-            totalPages={pagination?.totalPages}
-            currentPage={pagination?.currentPage}
-            handlePageChange={(page) => fetchEmployees({ page })}
-          />
-          <AddEditEmployee
-            open={open}
-            closeModal={() => setOpen(false)}
-            mode="add"
-            getResponseBack={() => fetchEmployees()}
-          />
-        </>
-      )}
+      <>
+        {" "}
+        :
+        <EmployeesList
+          employees={employees}
+          getResponseBack={() => fetchEmployees()}
+        />
+        <PaginationContainer
+          totalPages={pagination?.totalPages}
+          currentPage={pagination?.currentPage}
+          handlePageChange={(page) => fetchEmployees({ page })}
+        />
+        <AddEditEmployee
+          open={open}
+          closeModal={() => setOpen(false)}
+          mode="add"
+          getResponseBack={() => fetchEmployees()}
+        />
+      </>
     </div>
   );
 };
