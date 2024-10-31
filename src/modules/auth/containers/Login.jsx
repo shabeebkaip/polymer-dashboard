@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { TextField, IconButton, InputAdornment } from "@mui/material";
+import {
+  TextField,
+  IconButton,
+  InputAdornment,
+  CircularProgress,
+} from "@mui/material";
 import loginBanner from "../../../assets/1729680960861.jpg";
 import logo from "../../../assets/btc_networks_logo.jpg";
 
@@ -13,12 +18,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
       try {
+        setLoading(true);
         loginApi({ email, password }).then((res) => {
           localStorage.setItem("token", res.token);
           localStorage.setItem("user", JSON.stringify(res.user));
@@ -54,7 +61,7 @@ const Login = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
+  console.log(errors);
   return (
     <div className="flex w-full h-screen">
       <div className="flex-1">
@@ -87,6 +94,7 @@ const Login = () => {
                     variant="outlined"
                     fullWidth
                     error={!!errors.email}
+                    helperText={errors.email}
                   />
                 </div>
                 <div className="mb-5">
@@ -99,7 +107,7 @@ const Login = () => {
                     variant="outlined"
                     fullWidth
                     error={!!errors.password}
-                    helperText={""}
+                    helperText={errors.password}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -123,11 +131,20 @@ const Login = () => {
                   type="submit"
                   className="w-full px-4 py-2 text-white bg-[#00aeaa] rounded-md hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  Login
+                  {loading ? (
+                    <CircularProgress
+                      style={{ color: "#ffffff" }}
+                      size={"25px"}
+                    />
+                  ) : (
+                    "Login"
+                  )}
                 </button>
                 <p className="mt-2">
                   Dont have an Account ?{" "}
-                  <a href="/signup"  className="text-blue-700">Register</a>{" "}
+                  <a href="/signup" className="text-blue-700">
+                    Register
+                  </a>{" "}
                 </p>
               </form>
             </div>
