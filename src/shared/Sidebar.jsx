@@ -14,12 +14,12 @@ const menuItems = [
     name: "dashboard",
     icon: "",
   },
-  {
-    displayName: "Users",
-    route: "/users",
-    name: "dashboard",
-    icon: "",
-  },
+  // {
+  //   displayName: "Users",
+  //   route: "/users",
+  //   name: "dashboard",
+  //   icon: "",
+  // },
 ];
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
