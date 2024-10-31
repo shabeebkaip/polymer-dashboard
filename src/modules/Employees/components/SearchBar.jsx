@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
+import PropTypes from "prop-types";
 
-const SearchBar = () => {
+const SearchBar = ({ fetchEmployees }) => {
   const [text, setText] = useState("");
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     setText(newValue);
+    fetchEmployees(newValue);
 
     if (newValue.length === 0) {
       handleClear("");
@@ -36,7 +38,6 @@ const SearchBar = () => {
       <div className="flex h-full items-center rounded-full bg-[#F5F7FE] text-navy-700 w-full gap-2 px-3">
         <p className="">
           <FiSearch className="w-4 h-4 text-gray-400" />
-          
         </p>
         <input
           type="text"
@@ -56,6 +57,9 @@ const SearchBar = () => {
       </div>
     </div>
   );
+};
+SearchBar.propTypes = {
+  fetchEmployees: PropTypes.func,
 };
 
 export default SearchBar;
