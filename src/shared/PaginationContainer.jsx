@@ -1,12 +1,8 @@
-import { useState } from "react";
 import Pagination from "./Pagination";
 import PropTypes from "prop-types";
 
-const PaginationContainer = ({ totalPages, handlePageChange }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-
+const PaginationContainer = ({ totalPages, handlePageChange, currentPage }) => {
   const handlePage = (page) => {
-    setCurrentPage(page);
     handlePageChange(page);
   };
 
@@ -28,6 +24,7 @@ const PaginationContainer = ({ totalPages, handlePageChange }) => {
 PaginationContainer.propTypes = {
   totalPages: PropTypes.number,
   handlePageChange: PropTypes.func,
+  currentPage: PropTypes.number,
 };
 
 export default PaginationContainer;
