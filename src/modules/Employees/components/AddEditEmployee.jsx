@@ -15,6 +15,7 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { addEmployeeApi, editEmployeeApi } from "../api";
+import { createLogApi } from "../../Logs/api";
 
 const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
   const [data, setData] = React.useState({});
@@ -31,13 +32,22 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
         if (response.success) {
           closeModal();
           getResponseBack();
+          createLogApi({
+            user_name: JSON.parse(localStorage.getItem("user")).username,
+            activity: `Added ${data.name} to the employees list`,
+          });
         }
       });
     } else {
       editEmployeeApi(data, data._id).then((response) => {
+        console.log(response, "response");
         if (response.success) {
           closeModal();
           getResponseBack();
+          createLogApi({
+            user_name: JSON.parse(localStorage.getItem("user")).username,
+            activity: `Edited ${data.name}'s details `,
+          });
         }
       });
     }

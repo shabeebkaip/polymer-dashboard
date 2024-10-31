@@ -6,6 +6,7 @@ import DeleteModal from "../../../shared/DeleteModal";
 import { useState } from "react";
 import { deleteEmployeeApi } from "../api";
 import AddEditEmployee from "./AddEditEmployee";
+import { createLogApi } from "../../Logs/api";
 
 const EmployeesList = ({ employees, getResponseBack }) => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -17,6 +18,10 @@ const EmployeesList = ({ employees, getResponseBack }) => {
       if (response.success) {
         setDeleteModal(false);
         getResponseBack();
+        createLogApi({
+          user_name: JSON.parse(localStorage.getItem("user")).username,
+          activity: `Deleted an employee with id ${id}`,
+        });
       }
     });
   };
@@ -133,6 +138,7 @@ const EmployeesList = ({ employees, getResponseBack }) => {
         closeModal={() => setEditModal(false)}
         item={editData}
         mode="edit"
+        getResponseBack={getResponseBack}
       />
     </div>
   );

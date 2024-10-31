@@ -5,6 +5,7 @@ import { Actions, EmployeesList, SearchBar } from "../components";
 import { exportApi, getEmployeesApi, importApi } from "../api";
 import Loader from "../../../shared/Loader";
 import AddEditEmployee from "../components/AddEditEmployee";
+import { createLogApi } from "../../Logs/api";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -33,6 +34,10 @@ const Employees = () => {
   const handleExport = () => {
     setLoading(true);
     exportApi();
+    createLogApi({
+      user_name: JSON.parse(localStorage.getItem("user")).username,
+      activity: "Exported employees",
+    });
     setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -47,6 +52,10 @@ const Employees = () => {
       setLoading(false);
       if (response.success) {
         fetchEmployees();
+        createLogApi({
+          user_name: JSON.parse(localStorage.getItem("user")).username,
+          activity: "Imported employees",
+        });
       }
     });
   };
