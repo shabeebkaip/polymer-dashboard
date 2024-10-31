@@ -26,6 +26,7 @@ const Login = () => {
             user_name: res.user.username,
             activity: "Logged in",
           }).then((response) => {
+            console.log(response);
             navigate("/");
           });
         });
