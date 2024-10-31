@@ -7,6 +7,7 @@ import { useState } from "react";
 import gradientImage from "./assets/gradient.png";
 import AppRoutes from "./AppRoutes";
 import Login from "./modules/auth/containers/Login";
+import SignUp from "./modules/auth/containers/SignUp";
 // import { useDispatch, useSelector } from "react-redux";
 
 // const ProtectedRoute = () => {
@@ -25,6 +26,7 @@ function App() {
     <div className="font-light font-kanit">
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route
           path="/*"
           element={

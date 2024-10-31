@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { createLogApi } from "../modules/Logs/api";
 
 const Navbar = () => {
-  const [loading, setLoading] = useState(false);
   const location = useLocation();
   console.log(location.pathname);
   const handleLogout = () => {
@@ -14,7 +12,7 @@ const Navbar = () => {
       console.log(response);
       localStorage.clear();
       window.location.href = "/login";
-    }); 
+    });
   };
   return (
     <nav className="w-full bg-white shadow-custom  h-[80px]">
@@ -35,14 +33,6 @@ const Navbar = () => {
           logout
         </button>
       </div>
-
-      {loading && (
-        <div>
-          <div className="relative w-full h-1 bg-gray-200">
-            <div className="absolute top-0 left-0 w-full h-full bg-[#2952FF] linear-loader"></div>
-          </div>
-        </div>
-      )}
     </nav>
   );
 };

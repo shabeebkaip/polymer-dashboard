@@ -8,3 +8,12 @@ export const loginApi = async (data) => {
     console.log(err);
   }
 };
+
+export const signUpApi = async (data) => {
+  try {
+    const response = await globalPostService("/users", data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

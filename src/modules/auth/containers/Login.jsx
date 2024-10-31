@@ -127,7 +127,7 @@ const Login = () => {
                 </button>
                 <p className="mt-2">
                   Dont have an Account ?{" "}
-                  <a className="text-blue-700">Register</a>{" "}
+                  <a href="/signup"  className="text-blue-700">Register</a>{" "}
                 </p>
               </form>
             </div>
