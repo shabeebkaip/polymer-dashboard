@@ -72,16 +72,16 @@ const EmployeesList = ({ employees, getResponseBack }) => {
                     index % 2 === 1 ? "glass-card" : "dark-glass"
                   } ${isLastRow ? "border-b-[3px]" : ""}`}
                 >
-                  <td className="p-4 border-b">{row.employee_id}</td>
-                  <td className="p-4 border-b">{row.name}</td>
+                  <td className="p-4 border-b ">{row.employee_id}</td>
+                  <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
                   <td className="p-4 border-b">{row.phone}</td>
-                  <td className="p-4 border-b">{row.position}</td>
-                  <td className="p-4 border-b">{row.nationality}</td>
+                  <td className="p-4 capitalize border-b">{row.position}</td>
+                  <td className="p-4 capitalize border-b">{row.nationality}</td>
                   <td className="p-4 border-b">
                     {moment(row.dob).format("MMM DD YYYY")}
                   </td>
-                  <td className="p-4 border-b">{row.gender}</td>
+                  <td className="p-4 capitalize border-b">{row.gender}</td>
                   <td className="p-4 border-b ">
                     <div className="flex items-center gap-4 ">
                       <button

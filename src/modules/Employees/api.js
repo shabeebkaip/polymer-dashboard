@@ -35,7 +35,7 @@ export const addEmployeeApi = async (data) => {
 export const editEmployeeApi = async (data, id) => {
   try {
     let response = await globalPutService(`/employees/${id}`, data);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
   }
