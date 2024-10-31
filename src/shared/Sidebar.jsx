@@ -25,17 +25,11 @@ const menuItems = [
 const Sidebar = ({ collapsed, setCollapsed }) => {
   const [expandedAccordion, setExpandedAccordion] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
-  const handleAccordionChange = useCallback((panel) => {
-    setExpandedAccordion((prev) => (prev === panel ? null : panel));
-  }, []);
 
-  const renderMenuItem = useCallback(
-    (item, index) => {
-      const isSelected = location.pathname === item.route;
+  const renderMenuItem = useCallback((item, index) => {
+    const isSelected = location.pathname === item.route;
 
-      const isHovered = hoveredItem === index;
-
-      const itemClasses = `flex items-center p-3 m-1 rounded-lg cursor-pointer transition-colors
+    const itemClasses = `flex items-center p-3 m-1 rounded-lg cursor-pointer transition-colors
         ${collapsed ? "justify-center" : "justify-start"}
         ${
           isSelected
@@ -43,25 +37,20 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
             : "text-[#363535] hover:bg-[#F6F7F6] hover:text-[#004CFF]"
         }`;
 
-      return (
-        <div
-          key={index}
-          className={itemClasses}
-          onMouseEnter={() => setHoveredItem(index)}
-          onMouseLeave={() => setHoveredItem(null)}
-        >
-          {/* <img
-                        src={icon}
-                        alt={item.displayName}
-                        className={`w-6 h-6 ${language === 'ar' ? 'ml-3' : 'mr-3'}`}
-                        style={{ filter: iconFilter }}
-                    /> */}
-          {!collapsed && <span>{item.displayName}</span>}
-        </div>
-      );
-    },
-    [collapsed, expandedAccordion, hoveredItem]
-  );
+    return (
+      <div
+        key={index}
+        className={itemClasses}
+        onMouseEnter={() => setHoveredItem(index)}
+        onMouseLeave={() => setHoveredItem(null)}
+        onClick={() => {
+          window.location.href = item.route;
+        }}
+      >
+        {!collapsed && <span>{item.displayName}</span>}
+      </div>
+    );
+  }, []);
 
   return (
     <div

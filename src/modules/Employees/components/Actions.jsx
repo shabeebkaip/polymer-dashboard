@@ -4,7 +4,7 @@ import exportIcon from "../../../assets/tools/export.svg";
 import importIcon from "../../../assets/tools/import.svg";
 import PropTypes from "prop-types";
 
-const Actions = ({ handleAddEmployee, handleExport, handleImport, fileInputRef }) => {
+const Actions = ({ handleAddEmployee, handleExport, handleImport }) => {
   return (
     <div className="flex items-center gap-5">
       <ActionButton
@@ -27,7 +27,6 @@ const Actions = ({ handleAddEmployee, handleExport, handleImport, fileInputRef }
           />
           <input
             type="file"
-            ref={fileInputRef}
             onChange={handleImport}
             className="absolute top-0 w-32 h-10 opacity-0 cursor-pointer " // Hidden file input
           />
@@ -46,5 +45,6 @@ const Actions = ({ handleAddEmployee, handleExport, handleImport, fileInputRef }
 Actions.propTypes = {
   handleAddEmployee: PropTypes.func,
   handleExport: PropTypes.func,
+  handleImport: PropTypes.func,
 };
 export default Actions;

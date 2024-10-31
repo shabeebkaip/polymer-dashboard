@@ -8,7 +8,7 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" exact element={<Employees />} />
                 <Route path="/employees" exact element={<Employees />} />
-                <Route path="/logs" exact element={<Logs />} />
+                <Route path="/activity-logs" exact element={<Logs />} />
             </Routes>
         </div>
     );
