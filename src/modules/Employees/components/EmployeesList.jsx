@@ -132,6 +132,7 @@ const EmployeesList = ({ employees, getResponseBack }) => {
         open={editModal}
         closeModal={() => setEditModal(false)}
         item={editData}
+        mode="edit"
       />
     </div>
   );

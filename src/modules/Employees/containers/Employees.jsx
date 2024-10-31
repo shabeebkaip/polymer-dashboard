@@ -57,7 +57,7 @@ const Employees = () => {
             currentPage={pagination?.currentPage}
             handlePageChange={(page) => fetchEmployees({ page })}
           />
-          <AddEditEmployee open={open} closeModal={() => setOpen(false)} />
+          <AddEditEmployee open={open} closeModal={() => setOpen(false)} mode="add" />
         </>
       )}
     </div>

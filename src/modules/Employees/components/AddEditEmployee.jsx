@@ -14,14 +14,34 @@ import PropTypes from "prop-types";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
+import { addEmployeeApi, editEmployeeApi } from "../api";
 
-const AddEditEmployee = ({ open, closeModal, item }) => {
+const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
   const [data, setData] = React.useState({});
   useEffect(() => {
     if (item) {
       setData(item);
     }
   }, [item]);
+  console.log(data, "data");
+
+  const handleSave = () => {
+    if (mode === "add") {
+      addEmployeeApi(data).then((response) => {
+        if (response.success) {
+          closeModal();
+          getResponseBack();
+        }
+      });
+    } else {
+      editEmployeeApi(data, data._id).then((response) => {
+        if (response.success) {
+          closeModal();
+          getResponseBack();
+        }
+      });
+    }
+  };
   return (
     <div>
       <Dialog
@@ -99,12 +119,12 @@ const AddEditEmployee = ({ open, closeModal, item }) => {
                 >
                   <FormControlLabel
                     value="male"
-                    control={<Radio />}
+                    control={<Radio checked={data.gender === "male"} />}
                     label="Male"
                   />
                   <FormControlLabel
                     value="female"
-                    control={<Radio />}
+                    control={<Radio checked={data.gender === "female"} />}
                     label="Female"
                   />
                 </RadioGroup>
@@ -173,7 +193,13 @@ const AddEditEmployee = ({ open, closeModal, item }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {}} color="primary" variant="contained">
+          <Button
+            onClick={() => {
+              handleSave();
+            }}
+            color="primary"
+            variant="contained"
+          >
             Save
           </Button>
           <Button
@@ -193,6 +219,8 @@ AddEditEmployee.propTypes = {
   open: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   item: PropTypes.object,
+  getResponseBack: PropTypes.func.isRequired,
+  mode: PropTypes.string.isRequired,
 };
 
 export default AddEditEmployee;
