@@ -6,7 +6,7 @@ import {
   InputAdornment,
   CircularProgress,
 } from "@mui/material";
-import loginBanner from "../../../assets/1729680960861.jpg";
+import loginBanner from "../../../assets/1728384308140.jpg";
 import logo from "../../../assets/btc_networks_logo.jpg";
 
 import { useNavigate } from "react-router-dom";
