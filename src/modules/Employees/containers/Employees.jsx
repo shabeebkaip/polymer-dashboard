@@ -19,8 +19,8 @@ const Employees = () => {
     fetchEmployees();
   }, []);
 
-  const fetchEmployees = (query) => {
-    setLoading(true);
+  const fetchEmployees = (query, loading = true) => {
+    if (loading) setLoading(true);
     getEmployeesApi(query).then((response) => {
       setLoading(false);
       if (response.success) {
@@ -76,7 +76,7 @@ const Employees = () => {
       />
       <div className="flex items-center justify-between p-1 mt-4 bg-white rounded-full shadow ">
         <SearchBar
-          fetchEmployees={(search) => fetchEmployees({ search: search })}
+          fetchEmployees={(search) => fetchEmployees({ search: search }, false)}
         />
         <Actions
           handleAddEmployee={() => setOpen(true)}

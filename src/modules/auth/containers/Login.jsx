@@ -12,6 +12,7 @@ import logo from "../../../assets/btc_networks_logo.jpg";
 import { useNavigate } from "react-router-dom";
 import { loginApi } from "../api";
 import { createLogApi } from "../../Logs/api";
+import { enqueueSnackbar } from "notistack";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,23 +28,31 @@ const Login = () => {
       try {
         setLoading(true);
         loginApi({ email, password }).then((res) => {
-          localStorage.setItem("token", res.token);
-          localStorage.setItem("user", JSON.stringify(res.user));
-          createLogApi({
-            user_name: res.user.username,
-            activity: "Logged in",
-          }).then((response) => {
-            console.log(response);
-            navigate("/");
-          });
+          if (res.status) {
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("user", JSON.stringify(res.user));
+            enqueueSnackbar("Logged In Successfully", {
+              anchorOrigin: { vertical: "top", horizontal: "right" },
+              variant: "success",
+            });
+            createLogApi({
+              user_name: res.user.username,
+              activity: "Logged in",
+            }).then((response) => {
+              console.log(response);
+              navigate("/");
+            });
+          } else {
+            enqueueSnackbar(res.message, {
+              anchorOrigin: { vertical: "top", horizontal: "right" },
+              variant: "error",
+            });
+            setLoading(false);
+          }
         });
       } catch (error) {
         console.log(error);
       }
-    } else {
-      setTimeout(() => {
-        setErrors({});
-      }, 1000);
     }
   };
 
@@ -61,7 +70,6 @@ const Login = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  console.log(errors);
   return (
     <div className="flex w-full h-screen">
       <div className="flex-1">
@@ -79,7 +87,7 @@ const Login = () => {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="max-w-auto w-[441px] h-[554px] p-6 bg-transparent rounded-lg">
               <div className="flex justify-center mb-6">
-                <img src={logo} alt="Logo" /> *
+                <img src={logo} alt="Logo" />
               </div>
               <h1 className="mb-8 text-3xl font-medium">
                 Manage your employees!
@@ -95,6 +103,7 @@ const Login = () => {
                     fullWidth
                     error={!!errors.email}
                     helperText={errors.email}
+                    onFocus={() => setErrors({ ...errors, email: "" })}
                   />
                 </div>
                 <div className="mb-5">
@@ -108,21 +117,24 @@ const Login = () => {
                     fullWidth
                     error={!!errors.password}
                     helperText={errors.password}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <MdOutlineVisibilityOff size={20} />
-                            ) : (
-                              <MdOutlineVisibility size={20} />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
+                    onFocus={() => setErrors({ ...errors, password: "" })}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => setShowPassword(!showPassword)}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <MdOutlineVisibilityOff size={20} />
+                              ) : (
+                                <MdOutlineVisibility size={20} />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
                     }}
                   />
                 </div>

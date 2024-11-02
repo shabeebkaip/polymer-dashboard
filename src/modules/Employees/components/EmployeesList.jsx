@@ -83,7 +83,9 @@ const EmployeesList = ({ employees, getResponseBack }) => {
                   <td className="p-4 border-b ">{row.employee_id}</td>
                   <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
-                  <td className="p-4 border-b">{row.phone}</td>
+                  <td className="p-4 border-b">
+                    {row.countryCode} {row.phone}
+                  </td>
                   <td className="p-4 capitalize border-b">{row.position}</td>
                   <td className="p-4 capitalize border-b">{row.nationality}</td>
                   <td className="p-4 border-b">
