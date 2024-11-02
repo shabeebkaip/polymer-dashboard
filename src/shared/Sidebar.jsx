@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import logo from "../assets/btc_networks_logo.jpg";
+import PropTypes from "prop-types";
 
 const menuItems = [
   {
@@ -22,7 +23,7 @@ const menuItems = [
   // },
 ];
 
-const Sidebar = ({ collapsed, setCollapsed }) => {
+const Sidebar = ({ collapsed }) => {
   const renderMenuItem = useCallback((item, index) => {
     const isSelected = location.pathname === item.route;
 
@@ -65,6 +66,11 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       </div>
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  collapsed: PropTypes.bool,
+  setCollapsed: PropTypes.func,
 };
 
 export default Sidebar;

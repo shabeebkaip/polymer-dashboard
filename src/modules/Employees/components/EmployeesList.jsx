@@ -1,5 +1,6 @@
 import editIcon from "../../../assets/actions/edit.svg";
 import deleteIcon from "../../../assets/actions/delete.svg";
+import viewIcon from "../../../assets/actions/view.svg";
 import moment from "moment";
 import PropTypes from "prop-types";
 import DeleteModal from "../../../shared/DeleteModal";
@@ -7,12 +8,14 @@ import { useState } from "react";
 import { deleteEmployeeApi } from "../api";
 import AddEditEmployee from "./AddEditEmployee";
 import { createLogApi } from "../../Logs/api";
+import { Tooltip } from "@mui/material";
 
 const EmployeesList = ({ employees, getResponseBack }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [editData, setEditData] = useState({});
+  const [mode, setMode] = useState("");
   const handleDelete = (id) => {
     deleteEmployeeApi(id).then((response) => {
       if (response.success) {
@@ -89,24 +92,41 @@ const EmployeesList = ({ employees, getResponseBack }) => {
                   <td className="p-4 capitalize border-b">{row.gender}</td>
                   <td className="p-4 border-b ">
                     <div className="flex items-center gap-4 ">
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          setEditData(row);
-                          setEditModal(true);
-                        }}
-                      >
-                        <img src={editIcon} alt="Edit" />
-                      </button>
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          setDeleteModal(true);
-                          setDeleteId(row._id);
-                        }}
-                      >
-                        <img src={deleteIcon} alt="Delete" />
-                      </button>
+                      <Tooltip title="View" arrow>
+                        <button
+                          className="btn"
+                          onClick={() => {
+                            setEditData(row);
+                            setEditModal(true);
+                            setMode("view");
+                          }}
+                        >
+                          <img src={viewIcon} />
+                        </button>
+                      </Tooltip>
+                      <Tooltip title="Edit" arrow>
+                        <button
+                          className="btn"
+                          onClick={() => {
+                            setEditData(row);
+                            setEditModal(true);
+                            setMode("edit");
+                          }}
+                        >
+                          <img src={editIcon} alt="Edit" />
+                        </button>
+                      </Tooltip>
+                      <Tooltip title="Delete" arrow>
+                        <button
+                          className="btn"
+                          onClick={() => {
+                            setDeleteModal(true);
+                            setDeleteId(row._id);
+                          }}
+                        >
+                          <img src={deleteIcon} alt="Delete" />
+                        </button>
+                      </Tooltip>
                     </div>
                   </td>
                 </tr>
@@ -137,7 +157,8 @@ const EmployeesList = ({ employees, getResponseBack }) => {
         open={editModal}
         closeModal={() => setEditModal(false)}
         item={editData}
-        mode="edit"
+        mode={mode}
+        setMode={setMode}
         getResponseBack={getResponseBack}
       />
     </div>

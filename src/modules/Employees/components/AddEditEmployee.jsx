@@ -19,9 +19,17 @@ import { addEmployeeApi, editEmployeeApi } from "../api";
 import { createLogApi } from "../../Logs/api";
 import { enqueueSnackbar } from "notistack";
 
-const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
+const AddEditEmployee = ({
+  open,
+  closeModal,
+  item,
+  getResponseBack,
+  mode,
+  setMode,
+}) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  console.log(mode, "item");
   useEffect(() => {
     if (item) {
       setData(item);
@@ -75,85 +83,138 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
         fullWidth
         maxWidth="md"
       >
-        <DialogTitle id="add-edit-employee">Add Employee</DialogTitle>
+        <DialogTitle id="add-edit-employee">
+          <div className="flex items-center justify-between ">
+            {mode === "view"
+              ? "View Employee"
+              : mode === "add"
+              ? "Add Employee"
+              : "Edit Employee"}
+            {mode === "view" && (
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => setMode("edit")}
+              >
+                Edit
+              </Button>
+            )}
+          </div>
+        </DialogTitle>
         <DialogContent dividers>
           <div className="grid grid-cols-2 gap-4">
             <TextField
               label="Name"
-              variant="outlined"
+              variant={mode === "view" ? "standard" : "outlined"}
               margin="dense"
               fullWidth
               value={data.name}
               onChange={(e) => setData({ ...data, name: e.target.value })}
+              InputProps={{
+                readOnly: mode === "view",
+              }}
             />
             <TextField
               label="Email"
-              variant="outlined"
+              variant={mode === "view" ? "standard" : "outlined"}
               margin="dense"
               fullWidth
               value={data.email}
               onChange={(e) => setData({ ...data, email: e.target.value })}
+              InputProps={{
+                readOnly: mode === "view",
+              }}
             />
             <div className="grid w-full grid-cols-5 gap-4">
               <TextField
                 label="Country Code"
-                variant="outlined"
+                variant={mode === "view" ? "standard" : "outlined"}
                 margin="dense"
                 fullWidth
                 value={data.countryCode}
                 onChange={(e) =>
                   setData({ ...data, countryCode: e.target.value })
                 }
+                InputProps={{
+                  readOnly: mode === "view",
+                }}
                 className="col-span-2"
               />
               <TextField
                 label="Phone"
-                variant="outlined"
+                variant={mode === "view" ? "standard" : "outlined"}
                 margin="dense"
                 fullWidth
                 value={data.phone}
                 onChange={(e) => setData({ ...data, phone: e.target.value })}
                 className="col-span-3"
+                InputProps={{
+                  readOnly: mode === "view",
+                }}
               />
             </div>
             <TextField
               label="Role"
-              variant="outlined"
+              variant={mode === "view" ? "standard" : "outlined"}
               margin="dense"
               fullWidth
               value={data.position}
               onChange={(e) => setData({ ...data, position: e.target.value })}
+              InputProps={{
+                readOnly: mode === "view",
+              }}
             />
             <TextField
               label="Salary"
-              variant="outlined"
+              variant={mode === "view" ? "standard" : "outlined"}
               margin="dense"
               fullWidth
               value={data.salary}
               onChange={(e) => setData({ ...data, salary: e.target.value })}
               type="number"
+              InputProps={{
+                readOnly: mode === "view",
+              }}
             />
-            <div>
-              <label>Gender</label>
+            {mode === "view" ? (
+              <TextField
+                label="Gender"
+                variant="standard"
+                margin="dense"
+                fullWidth
+                value={data.gender}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            ) : (
               <div>
-                <RadioGroup
-                  row
-                  value={data.gender}
-                  onChange={(e) => setData({ ...data, gender: e.target.value })}
-                >
-                  <FormControlLabel
-                    value="male"
-                    control={<Radio checked={data.gender === "male"} />}
-                    label="Male"
-                  />
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio checked={data.gender === "female"} />}
-                    label="Female"
-                  />
-                </RadioGroup>
+                <label>Gender</label>
+                <div>
+                  <RadioGroup
+                    row
+                    value={data.gender}
+                    onChange={(e) =>
+                      setData({ ...data, gender: e.target.value })
+                    }
+                    InputProps={{
+                      readOnly: mode === "view",
+                    }}
+                  >
+                    <FormControlLabel
+                      value="male"
+                      control={<Radio checked={data.gender === "male"} />}
+                      label="Male"
+                    />
+                    <FormControlLabel
+                      value="female"
+                      control={<Radio checked={data.gender === "female"} />}
+                      label="Female"
+                    />
+                  </RadioGroup>
+                </div>
               </div>
-            </div>
+            )}
             <TextField
               label="Nationality"
               variant="outlined"
@@ -163,6 +224,9 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
               onChange={(e) =>
                 setData({ ...data, nationality: e.target.value })
               }
+              InputProps={{
+                readOnly: mode === "view",
+              }}
             />
             <TextField
               label="Passport Number"
@@ -173,6 +237,9 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
               onChange={(e) =>
                 setData({ ...data, passportNumber: e.target.value })
               }
+              InputProps={{
+                readOnly: mode === "view",
+              }}
             />
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
@@ -188,6 +255,9 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
                   },
                 }}
                 className="w-full"
+                InputProps={{
+                  readOnly: mode === "view",
+                }}
               />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -204,6 +274,9 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
                   },
                 }}
                 className="w-full"
+                InputProps={{
+                  readOnly: mode === "view",
+                }}
               />
             </LocalizationProvider>
           </div>
@@ -214,29 +287,46 @@ const AddEditEmployee = ({ open, closeModal, item, getResponseBack, mode }) => {
             fullWidth
             value={data.address}
             onChange={(e) => setData({ ...data, address: e.target.value })}
+            InputProps={{
+              readOnly: mode === "view",
+            }}
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => {
-              handleSave();
-            }}
-            color="primary"
-            variant="contained"
-          >
-            {loading ? (
-              <CircularProgress size="30px" style={{ color: "#ffffff" }} />
-            ) : (
-              "Save"
-            )}
-          </Button>
-          <Button
-            onClick={() => closeModal()}
-            color="error"
-            variant="contained"
-          >
-            Cancel
-          </Button>
+          {mode === "view" ? (
+            <Button
+              onClick={() => {
+                closeModal();
+              }}
+              color="primary"
+              variant="contained"
+            >
+              Close
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  handleSave();
+                }}
+                color="primary"
+                variant="contained"
+              >
+                {loading ? (
+                  <CircularProgress size="30px" style={{ color: "#ffffff" }} />
+                ) : (
+                  "Save"
+                )}
+              </Button>
+              <Button
+                onClick={() => closeModal()}
+                color="error"
+                variant="contained"
+              >
+                Cancel
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -249,6 +339,7 @@ AddEditEmployee.propTypes = {
   item: PropTypes.object,
   getResponseBack: PropTypes.func.isRequired,
   mode: PropTypes.string.isRequired,
+  setMode: PropTypes.func.isRequired,
 };
 
 export default AddEditEmployee;
