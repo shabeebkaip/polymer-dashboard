@@ -71,8 +71,6 @@ const EmployeesList = ({ employees, getResponseBack }) => {
           <tbody>
             {employees.map((row, index) => {
               const isLastRow = index === employees?.length - 1;
-              //   const isSelected = selectedRows.includes(row.id);
-
               return (
                 <tr
                   key={index}

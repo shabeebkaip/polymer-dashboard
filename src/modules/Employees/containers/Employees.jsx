@@ -15,7 +15,6 @@ const Employees = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     fetchEmployees();
   }, []);
 

@@ -46,7 +46,7 @@ const SearchBar = ({ fetchEmployees }) => {
           type="text"
           value={text}
           onChange={handleInputChange}
-          placeholder="Search..."
+          placeholder="Search by Name or Email..."
           className="block h-full w-full  bg-[#F5F7FE] text-lg outline-none placeholder:!text-gray-400 "
         />
         {text && (

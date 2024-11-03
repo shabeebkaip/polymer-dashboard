@@ -27,31 +27,44 @@ const Login = () => {
     if (validate()) {
       try {
         setLoading(true);
-        loginApi({ email, password }).then((res) => {
-          if (res.status) {
-            localStorage.setItem("token", res.token);
-            localStorage.setItem("user", JSON.stringify(res.user));
-            enqueueSnackbar("Logged In Successfully", {
-              anchorOrigin: { vertical: "top", horizontal: "right" },
-              variant: "success",
-            });
-            createLogApi({
-              user_name: res.user.username,
-              activity: "Logged in",
-            }).then((response) => {
-              console.log(response);
-              navigate("/");
-            });
-          } else {
-            enqueueSnackbar(res.message, {
+        loginApi({ email, password })
+          .then((res) => {
+            if (res.status) {
+              localStorage.setItem("token", res.token);
+              localStorage.setItem("user", JSON.stringify(res.user));
+              enqueueSnackbar("Logged In Successfully", {
+                anchorOrigin: { vertical: "top", horizontal: "right" },
+                variant: "success",
+              });
+              createLogApi({
+                user_name: res.user.username,
+                activity: "Logged in",
+              }).then((response) => {
+                console.log(response);
+                navigate("/");
+              });
+            } else {
+              enqueueSnackbar(res.message, {
+                anchorOrigin: { vertical: "top", horizontal: "right" },
+                variant: "error",
+              });
+              setLoading(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error, "56");
+            enqueueSnackbar("Invalid Email or Password", {
               anchorOrigin: { vertical: "top", horizontal: "right" },
               variant: "error",
             });
             setLoading(false);
-          }
-        });
+          });
       } catch (error) {
-        console.log(error);
+        console.log("Invalid Email or Password", "64");
+        enqueueSnackbar(error, {
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+          variant: "error",
+        });
       }
     }
   };

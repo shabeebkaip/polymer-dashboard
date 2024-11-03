@@ -1,26 +1,29 @@
 import { useCallback } from "react";
 import logo from "../assets/btc_networks_logo.jpg";
 import PropTypes from "prop-types";
+import { RxActivityLog } from "react-icons/rx";
+import { ImManWoman } from "react-icons/im";
+import { FaRegUser } from "react-icons/fa";
 
 const menuItems = [
   {
     displayName: "Employees",
     route: "/",
     name: "Employees",
-    icon: "",
+    icon: <ImManWoman />,
   },
   {
     displayName: "Activity Logs",
     route: "/activity-logs",
     name: "dashboard",
-    icon: "",
+    icon: <RxActivityLog />,
   },
-  // {
-  //   displayName: "Users",
-  //   route: "/users",
-  //   name: "dashboard",
-  //   icon: "",
-  // },
+  {
+    displayName: "Registered Users",
+    route: "/users",
+    name: "dashboard",
+    icon: <FaRegUser />,
+  },
 ];
 
 const Sidebar = ({ collapsed }) => {
@@ -43,6 +46,7 @@ const Sidebar = ({ collapsed }) => {
           window.location.href = item.route;
         }}
       >
+        <div className="mr-2">{item.icon}</div>
         {!collapsed && <span>{item.displayName}</span>}
       </div>
     );
