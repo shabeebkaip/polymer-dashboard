@@ -29,7 +29,7 @@ const Login = () => {
         setLoading(true);
         loginApi({ email, password })
           .then((res) => {
-            if (res.status) {
+            if (res.success) {
               localStorage.setItem("token", res.token);
               localStorage.setItem("user", JSON.stringify(res.user));
               enqueueSnackbar("Logged In Successfully", {
