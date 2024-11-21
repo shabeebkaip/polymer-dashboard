@@ -49,10 +49,14 @@ const AddEditEmployee = ({
       date: data.date ? "" : "Date of Joining is required",
       address: data.address ? "" : "Address is required",
     };
+    let payload = Object.assign({}, data, {
+      dob: moment(data.dob).format("YYYY-MM-DD"),
+      date: moment(data.date).format("YYYY-MM-DD"),
+    });
     if (Object.keys(validateInput).every((key) => validateInput[key] === "")) {
       if (mode === "add") {
         setLoading(true);
-        addEmployeeApi(data)
+        addEmployeeApi(payload)
           .then((response) => {
             setLoading(false);
             if (response.success) {
@@ -82,7 +86,7 @@ const AddEditEmployee = ({
           });
       } else {
         setLoading(true);
-        editEmployeeApi(data, data._id).then((response) => {
+        editEmployeeApi(payload, data.id).then((response) => {
           setLoading(false);
           if (response.success) {
             closeModal();

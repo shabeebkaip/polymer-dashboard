@@ -37,6 +37,7 @@ const EmployeesList = ({ employees, getResponseBack }) => {
     "Role",
     "Nationality",
     "DOB",
+    "Date of Joining",
     "Gender",
     "Actions",
   ];
@@ -78,7 +79,7 @@ const EmployeesList = ({ employees, getResponseBack }) => {
                     index % 2 === 1 ? "glass-card" : "dark-glass"
                   } ${isLastRow ? "border-b-[3px]" : ""}`}
                 >
-                  <td className="p-4 border-b ">{row.employee_id}</td>
+                  <td className="p-4 border-b ">{row.id}</td>
                   <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
                   <td className="p-4 border-b">
@@ -88,6 +89,9 @@ const EmployeesList = ({ employees, getResponseBack }) => {
                   <td className="p-4 capitalize border-b">{row.nationality}</td>
                   <td className="p-4 border-b">
                     {moment(row.dob).format("MMM DD YYYY")}
+                  </td>
+                  <td className="p-4 border-b">
+                    {moment(row.date).format("MMM DD YYYY")}
                   </td>
                   <td className="p-4 capitalize border-b">{row.gender}</td>
                   <td className="p-4 border-b ">
@@ -121,7 +125,7 @@ const EmployeesList = ({ employees, getResponseBack }) => {
                           className="btn"
                           onClick={() => {
                             setDeleteModal(true);
-                            setDeleteId(row._id);
+                            setDeleteId(row.id);
                           }}
                         >
                           <img src={deleteIcon} alt="Delete" />
