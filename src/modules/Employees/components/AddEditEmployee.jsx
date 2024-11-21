@@ -35,8 +35,6 @@ const AddEditEmployee = ({
       setData(item);
     }
   }, [item]);
-  console.log(data, "data");
-
   const handleSave = () => {
     let validateInput = {
       name: data.name ? "" : "Name is required",
