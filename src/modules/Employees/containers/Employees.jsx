@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import PaginationContainer from "../../../shared/PaginationContainer";
 import Title from "../../../shared/Title";
-import { Actions, EmployeesList, SearchBar } from "../components";
+import { Actions, EmployeesList } from "../components";
 import { exportApi, getEmployeesApi, importApi } from "../api";
 import AddEditEmployee from "../components/AddEditEmployee";
-import { createLogApi } from "../../Logs/api";
 import PageLoader from "../../../shared/PageLoader";
 import { enqueueSnackbar } from "notistack";
 
@@ -34,10 +33,6 @@ const Employees = () => {
   const handleExport = () => {
     setLoading(true);
     exportApi(enqueueSnackbar);
-    createLogApi({
-      user_name: JSON.parse(localStorage.getItem("user")).username,
-      activity: "Exported employees",
-    });
     setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -59,10 +54,6 @@ const Employees = () => {
             horizontal: "right",
           },
         });
-        createLogApi({
-          user_name: JSON.parse(localStorage.getItem("user")).username,
-          activity: "Imported employees",
-        });
       }
     });
   };
@@ -74,9 +65,6 @@ const Employees = () => {
         description="Displaying all employees currently assigned to the BTC department, including their Employee ID, Name, and Email for quick reference."
       />
       <div className="flex items-center justify-between p-1 mt-4 bg-white rounded-full shadow ">
-        <SearchBar
-          fetchEmployees={(search) => fetchEmployees({ search: search }, false)}
-        />
         <Actions
           handleAddEmployee={() => setOpen(true)}
           handleExport={handleExport}
@@ -85,7 +73,6 @@ const Employees = () => {
       </div>
       <>
         {" "}
-        :
         <EmployeesList
           employees={employees}
           getResponseBack={() => fetchEmployees()}

@@ -11,7 +11,6 @@ import logo from "../../../assets/btc_networks_logo.jpg";
 
 import { useNavigate } from "react-router-dom";
 import { loginApi } from "../api";
-import { createLogApi } from "../../Logs/api";
 import { enqueueSnackbar } from "notistack";
 
 const Login = () => {
@@ -29,27 +28,9 @@ const Login = () => {
         setLoading(true);
         loginApi({ email, password })
           .then((res) => {
-            if (res.success) {
-              localStorage.setItem("token", res.token);
-              localStorage.setItem("user", JSON.stringify(res.user));
-              enqueueSnackbar("Logged In Successfully", {
-                anchorOrigin: { vertical: "top", horizontal: "right" },
-                variant: "success",
-              });
-              createLogApi({
-                user_name: res.user.username,
-                activity: "Logged in",
-              }).then((response) => {
-                console.log(response);
-                navigate("/");
-              });
-            } else {
-              enqueueSnackbar(res.message, {
-                anchorOrigin: { vertical: "top", horizontal: "right" },
-                variant: "error",
-              });
-              setLoading(false);
-            }
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("user", JSON.stringify(res.user));
+            navigate("/");
           })
           .catch((error) => {
             console.log(error, "56");

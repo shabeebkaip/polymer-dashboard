@@ -7,7 +7,6 @@ import DeleteModal from "../../../shared/DeleteModal";
 import { useState } from "react";
 import { deleteEmployeeApi } from "../api";
 import AddEditEmployee from "./AddEditEmployee";
-import { createLogApi } from "../../Logs/api";
 import { Tooltip } from "@mui/material";
 
 const EmployeesList = ({ employees, getResponseBack }) => {
@@ -21,10 +20,6 @@ const EmployeesList = ({ employees, getResponseBack }) => {
       if (response.success) {
         setDeleteModal(false);
         getResponseBack();
-        createLogApi({
-          user_name: JSON.parse(localStorage.getItem("user")).username,
-          activity: `Deleted an employee with id ${id}`,
-        });
       }
     });
   };

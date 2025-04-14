@@ -16,7 +16,6 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { addEmployeeApi, editEmployeeApi } from "../api";
-import { createLogApi } from "../../Logs/api";
 import { enqueueSnackbar } from "notistack";
 
 const AddEditEmployee = ({
@@ -64,10 +63,6 @@ const AddEditEmployee = ({
                 variant: "success",
                 anchorOrigin: { vertical: "top", horizontal: "right" },
               });
-              createLogApi({
-                user_name: JSON.parse(localStorage.getItem("user")).username,
-                activity: `Added ${data.name} to the employees list`,
-              });
             } else {
               enqueueSnackbar(response.message, {
                 variant: "error",
@@ -92,10 +87,6 @@ const AddEditEmployee = ({
             enqueueSnackbar(response.message, {
               variant: "success",
               anchorOrigin: { vertical: "top", horizontal: "right" },
-            });
-            createLogApi({
-              user_name: JSON.parse(localStorage.getItem("user")).username,
-              activity: `Edited ${data.name}'s details `,
             });
           }
         });

@@ -11,7 +11,6 @@ import logo from "../../../assets/btc_networks_logo.jpg";
 
 import { useNavigate } from "react-router-dom";
 import { signUpApi } from "../api";
-import { createLogApi } from "../../Logs/api";
 import { enqueueSnackbar } from "notistack";
 
 const Login = () => {
@@ -38,18 +37,6 @@ const Login = () => {
               variant: "success",
               anchorOrigin: { vertical: "top", horizontal: "right" },
             });
-            createLogApi({
-              user_name: res.data.name,
-              activity: "Signed Up",
-            })
-              .then((response) => {
-                console.log(response);
-                navigate("/");
-              })
-              .catch((error) => {
-                console.log(error);
-                navigate("/");
-              });
           })
           .catch((error) => {
             console.log(error);

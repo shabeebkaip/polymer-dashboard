@@ -1,37 +1,10 @@
 import ActionButton from "../../../shared/ActionButton";
 import addIcon from "../../../assets/tools/create.svg";
-import exportIcon from "../../../assets/tools/export.svg";
-import importIcon from "../../../assets/tools/import.svg";
 import PropTypes from "prop-types";
 
-const Actions = ({ handleAddEmployee, handleExport, handleImport }) => {
+const Actions = ({ handleAddEmployee }) => {
   return (
-    <div className="flex items-center gap-5">
-      <ActionButton
-        buttonText="Export"
-        handleOnClick={() => {
-          handleExport();
-        }}
-        textColor="#000000"
-        bgColor="#ffffff"
-        icon={exportIcon}
-      />
-      {
-        <div className="relative cursor-pointer">
-          <ActionButton
-            buttonText="Import"
-            handleOnClick={() => {}}
-            textColor="#000000"
-            bgColor="#ffffff"
-            icon={importIcon}
-          />
-          <input
-            type="file"
-            onChange={handleImport}
-            className="absolute top-0 w-32 h-10 opacity-0 cursor-pointer " // Hidden file input
-          />
-        </div>
-      }
+    <div className="flex items-center justify-end gap-5">
       <ActionButton
         buttonText="Add Employee"
         handleOnClick={() => handleAddEmployee()}
@@ -46,5 +19,6 @@ Actions.propTypes = {
   handleAddEmployee: PropTypes.func,
   handleExport: PropTypes.func,
   handleImport: PropTypes.func,
+  exportFn: PropTypes.bool,
 };
 export default Actions;
