@@ -7,7 +7,6 @@ import { IoLogoPolymer } from "react-icons/io";
 import { GiFamilyTree, GiBrandyBottle } from "react-icons/gi";
 import { TbBrandDenodo } from "react-icons/tb";
 import { RiCustomerServiceLine } from "react-icons/ri";
-import logo from "../assets/btc_networks_logo.jpg";
 import { Typography } from "@mui/material";
 
 const menuItems = [
@@ -30,9 +29,9 @@ const menuItems = [
     icon: <GiFamilyTree />,
   },
   {
-    name: "categories",
-    displayName: "Categories",
-    route: "/categories",
+    name: "Industries",
+    displayName: "industries",
+    route: "/industries",
     icon: <MdCategory />,
   },
   {
