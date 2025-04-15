@@ -1,16 +1,19 @@
 import ActionButton from "../../../shared/ActionButton";
 import Title from "../../../shared/Title";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getIndustriesApi } from "../api";
-import { setIndustries } from "../../../slices/sharedSlice";
+import { setIndustries, setLoader } from "../../../slices/sharedSlice";
 import IndustriesList from "../components/IndustriesList";
+import PageLoader from "../../../shared/PageLoader";
 
 const Industries = () => {
+  const { loader } = useSelector((state) => state.sharedState);
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(setLoader(true));
     getIndustriesApi({}).then((response) => {
-      console.log("Industries response", response);
+      dispatch(setLoader(false));
       if (response.success) {
         dispatch(setIndustries(response.data));
       }
@@ -31,9 +34,7 @@ const Industries = () => {
           icon={"/tools/create.svg"}
         />
       </div>
-      <div className="mt-4">
-        <IndustriesList />
-      </div>
+      <div className="mt-4">{loader ? <PageLoader /> : <IndustriesList />}</div>
     </div>
   );
 };
