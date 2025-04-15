@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const TableUI = ({ data, tableHeader, children }) => {
+const TableUI = ({ noRecord, tableHeader, children }) => {
   return (
     <table className="w-full border-collapse">
       <thead>
@@ -27,6 +27,15 @@ const TableUI = ({ data, tableHeader, children }) => {
           ))}
         </tr>
       </thead>
+      {noRecord && (
+        <tbody className="bg-white rounded-md">
+          <tr>
+            <td colSpan={tableHeader.length} className="p-4 text-center">
+              No data available
+            </td>
+          </tr>
+        </tbody>
+      )}
       <tbody>{children}</tbody>
     </table>
   );
@@ -36,6 +45,7 @@ TableUI.propTypes = {
   data: PropTypes.array.isRequired,
   tableHeader: PropTypes.array.isRequired,
   children: PropTypes.node,
+  noRecord: PropTypes.bool,
 };
 
 export default TableUI;
