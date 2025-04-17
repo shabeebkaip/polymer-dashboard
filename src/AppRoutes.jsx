@@ -8,6 +8,7 @@ const AppRoutes = () => {
     <div className="p-5">
       <Routes>
         <Route path="/products" exact element={<Products />} />
+        <Route path="/" exact element={<Products />} />
         <Route path="/industries" exact element={<Industries />} />
 
         <Route path={"/users"} element={<Users />} />

@@ -15,7 +15,9 @@ const TableUI = ({ noRecord, tableHeader, children }) => {
           {tableHeader?.map((head, index) => (
             <th
               key={index}
-              className={`p-4 text-left border-b h-[20px] font-semibold w-fit `}
+              className={`${
+                index === 0 ? "p-4" : ""
+              }  text-left border-b h-[20px] font-semibold w-fit `}
               style={{
                 color: "#263238",
                 fontSize: "16px",

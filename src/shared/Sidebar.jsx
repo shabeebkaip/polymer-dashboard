@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { RxCaretDown, RxCaretRight } from "react-icons/rx";
 import { FaRegUser } from "react-icons/fa";
-import { MdDashboard, MdCategory } from "react-icons/md";
+import { MdCategory } from "react-icons/md";
 import { IoLogoPolymer } from "react-icons/io";
 import { GiFamilyTree, GiBrandyBottle } from "react-icons/gi";
 import { TbBrandDenodo } from "react-icons/tb";
@@ -10,12 +10,6 @@ import { RiCustomerServiceLine } from "react-icons/ri";
 import { Typography } from "@mui/material";
 
 const menuItems = [
-  {
-    name: "dashboard",
-    displayName: "Dashboard",
-    route: "/",
-    icon: <MdDashboard />,
-  },
   {
     name: "products",
     displayName: "Products",

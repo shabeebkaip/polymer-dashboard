@@ -6,7 +6,7 @@ import DeleteAction from "../../../shared/DeleteAction";
 const IndustryRow = ({ industry, index, isLastRow }) => {
   return (
     <TableRow index={index} isLastRow={isLastRow}>
-      <td>{industry?.name}</td>
+      <td className="p-4">{industry?.name}</td>
       <td>{industry?.description || "--"}</td>
       <td>
         <img src={industry?.bg} className="w-48" />
