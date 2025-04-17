@@ -1,9 +1,9 @@
-import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const location = useLocation();
+  const { pageTitle } = useSelector((state) => state.sharedState);
   const [loading, setLoading] = useState(false);
   const handleLogout = () => {
     setLoading(true);
@@ -12,12 +12,7 @@ const Navbar = () => {
     <nav className="w-full bg-white shadow-custom  h-[80px]">
       <div className="flex items-center justify-between px-5 py-3.5">
         <div className="flex items-center gap-5">
-          <h1 className="text-[#263238] text-2xl">
-            {" "}
-            {location.pathname.includes("activity")
-              ? "Activity Logs"
-              : "Employees"}
-          </h1>
+          <h1 className="text-[#263238] text-2xl">{pageTitle}</h1>
         </div>
 
         <button

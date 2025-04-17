@@ -6,6 +6,7 @@ import PageLoader from "../../../shared/PageLoader";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductsList from "../components/ProductsList";
+import { setPageTitle } from "../../../slices/sharedSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -13,9 +14,8 @@ const Products = () => {
     (state) => state.productState
   );
 
-  console.log("products", products);
-
   useEffect(() => {
+    dispatch(setPageTitle("Products"));
     dispatch(setProductLoader(true));
     getProductsApi({}).then((response) => {
       dispatch(setProductLoader(false));
@@ -23,7 +23,7 @@ const Products = () => {
         dispatch(setProducts(response.data));
       }
     });
-  }, []);
+  }, [dispatch]);
   return (
     <div>
       <Title title="Products" description="Displaying all the Products" />
@@ -36,13 +36,13 @@ const Products = () => {
           icon={"/tools/create.svg"}
         />
       </div>
-        {productLoader ? (
-          <PageLoader />
-        ) : (
-          <div className="mt-4">
-            <ProductsList products={products?.list} />
-          </div>
-        )}
+      {productLoader ? (
+        <PageLoader />
+      ) : (
+        <div className="mt-4">
+          <ProductsList products={products?.list} />
+        </div>
+      )}
     </div>
   );
 };

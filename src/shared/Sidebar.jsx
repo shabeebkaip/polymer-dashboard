@@ -18,8 +18,8 @@ const menuItems = [
   },
   {
     name: "products_family",
-    displayName: "Product Family",
-    route: "/product-family",
+    displayName: "Product Families",
+    route: "/product-families",
     icon: <GiFamilyTree />,
   },
   {
