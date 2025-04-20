@@ -4,16 +4,20 @@ import {
   setLoader,
   setPageTitle,
   setProductFamilies,
+  setProductFamilyModal,
 } from "../../../slices/sharedSlice";
 import { getProductFamiliesApi } from "../api";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductFamilyList from "../components/ProductFamilyList";
 import PageLoader from "../../../shared/PageLoader";
+import AddEditProductFamily from "../components/AddEditProductFamily";
 
 const ProductFamilies = () => {
   const dispatch = useDispatch();
-  const { loader } = useSelector((state) => state.sharedState);
+  const { loader, productFamilyModal } = useSelector(
+    (state) => state.sharedState
+  );
 
   const fetchProducts = useCallback(() => {
     getProductFamiliesApi().then((response) => {
@@ -38,7 +42,7 @@ const ProductFamilies = () => {
           <div className="flex items-center justify-between ">
             <ActionButton
               buttonText="Add Product Family"
-              handleOnClick={() => {}}
+              handleOnClick={() => dispatch(setProductFamilyModal(true))}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
               icon={"/tools/create.svg"}
@@ -53,6 +57,11 @@ const ProductFamilies = () => {
           <ProductFamilyList />
         </div>
       )}
+      <AddEditProductFamily
+        open={productFamilyModal}
+        mode="add"
+        getResponseBack={() => fetchProducts()}
+      />
     </div>
   );
 };

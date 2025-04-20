@@ -6,6 +6,7 @@ const sharedSlice = createSlice({
     loader: false,
     industries: [],
     productFamilies: [],
+    productFamilyModal: false,
     pageTitle: "",
   },
   reducers: {
@@ -21,9 +22,17 @@ const sharedSlice = createSlice({
     setProductFamilies: (state, action) => {
       state.productFamilies = action.payload;
     },
+    setProductFamilyModal: (state, action) => {
+      state.productFamilyModal = action.payload;
+    },
   },
 });
 
-export const { setLoader, setIndustries, setPageTitle, setProductFamilies } =
-  sharedSlice.actions;
+export const {
+  setLoader,
+  setIndustries,
+  setPageTitle,
+  setProductFamilies,
+  setProductFamilyModal,
+} = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;
