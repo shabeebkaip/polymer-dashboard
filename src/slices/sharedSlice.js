@@ -10,6 +10,8 @@ const sharedSlice = createSlice({
     mode: "add",
     // industries
     industries: [],
+    industryModal: false,
+    industryCrud: {},
     // product families
     productFamilies: [],
     productFamilyModal: false,
@@ -34,6 +36,12 @@ const sharedSlice = createSlice({
     setIndustries: (state, action) => {
       state.industries = action.payload;
     },
+    setIndustryModal: (state, action) => {
+      state.industryModal = action.payload;
+    },
+    setIndustryCrud: (state, action) => {
+      state.industryCrud = action.payload;
+    },
     setProductFamilies: (state, action) => {
       state.productFamilies = action.payload;
     },
@@ -52,6 +60,8 @@ export const {
   setPageTitle,
   setDeleteModal,
   setIndustries,
+  setIndustryModal,
+  setIndustryCrud,
   setProductFamilies,
   setProductFamilyModal,
   setProductFamilyCrud,

@@ -4,7 +4,6 @@ import IndustryRow from "./IndustryRow";
 
 const IndustriesList = () => {
   const { industries } = useSelector((state) => state.sharedState);
-  console.log("industries", industries);
   return (
     <div>
       <TableUI
