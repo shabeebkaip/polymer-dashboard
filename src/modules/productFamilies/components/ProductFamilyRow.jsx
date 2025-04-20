@@ -44,7 +44,9 @@ const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
           />
           <EditAction
             handleClick={() => {
-              console.log("Edit action clicked");
+              dispatch(setProductFamilyModal(true));
+              dispatch(setProductFamilyCrud(productFamily));
+              dispatch(setMode("edit"));
             }}
           />
           <DeleteAction

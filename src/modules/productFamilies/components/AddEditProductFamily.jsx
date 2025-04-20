@@ -13,8 +13,9 @@ import { setLoader, setProductFamilyModal } from "../../../slices/sharedSlice";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import ImageUpload from "../../../shared/ImageUpload";
-import { createProductFamilyApi } from "../api";
+import { createProductFamilyApi, updateProductFamilyApi } from "../api";
 import { useEffect } from "react";
+import { enqueueSnackbar } from "notistack";
 
 const AddEditProductFamily = ({ getResponseBack }) => {
   const dispatch = useDispatch();
@@ -23,7 +24,6 @@ const AddEditProductFamily = ({ getResponseBack }) => {
     productFamilyCrud,
     mode,
   } = useSelector((state) => state.sharedState);
-  console.log("open", productFamilyCrud);
   const [data, setData] = useState(productFamilyCrud);
   const { loader } = useSelector((state) => state.sharedState);
   const closeModal = () => {
@@ -34,27 +34,55 @@ const AddEditProductFamily = ({ getResponseBack }) => {
     if (mode === "add") {
       createProductFamilyApi(data)
         .then((response) => {
-          console.log(response);
+          if (response.success) {
+            closeModal();
+            setData({});
+            enqueueSnackbar(response?.message, {
+              variant: "success",
+              anchorOrigin: { vertical: "top", horizontal: "right" },
+            });
+          }
         })
         .catch((error) => {
           console.error("Error creating product family:", error);
+          enqueueSnackbar("Error creating product family", {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
         })
         .finally(() => {
-          setData({});
-          closeModal();
           dispatch(setLoader(false));
           getResponseBack();
         });
     } else {
-      // Add logic to update the existing product family
+      updateProductFamilyApi(data)
+        .then((response) => {
+          if (response.success) {
+            setData({});
+            closeModal();
+            enqueueSnackbar(response?.message, {
+              variant: "success",
+              anchorOrigin: { vertical: "top", horizontal: "right" },
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating product family:", error);
+          enqueueSnackbar("Error updating product family", {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        })
+        .finally(() => {
+          dispatch(setLoader(false));
+          getResponseBack();
+        });
     }
-    closeModal();
   };
 
   useEffect(() => {
     setData(productFamilyCrud);
   }, [productFamilyCrud]);
-  console.log("data", data);
   return (
     <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
       <DialogTitle>
@@ -114,22 +142,38 @@ const AddEditProductFamily = ({ getResponseBack }) => {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => {
-            handleSave();
-          }}
-          color="primary"
-          variant="contained"
-        >
-          {loader ? (
-            <CircularProgress size="30px" style={{ color: "#ffffff" }} />
-          ) : (
-            "Save"
-          )}
-        </Button>
-        <Button onClick={() => closeModal()} color="error" variant="contained">
-          Cancel
-        </Button>
+        {mode === "view" ? (
+          <Button
+            onClick={() => closeModal()}
+            color="primary"
+            variant="outlined"
+          >
+            Close
+          </Button>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                handleSave();
+              }}
+              color="primary"
+              variant="contained"
+            >
+              {loader ? (
+                <CircularProgress size="30px" style={{ color: "#ffffff" }} />
+              ) : (
+                "Save"
+              )}
+            </Button>
+            <Button
+              onClick={() => closeModal()}
+              color="error"
+              variant="contained"
+            >
+              Cancel
+            </Button>
+          </>
+        )}
       </DialogActions>
     </Dialog>
   );
