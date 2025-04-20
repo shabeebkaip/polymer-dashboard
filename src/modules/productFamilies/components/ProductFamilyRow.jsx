@@ -15,6 +15,12 @@ import {
 const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
   const dispatch = useDispatch();
 
+  const handleEditView = (mode) => {
+    dispatch(setProductFamilyModal(true));
+    dispatch(setProductFamilyCrud(productFamily));
+    dispatch(setMode(mode));
+  };
+
   return (
     <TableRow index={index} isLastRow={isLastRow}>
       <td className="p-4">{productFamily?.name}</td>
@@ -37,20 +43,8 @@ const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
       </td>
       <td>
         <div className="flex items-center gap-2">
-          <ViewAction
-            handleClick={() => {
-              dispatch(setProductFamilyModal(true));
-              dispatch(setProductFamilyCrud(productFamily));
-              dispatch(setMode("view"));
-            }}
-          />
-          <EditAction
-            handleClick={() => {
-              dispatch(setProductFamilyModal(true));
-              dispatch(setProductFamilyCrud(productFamily));
-              dispatch(setMode("edit"));
-            }}
-          />
+          {/* <ViewAction handleClick={() => handleEditView("view")} /> */}
+          <EditAction handleClick={() => handleEditView("edit")} />
           <DeleteAction
             handleClick={() => {
               dispatch(setDeleteModal(true));
