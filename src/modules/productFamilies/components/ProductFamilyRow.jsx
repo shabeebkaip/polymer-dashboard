@@ -18,10 +18,10 @@ const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
       <td className="p-4">{productFamily?.name}</td>
       <td>{productFamily?.description || "--"}</td>
       <td>
-        <div className="pt-4 pb-4">
+        <div className="pt-2 pb-2">
           <img
             src={productFamily?.image}
-            className="w-48 h-20 rounded-md"
+            className="w-16 h-16 rounded-md"
             alt="Background"
           />
         </div>

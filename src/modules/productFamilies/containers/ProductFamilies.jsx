@@ -2,8 +2,10 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setLoader,
+  setMode,
   setPageTitle,
   setProductFamilies,
+  setProductFamilyCrud,
   setProductFamilyModal,
 } from "../../../slices/sharedSlice";
 import { getProductFamiliesApi } from "../api";
@@ -42,7 +44,11 @@ const ProductFamilies = () => {
           <div className="flex items-center justify-between ">
             <ActionButton
               buttonText="Add Product Family"
-              handleOnClick={() => dispatch(setProductFamilyModal(true))}
+              handleOnClick={() => {
+                dispatch(setProductFamilyModal(true));
+                dispatch(setProductFamilyCrud({}));
+                dispatch(setMode("add"));
+              }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
               icon={"/tools/create.svg"}
