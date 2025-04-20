@@ -3,11 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const sharedSlice = createSlice({
   name: "shared",
   initialState: {
+    pageTitle: "",
     loader: false,
+    mode: "add",
+    // industries
     industries: [],
+    // product families
     productFamilies: [],
     productFamilyModal: false,
-    pageTitle: "",
+    productFamilyCrud: {},
   },
   reducers: {
     setLoader: (state, action) => {
@@ -25,14 +29,22 @@ const sharedSlice = createSlice({
     setProductFamilyModal: (state, action) => {
       state.productFamilyModal = action.payload;
     },
+    setProductFamilyCrud: (state, action) => {
+      state.productFamilyCrud = action.payload;
+    },
+    setMode: (state, action) => {
+      state.mode = action.payload;
+    },
   },
 });
 
 export const {
   setLoader,
-  setIndustries,
+  setMode,
   setPageTitle,
+  setIndustries,
   setProductFamilies,
   setProductFamilyModal,
+  setProductFamilyCrud,
 } = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;

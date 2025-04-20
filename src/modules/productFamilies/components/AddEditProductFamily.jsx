@@ -14,10 +14,17 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import ImageUpload from "../../../shared/ImageUpload";
 import { createProductFamilyApi } from "../api";
+import { useEffect } from "react";
 
-const AddEditProductFamily = ({ open, mode, getResponseBack }) => {
+const AddEditProductFamily = ({ getResponseBack }) => {
   const dispatch = useDispatch();
-  const [data, setData] = useState({});
+  const {
+    productFamilyModal: open,
+    productFamilyCrud,
+    mode,
+  } = useSelector((state) => state.sharedState);
+  console.log("open", productFamilyCrud);
+  const [data, setData] = useState(productFamilyCrud);
   const { loader } = useSelector((state) => state.sharedState);
   const closeModal = () => {
     dispatch(setProductFamilyModal(false));
@@ -43,9 +50,16 @@ const AddEditProductFamily = ({ open, mode, getResponseBack }) => {
     }
     closeModal();
   };
+
+  useEffect(() => {
+    setData(productFamilyCrud);
+  }, [productFamilyCrud]);
+  console.log("data", data);
   return (
     <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
-      <DialogTitle>{mode} Product Family</DialogTitle>
+      <DialogTitle>
+        <h4 className="capitalize">{mode} Product Family</h4>
+      </DialogTitle>
       <DialogContent dividers>
         <div className="grid grid-cols-2 gap-4">
           <TextField

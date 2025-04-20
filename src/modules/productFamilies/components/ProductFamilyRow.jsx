@@ -3,8 +3,16 @@ import PropTypes from "prop-types";
 import ViewAction from "../../../shared/ViewAction";
 import EditAction from "../../../shared/EditAction";
 import DeleteAction from "../../../shared/DeleteAction";
+import { useDispatch } from "react-redux";
+import {
+  setMode,
+  setProductFamilyCrud,
+  setProductFamilyModal,
+} from "../../../slices/sharedSlice";
 
 const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
+  const dispatch = useDispatch();
+
   return (
     <TableRow index={index} isLastRow={isLastRow}>
       <td className="p-4">{productFamily?.name}</td>
@@ -29,7 +37,9 @@ const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
         <div className="flex items-center gap-2">
           <ViewAction
             handleClick={() => {
-              console.log("View action clicked");
+              dispatch(setProductFamilyModal(true));
+              dispatch(setProductFamilyCrud(productFamily));
+              dispatch(setMode("view"));
             }}
           />
           <EditAction
