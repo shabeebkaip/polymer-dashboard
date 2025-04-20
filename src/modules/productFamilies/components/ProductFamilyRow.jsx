@@ -1,6 +1,5 @@
 import TableRow from "../../../shared/TableRow";
 import PropTypes from "prop-types";
-import ViewAction from "../../../shared/ViewAction";
 import EditAction from "../../../shared/EditAction";
 import DeleteAction from "../../../shared/DeleteAction";
 import { useDispatch } from "react-redux";
@@ -43,7 +42,6 @@ const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
       </td>
       <td>
         <div className="flex items-center gap-2">
-          {/* <ViewAction handleClick={() => handleEditView("view")} /> */}
           <EditAction handleClick={() => handleEditView("edit")} />
           <DeleteAction
             handleClick={() => {
