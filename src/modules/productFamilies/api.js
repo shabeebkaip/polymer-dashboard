@@ -1,4 +1,5 @@
 import {
+  globalDeleteService,
   globalGetService,
   globalPostService,
   globalPutService,
@@ -28,6 +29,15 @@ export const updateProductFamilyApi = async (data) => {
       `/product-family/edit/${data._id}`,
       data
     );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteProductFamilyApi = async (id) => {
+  try {
+    let response = await globalDeleteService(`/product-family/delete/${id}`);
     return response.data;
   } catch (err) {
     console.log(err);

@@ -24,16 +24,18 @@ const Industries = () => {
       <Title
         title="Industries"
         description="Displaying all the categories under Industries"
+        actions={
+          <div className="flex items-center justify-between ">
+            <ActionButton
+              buttonText="Add Industry"
+              handleOnClick={() => {}}
+              textColor="#ffffff"
+              bgColor="rgb(41, 82, 255)"
+              icon={"/tools/create.svg"}
+            />
+          </div>
+        }
       />
-      <div className="flex items-center justify-end p-1 mt-4 bg-white rounded-full shadow">
-        <ActionButton
-          buttonText="Add Industry"
-          handleOnClick={() => {}}
-          textColor="#ffffff"
-          bgColor="rgb(41, 82, 255)"
-          icon={"/tools/create.svg"}
-        />
-      </div>
       <div className="mt-4">{loader ? <PageLoader /> : <IndustriesList />}</div>
     </div>
   );

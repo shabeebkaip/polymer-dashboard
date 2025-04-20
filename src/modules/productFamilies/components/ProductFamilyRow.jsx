@@ -5,6 +5,8 @@ import EditAction from "../../../shared/EditAction";
 import DeleteAction from "../../../shared/DeleteAction";
 import { useDispatch } from "react-redux";
 import {
+  setDeleteId,
+  setDeleteModal,
   setMode,
   setProductFamilyCrud,
   setProductFamilyModal,
@@ -51,7 +53,8 @@ const ProductFamilyRow = ({ productFamily, index, isLastRow }) => {
           />
           <DeleteAction
             handleClick={() => {
-              console.log("Delete action clicked");
+              dispatch(setDeleteModal(true));
+              dispatch(setDeleteId(productFamily._id));
             }}
           />
         </div>

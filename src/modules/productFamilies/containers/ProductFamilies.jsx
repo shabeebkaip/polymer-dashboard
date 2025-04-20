@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setDeleteModal,
   setLoader,
   setMode,
   setPageTitle,
@@ -8,16 +9,18 @@ import {
   setProductFamilyCrud,
   setProductFamilyModal,
 } from "../../../slices/sharedSlice";
-import { getProductFamiliesApi } from "../api";
+import { deleteProductFamilyApi, getProductFamiliesApi } from "../api";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductFamilyList from "../components/ProductFamilyList";
 import PageLoader from "../../../shared/PageLoader";
 import AddEditProductFamily from "../components/AddEditProductFamily";
+import DeleteModal from "../../../shared/DeleteModal";
+import { enqueueSnackbar } from "notistack";
 
 const ProductFamilies = () => {
   const dispatch = useDispatch();
-  const { loader, productFamilyModal } = useSelector(
+  const { loader, productFamilyModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
@@ -29,11 +32,33 @@ const ProductFamilies = () => {
       }
     });
   }, [dispatch]);
+
   useEffect(() => {
     dispatch(setLoader(true));
     dispatch(setPageTitle("Product Families"));
     fetchProducts();
   }, [dispatch, fetchProducts]);
+
+  const handleDelete = () => {
+    dispatch(setLoader(true));
+    deleteProductFamilyApi(deleteId)
+      .then((response) => {
+        if (response.success) {
+          dispatch(setDeleteModal(false));
+          enqueueSnackbar(response?.message, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting product family:", error);
+      })
+      .finally(() => {
+        dispatch(setLoader(false));
+        fetchProducts();
+      });
+  };
 
   return (
     <div>
@@ -68,6 +93,7 @@ const ProductFamilies = () => {
         mode="add"
         getResponseBack={() => fetchProducts()}
       />
+      <DeleteModal handleDelete={handleDelete} />
     </div>
   );
 };

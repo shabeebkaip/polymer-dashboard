@@ -6,10 +6,22 @@ import {
   Button,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { setDeleteModal } from "../slices/sharedSlice";
 
-const DeleteModal = ({ open, closeModal, handleDelete }) => {
+const DeleteModal = ({ handleDelete }) => {
+  const dispatch = useDispatch();
+  const { deleteModal } = useSelector((state) => state.sharedState);
+  console.log("deleteModal", deleteModal);
+  const closeModal = () => {
+    dispatch(setDeleteModal(false));
+  };
   return (
-    <Dialog open={open} onClose={closeModal} aria-labelledby="delete-dialog">
+    <Dialog
+      open={deleteModal}
+      onClose={closeModal}
+      aria-labelledby="delete-dialog"
+    >
       <DialogTitle id="delete-dialog">Delete Confirmation</DialogTitle>
       <DialogContent>Are you sure you want to delete this item?</DialogContent>
       <DialogActions sx={{ gap: 1 }}>
@@ -26,8 +38,6 @@ const DeleteModal = ({ open, closeModal, handleDelete }) => {
 
 DeleteModal.propTypes = {
   module: PropTypes.string.isRequired,
-  open: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
 };
 
