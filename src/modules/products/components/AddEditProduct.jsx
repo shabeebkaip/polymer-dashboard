@@ -14,6 +14,7 @@ import ImageUpload from "../../../shared/ImageUpload";
 import {
   getAppearancesApi,
   getBrandsApi,
+  getGradesApi,
   getSubstancesApi,
 } from "../../../shared/api";
 import { getIndustriesApi } from "../../industries/api";
@@ -21,8 +22,15 @@ import { getProductFamiliesApi } from "../../productFamilies/api";
 
 const AddEditProduct = () => {
   const dispatch = useDispatch();
-  const { mode, brands, industries, productFamilies, appearance, substance } =
-    useSelector((state) => state.sharedState);
+  const {
+    mode,
+    brands,
+    industries,
+    productFamilies,
+    appearance,
+    substance,
+    grade,
+  } = useSelector((state) => state.sharedState);
   const { productCrud, productModal, productLoader } = useSelector(
     (state) => state.productState
   );
@@ -33,6 +41,7 @@ const AddEditProduct = () => {
     dispatch(getProductFamiliesApi());
     dispatch(getAppearancesApi());
     dispatch(getSubstancesApi());
+    dispatch(getGradesApi());
   }, [dispatch]);
 
   useEffect(() => {
@@ -105,9 +114,9 @@ const AddEditProduct = () => {
             value={data.substance}
           />
           <Autocomplete
-            options={[]}
+            options={grade}
             multiple
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="Grade" variant="outlined" />
             )}

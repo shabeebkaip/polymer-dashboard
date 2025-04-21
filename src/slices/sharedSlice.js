@@ -22,6 +22,8 @@ const sharedSlice = createSlice({
     appearance: [],
     // substance
     substance: [],
+    // grade
+    grade: [],
   },
   reducers: {
     setLoader: (state, action) => {
@@ -71,6 +73,10 @@ const sharedSlice = createSlice({
     setSubstance: (state, action) => {
       state.substance = action.payload;
     },
+    // grade
+    setGrade: (state, action) => {
+      state.grade = action.payload;
+    },
   },
 });
 
@@ -94,5 +100,7 @@ export const {
   setAppearance,
   // substance
   setSubstance,
+  // grade
+  setGrade,
 } = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;

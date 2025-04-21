@@ -1,4 +1,9 @@
-import { setAppearance, setBrands, setSubstance } from "../slices/sharedSlice";
+import {
+  setAppearance,
+  setBrands,
+  setGrade,
+  setSubstance,
+} from "../slices/sharedSlice";
 import {
   globalGetService,
   globalPostService,
@@ -49,6 +54,19 @@ export const getSubstancesApi = () => async (dispatch) => {
     return response;
   } catch (error) {
     console.error("Error fetching substances:", error);
+    throw error;
+  }
+};
+
+export const getGradesApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/grade/list`);
+    if (response.data.success) {
+      dispatch(setGrade(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching grades:", error);
     throw error;
   }
 };
