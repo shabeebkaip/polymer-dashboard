@@ -19,10 +19,10 @@ const AddEditIndustries = ({ getResponseBack }) => {
   const dispatch = useDispatch();
   const {
     industryModal: open,
-    industriesCrud,
+    industryCrud,
     mode,
   } = useSelector((state) => state.sharedState);
-  const [data, setData] = useState(industriesCrud);
+  const [data, setData] = useState(industryCrud);
   const { loader } = useSelector((state) => state.sharedState);
   const closeModal = () => {
     dispatch(setIndustryModal(false));
@@ -70,8 +70,8 @@ const AddEditIndustries = ({ getResponseBack }) => {
     }
   };
   useEffect(() => {
-    setData(industriesCrud);
-  }, [industriesCrud]);
+    setData(industryCrud );
+  }, [industryCrud ]);
   return (
     <Dialog
       open={open}

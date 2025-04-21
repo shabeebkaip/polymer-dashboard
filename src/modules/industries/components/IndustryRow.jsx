@@ -1,34 +1,41 @@
 import PropTypes from "prop-types";
 import TableRow from "../../../shared/TableRow";
-import ViewAction from "../../../shared/ViewAction";
 import EditAction from "../../../shared/EditAction";
 import DeleteAction from "../../../shared/DeleteAction";
+import { useDispatch } from "react-redux";
+import {
+  setDeleteId,
+  setDeleteModal,
+  setIndustryCrud,
+  setIndustryModal,
+  setMode,
+} from "../../../slices/sharedSlice";
 const IndustryRow = ({ industry, index, isLastRow }) => {
+  const dispatch = useDispatch();
+  const handleEditView = (mode) => {
+    dispatch(setIndustryModal(true));
+    dispatch(setIndustryCrud(industry));
+    dispatch(setMode(mode));
+  };
   return (
     <TableRow index={index} isLastRow={isLastRow}>
       <td className="p-4">{industry?.name}</td>
       <td>{industry?.description || "--"}</td>
       <td>
-        <img src={industry?.bg} className="w-48" />
+        <div className="pt-2 pb-2">
+          <img src={industry?.bg} className="object-contain w-20 rounded-md" />
+        </div>
       </td>
       <td>
-        <img src={industry?.icon} className="w-6" />
+        <img src={industry?.icon} className="object-contain w-20 rounded-md " />
       </td>
       <td>
         <div className="flex items-center gap-2">
-          <ViewAction
-            handleClick={() => {
-              console.log("View action clicked");
-            }}
-          />
-          <EditAction
-            handleClick={() => {
-              console.log("Edit action clicked");
-            }}
-          />
+          <EditAction handleClick={() => handleEditView("edit")} />
           <DeleteAction
             handleClick={() => {
-              console.log("Delete action clicked");
+              dispatch(setDeleteModal(true));
+              dispatch(setDeleteId(industry ._id));
             }}
           />
         </div>

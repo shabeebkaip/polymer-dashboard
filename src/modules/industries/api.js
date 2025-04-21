@@ -1,4 +1,5 @@
 import {
+  globalDeleteService,
   globalGetService,
   globalPostService,
   globalPutService,
@@ -24,7 +25,19 @@ export const createIndustryApi = async (data) => {
 
 export const updateIndustryApi = async (data) => {
   try {
-    const response = await globalPutService(`/industry/edit/${data._id}`, data);
+    const response = await globalPutService(
+      `/industry/update/${data._id}`,
+      data
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteIndustryApi = async (id) => {
+  try {
+    const response = await globalDeleteService(`/industry/delete/${id}`);
     return response.data;
   } catch (err) {
     console.log(err);
