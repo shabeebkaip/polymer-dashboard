@@ -4,9 +4,13 @@ const baseURL = "https://polymer-nodejs.vercel.app/api";
 const axiosInstance = axios.create({
   baseURL: baseURL,
 });
+const token = localStorage.getItem("token") || null;
 
 axiosInstance.interceptors.request.use(
   function (config) {
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
     return config;
   },
   function (error) {

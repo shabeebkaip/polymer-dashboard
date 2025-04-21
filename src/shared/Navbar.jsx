@@ -7,6 +7,12 @@ const Navbar = () => {
   const [loading, setLoading] = useState(false);
   const handleLogout = () => {
     setLoading(true);
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setLoading(false);
+      window.location.href = "/login";
+    }, 1000);
   };
   return (
     <nav className="w-full bg-white shadow-custom  h-[80px]">
