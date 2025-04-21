@@ -20,6 +20,8 @@ const sharedSlice = createSlice({
     brands: [],
     // appearance
     appearance: [],
+    // substance
+    substance: [],
   },
   reducers: {
     setLoader: (state, action) => {
@@ -65,6 +67,10 @@ const sharedSlice = createSlice({
     setAppearance: (state, action) => {
       state.appearance = action.payload;
     },
+    // substance
+    setSubstance: (state, action) => {
+      state.substance = action.payload;
+    },
   },
 });
 
@@ -86,5 +92,7 @@ export const {
   setBrands,
   // appearance
   setAppearance,
+  // substance
+  setSubstance,
 } = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;
