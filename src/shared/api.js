@@ -2,6 +2,7 @@ import {
   setAppearance,
   setBrands,
   setGrade,
+  setIncoterms,
   setSubstance,
 } from "../slices/sharedSlice";
 import {
@@ -67,6 +68,19 @@ export const getGradesApi = () => async (dispatch) => {
     return response;
   } catch (error) {
     console.error("Error fetching grades:", error);
+    throw error;
+  }
+};
+
+export const getIncotermsApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/incoterm/list`);
+    if (response.data.success) {
+      dispatch(setIncoterms(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching incoterms:", error);
     throw error;
   }
 };

@@ -15,6 +15,7 @@ import {
   getAppearancesApi,
   getBrandsApi,
   getGradesApi,
+  getIncotermsApi,
   getSubstancesApi,
 } from "../../../shared/api";
 import { getIndustriesApi } from "../../industries/api";
@@ -30,6 +31,7 @@ const AddEditProduct = () => {
     appearance,
     substance,
     grade,
+    incoterms,
   } = useSelector((state) => state.sharedState);
   const { productCrud, productModal, productLoader } = useSelector(
     (state) => state.productState
@@ -42,6 +44,7 @@ const AddEditProduct = () => {
     dispatch(getAppearancesApi());
     dispatch(getSubstancesApi());
     dispatch(getGradesApi());
+    dispatch(getIncotermsApi());
   }, [dispatch]);
 
   useEffect(() => {
@@ -124,9 +127,9 @@ const AddEditProduct = () => {
             value={data.grade}
           />
           <Autocomplete
-            options={[]}
+            options={incoterms}
             multiple
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => `${option.name}-${option.fullForm}`}
             renderInput={(params) => (
               <TextField {...params} label="Incoterms" variant="outlined" />
             )}

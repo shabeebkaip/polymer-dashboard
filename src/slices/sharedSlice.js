@@ -24,6 +24,8 @@ const sharedSlice = createSlice({
     substance: [],
     // grade
     grade: [],
+    // incoterms
+    incoterms: [],
   },
   reducers: {
     setLoader: (state, action) => {
@@ -77,6 +79,10 @@ const sharedSlice = createSlice({
     setGrade: (state, action) => {
       state.grade = action.payload;
     },
+    // incoterms
+    setIncoterms: (state, action) => {
+      state.incoterms = action.payload;
+    },
   },
 });
 
@@ -102,5 +108,7 @@ export const {
   setSubstance,
   // grade
   setGrade,
+  // incoterms
+  setIncoterms,
 } = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;
