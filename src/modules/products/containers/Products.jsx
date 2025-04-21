@@ -13,7 +13,6 @@ import ActionButton from "../../../shared/ActionButton";
 import ProductsList from "../components/ProductsList";
 import { setPageTitle } from "../../../slices/sharedSlice";
 import AddEditProduct from "../components/AddEditProduct";
-import { getBrandsApi } from "../../../shared/api";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -42,7 +41,6 @@ const Products = () => {
             handleOnClick={() => {
               dispatch(setProductModal(true));
               dispatch(setProductCrud({}));
-              dispatch(getBrandsApi());
             }}
             textColor="#ffffff"
             bgColor="rgb(41, 82, 255)"

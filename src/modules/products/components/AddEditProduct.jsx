@@ -6,11 +6,12 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProductCrud, setProductModal } from "../../../slices/productSlice";
 import DialogActionButtons from "../../../shared/DialogActionButtons";
 import ImageUpload from "../../../shared/ImageUpload";
+import { getBrandsApi } from "../../../shared/api";
 
 const AddEditProduct = () => {
   const dispatch = useDispatch();
@@ -19,9 +20,16 @@ const AddEditProduct = () => {
     (state) => state.productState
   );
   const [data, setData] = useState(productCrud);
+  const fetchDropdowns = useCallback(() => {
+    dispatch(getBrandsApi());
+  }, [dispatch]);
+
   useEffect(() => {
     setData(productCrud);
   }, [productCrud]);
+  useEffect(() => {
+    fetchDropdowns();
+  }, [fetchDropdowns]);
 
   const closeModal = () => {
     dispatch(setProductModal(false));
