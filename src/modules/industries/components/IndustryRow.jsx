@@ -23,11 +23,19 @@ const IndustryRow = ({ industry, index, isLastRow }) => {
       <td>{industry?.description || "--"}</td>
       <td>
         <div className="pt-2 pb-2">
-          <img src={industry?.bg} className="object-contain w-20 rounded-md" />
+          {industry?.bg ? (
+            <img src={industry?.bg} className="w-16 h-16 rounded-md" />
+          ) : (
+            "--"
+          )}
         </div>
       </td>
       <td>
-        <img src={industry?.icon} className="object-contain w-20 rounded-md " />
+        {industry?.icon ? (
+          <img src={industry?.icon} className="w-6" alt="Icon" />
+        ) : (
+          "--"
+        )}
       </td>
       <td>
         <div className="flex items-center gap-2">
@@ -35,7 +43,7 @@ const IndustryRow = ({ industry, index, isLastRow }) => {
           <DeleteAction
             handleClick={() => {
               dispatch(setDeleteModal(true));
-              dispatch(setDeleteId(industry ._id));
+              dispatch(setDeleteId(industry._id));
             }}
           />
         </div>
