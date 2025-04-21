@@ -12,16 +12,22 @@ import { setProductCrud, setProductModal } from "../../../slices/productSlice";
 import DialogActionButtons from "../../../shared/DialogActionButtons";
 import ImageUpload from "../../../shared/ImageUpload";
 import { getBrandsApi } from "../../../shared/api";
+import { getIndustriesApi } from "../../industries/api";
+import { getProductFamiliesApi } from "../../productFamilies/api";
 
 const AddEditProduct = () => {
   const dispatch = useDispatch();
-  const { mode, brands } = useSelector((state) => state.sharedState);
+  const { mode, brands, industries, productFamilies } = useSelector(
+    (state) => state.sharedState
+  );
   const { productCrud, productModal, productLoader } = useSelector(
     (state) => state.productState
   );
   const [data, setData] = useState(productCrud);
   const fetchDropdowns = useCallback(() => {
     dispatch(getBrandsApi());
+    dispatch(getIndustriesApi());
+    dispatch(getProductFamiliesApi());
   }, [dispatch]);
 
   useEffect(() => {
@@ -39,6 +45,7 @@ const AddEditProduct = () => {
   const onFieldChange = (key, value) => {
     setData((prev) => ({ ...prev, [key]: value }));
   };
+  console.log("data", productFamilies);
   return (
     <Dialog open={productModal} onClose={closeModal} fullWidth maxWidth="lg">
       <DialogTitle>
@@ -64,9 +71,9 @@ const AddEditProduct = () => {
             value={data.category}
           />
           <Autocomplete
-            options={[]}
+            options={industries}
             multiple
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="Industry" variant="outlined" />
             )}
@@ -114,9 +121,9 @@ const AddEditProduct = () => {
             value={data.incoterms}
           />
           <Autocomplete
-            options={[]}
+            options={productFamilies}
             multiple
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -124,7 +131,7 @@ const AddEditProduct = () => {
                 variant="outlined"
               />
             )}
-            onChange={(event, value) => onFieldChange("product_family", value)}
+            onChange={(_, value) => onFieldChange("product_family", value)}
             value={data.product_family}
           />
           <TextField

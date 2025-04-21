@@ -1,3 +1,4 @@
+import { setLoader, setProductFamilies } from "../../slices/sharedSlice";
 import {
   globalDeleteService,
   globalGetService,
@@ -5,12 +6,17 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getProductFamiliesApi = async () => {
+export const getProductFamiliesApi = () => async (dispatch) => {
   try {
+    dispatch(setLoader(true));
     let response = await globalGetService("/product-family/list");
-    return response.data;
+    if (response.data.success) {
+      dispatch(setProductFamilies(response.data.data));
+    }
   } catch (err) {
     console.log(err);
+  } finally {
+    dispatch(setLoader(false));
   }
 };
 

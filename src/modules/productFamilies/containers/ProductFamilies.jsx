@@ -5,7 +5,6 @@ import {
   setLoader,
   setMode,
   setPageTitle,
-  setProductFamilies,
   setProductFamilyCrud,
   setProductFamilyModal,
 } from "../../../slices/sharedSlice";
@@ -25,12 +24,7 @@ const ProductFamilies = () => {
   );
 
   const fetchProducts = useCallback(() => {
-    getProductFamiliesApi().then((response) => {
-      dispatch(setLoader(false));
-      if (response.success) {
-        dispatch(setProductFamilies(response.data));
-      }
-    });
+    dispatch(getProductFamiliesApi());
   }, [dispatch]);
 
   useEffect(() => {

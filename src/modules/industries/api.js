@@ -1,3 +1,4 @@
+import { setIndustries, setLoader } from "../../slices/sharedSlice";
 import {
   globalDeleteService,
   globalGetService,
@@ -5,12 +6,17 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getIndustriesApi = async (query) => {
+export const getIndustriesApi = (query) => async (dispatch) => {
   try {
+    dispatch(setLoader(true));
     const response = await globalGetService("/industry/list", query);
-    return response.data;
+    if (response.data.success) {
+      dispatch(setIndustries(response.data.data));
+    }
   } catch (err) {
     console.log(err);
+  } finally {
+    dispatch(setLoader(false));
   }
 };
 

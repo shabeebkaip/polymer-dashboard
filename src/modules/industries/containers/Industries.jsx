@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteIndustryApi, getIndustriesApi } from "../api";
 import {
   setDeleteModal,
-  setIndustries,
   setIndustryCrud,
   setIndustryModal,
   setLoader,
@@ -21,17 +20,7 @@ const Industries = () => {
   const { loader, deleteId } = useSelector((state) => state.sharedState);
   const dispatch = useDispatch();
   const fetchIndustries = useCallback(() => {
-    dispatch(setLoader(true));
-    getIndustriesApi({})
-      .then((response) => {
-        dispatch(setLoader(false));
-        if (response.success) {
-          dispatch(setIndustries(response.data));
-        }
-      })
-      .catch(() => {
-        dispatch(setLoader(false));
-      });
+    dispatch(getIndustriesApi());
   }, [dispatch]);
 
   const handleDelete = () => {
