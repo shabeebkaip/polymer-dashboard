@@ -18,6 +18,8 @@ const sharedSlice = createSlice({
     productFamilyCrud: {},
     // Brands
     brands: [],
+    // appearance
+    appearance: [],
   },
   reducers: {
     setLoader: (state, action) => {
@@ -59,6 +61,10 @@ const sharedSlice = createSlice({
     setBrands: (state, action) => {
       state.brands = action.payload;
     },
+    // appearance
+    setAppearance: (state, action) => {
+      state.appearance = action.payload;
+    },
   },
 });
 
@@ -78,5 +84,7 @@ export const {
   setProductFamilyCrud,
   // Brands
   setBrands,
+  // appearance
+  setAppearance,
 } = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;

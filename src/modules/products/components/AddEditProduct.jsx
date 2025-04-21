@@ -11,13 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProductCrud, setProductModal } from "../../../slices/productSlice";
 import DialogActionButtons from "../../../shared/DialogActionButtons";
 import ImageUpload from "../../../shared/ImageUpload";
-import { getBrandsApi } from "../../../shared/api";
+import { getAppearancesApi, getBrandsApi } from "../../../shared/api";
 import { getIndustriesApi } from "../../industries/api";
 import { getProductFamiliesApi } from "../../productFamilies/api";
 
 const AddEditProduct = () => {
   const dispatch = useDispatch();
-  const { mode, brands, industries, productFamilies } = useSelector(
+  const { mode, brands, industries, productFamilies, appearance } = useSelector(
     (state) => state.sharedState
   );
   const { productCrud, productModal, productLoader } = useSelector(
@@ -28,6 +28,7 @@ const AddEditProduct = () => {
     dispatch(getBrandsApi());
     dispatch(getIndustriesApi());
     dispatch(getProductFamiliesApi());
+    dispatch(getAppearancesApi());
   }, [dispatch]);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const AddEditProduct = () => {
   const onFieldChange = (key, value) => {
     setData((prev) => ({ ...prev, [key]: value }));
   };
-  console.log("data", productFamilies);
+  console.log("data", appearance);
   return (
     <Dialog open={productModal} onClose={closeModal} fullWidth maxWidth="lg">
       <DialogTitle>
@@ -81,9 +82,9 @@ const AddEditProduct = () => {
             value={data.industry}
           />
           <Autocomplete
-            options={[]}
+            options={appearance}
             multiple
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="Apperance" variant="outlined" />
             )}

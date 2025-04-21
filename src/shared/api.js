@@ -1,4 +1,4 @@
-import { setBrands } from "../slices/sharedSlice";
+import { setAppearance, setBrands } from "../slices/sharedSlice";
 import {
   globalGetService,
   globalPostService,
@@ -23,6 +23,19 @@ export const getBrandsApi = () => async (dispatch) => {
     return response;
   } catch (error) {
     console.error("Error fetching brands:", error);
+    throw error;
+  }
+};
+
+export const getAppearancesApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/appearance/list`);
+    if (response.data.success) {
+      dispatch(setAppearance(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching appearances:", error);
     throw error;
   }
 };
