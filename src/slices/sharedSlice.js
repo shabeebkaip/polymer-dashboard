@@ -16,6 +16,8 @@ const sharedSlice = createSlice({
     productFamilies: [],
     productFamilyModal: false,
     productFamilyCrud: {},
+    // Brands
+    brands: [],
   },
   reducers: {
     setLoader: (state, action) => {
@@ -33,6 +35,7 @@ const sharedSlice = createSlice({
     setDeleteId: (state, action) => {
       state.deleteId = action.payload;
     },
+    // industries
     setIndustries: (state, action) => {
       state.industries = action.payload;
     },
@@ -42,6 +45,7 @@ const sharedSlice = createSlice({
     setIndustryCrud: (state, action) => {
       state.industryCrud = action.payload;
     },
+    // product families
     setProductFamilies: (state, action) => {
       state.productFamilies = action.payload;
     },
@@ -51,6 +55,10 @@ const sharedSlice = createSlice({
     setProductFamilyCrud: (state, action) => {
       state.productFamilyCrud = action.payload;
     },
+    // Brands
+    setBrands: (state, action) => {
+      state.brands = action.payload;
+    },
   },
 });
 
@@ -59,12 +67,16 @@ export const {
   setMode,
   setPageTitle,
   setDeleteModal,
+  setDeleteId,
+  // industries
   setIndustries,
   setIndustryModal,
   setIndustryCrud,
+  // product families
   setProductFamilies,
   setProductFamilyModal,
   setProductFamilyCrud,
-  setDeleteId,
+  // Brands
+  setBrands,
 } = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;

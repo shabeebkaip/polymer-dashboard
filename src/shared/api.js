@@ -1,4 +1,8 @@
-import { globalPostService } from "../utils/globalApiServices";
+import { setBrands } from "../slices/sharedSlice";
+import {
+  globalGetService,
+  globalPostService,
+} from "../utils/globalApiServices";
 
 export const postFileUpload = async (data) => {
   try {
@@ -6,6 +10,19 @@ export const postFileUpload = async (data) => {
     return response;
   } catch (error) {
     console.error("Error uploading :", error);
+    throw error;
+  }
+};
+
+export const getBrandsApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/brand/list`);
+    if (response.data.success) {
+      dispatch(setBrands(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching brands:", error);
     throw error;
   }
 };

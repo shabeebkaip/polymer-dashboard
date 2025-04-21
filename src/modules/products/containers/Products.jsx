@@ -1,12 +1,19 @@
 import { useEffect } from "react";
 import { getProductsApi } from "../api";
-import { setProductLoader, setProducts } from "../../../slices/productSlice";
+import {
+  setProductCrud,
+  setProductLoader,
+  setProductModal,
+  setProducts,
+} from "../../../slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PageLoader from "../../../shared/PageLoader";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductsList from "../components/ProductsList";
 import { setPageTitle } from "../../../slices/sharedSlice";
+import AddEditProduct from "../components/AddEditProduct";
+import { getBrandsApi } from "../../../shared/api";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -26,16 +33,24 @@ const Products = () => {
   }, [dispatch]);
   return (
     <div>
-      <Title title="Products" description="Displaying all the Products" />
-      <div className="flex items-center justify-between p-1 mt-4 bg-white rounded-full shadow">
-        <ActionButton
-          buttonText="Add Product"
-          handleOnClick={() => {}}
-          textColor="#ffffff"
-          bgColor="rgb(41, 82, 255)"
-          icon={"/tools/create.svg"}
-        />
-      </div>
+      <Title
+        title="Products"
+        description="Displaying all the Products"
+        actions={
+          <ActionButton
+            buttonText="Add Product"
+            handleOnClick={() => {
+              dispatch(setProductModal(true));
+              dispatch(setProductCrud({}));
+              dispatch(getBrandsApi());
+            }}
+            textColor="#ffffff"
+            bgColor="rgb(41, 82, 255)"
+            icon={"/tools/create.svg"}
+          />
+        }
+      />
+
       {productLoader ? (
         <PageLoader />
       ) : (
@@ -43,6 +58,7 @@ const Products = () => {
           <ProductsList products={products?.list} />
         </div>
       )}
+      <AddEditProduct />
     </div>
   );
 };
