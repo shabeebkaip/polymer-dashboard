@@ -2,7 +2,7 @@ import TableRow from "../../../shared/TableRow";
 import PropTypes from "prop-types";
 import ViewAction from "../../../shared/ViewAction";
 import { useDispatch } from "react-redux";
-import { setModal, setSamples } from "../../../slices/requestSlice";
+import { setModal, setSample, setSamples } from "../../../slices/requestSlice";
 
 const SampleRow = ({ isLastRow, sample, index }) => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const SampleRow = ({ isLastRow, sample, index }) => {
         <ViewAction
           handleClick={() => {
             dispatch(setModal(true));
-            dispatch(setSamples(sample));
+            dispatch(setSample(sample));
           }}
         />
       </td>

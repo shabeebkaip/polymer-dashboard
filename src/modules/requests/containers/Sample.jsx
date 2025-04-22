@@ -4,6 +4,7 @@ import { setPageTitle } from "../../../slices/sharedSlice";
 import Title from "../../../shared/Title";
 import { getSampleRequestApi } from "../api";
 import SampleList from "../components/SampleList";
+import SampleModal from "../components/SampleModal";
 
 const Sample = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const Sample = () => {
       <div className="mt-4">
         <SampleList />
       </div>
+      <SampleModal />
     </div>
   );
 };

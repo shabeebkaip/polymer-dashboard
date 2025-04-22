@@ -6,6 +6,7 @@ const requestSlice = createSlice({
     quotes: [],
     quote: {},
     samples: [],
+    sample: {},
     modal: false,
   },
   reducers: {
@@ -21,8 +22,11 @@ const requestSlice = createSlice({
     setQuote: (state, action) => {
       state.quote = action.payload;
     },
+    setSample: (state, action) => {
+      state.sample = action.payload;
+    },
   },
 });
-export const { setQuotes, setSamples, setModal, setQuote } =
+export const { setQuotes, setSamples, setModal, setQuote, setSample } =
   requestSlice.actions;
 export const requestReducer = requestSlice.reducer;
