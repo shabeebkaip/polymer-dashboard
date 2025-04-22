@@ -1,13 +1,13 @@
 import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { RxCaretDown, RxCaretRight } from "react-icons/rx";
-import { FaRegUser } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 import { IoLogoPolymer } from "react-icons/io";
-import { GiFamilyTree, GiBrandyBottle } from "react-icons/gi";
+import { GiFamilyTree } from "react-icons/gi";
 import { TbBrandDenodo } from "react-icons/tb";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const menuItems = [
   {
@@ -29,27 +29,33 @@ const menuItems = [
     icon: <MdCategory />,
   },
   {
-    name: "chemical_family",
-    displayName: "Chemical Family",
-    route: "/chemical-family",
-    icon: <GiBrandyBottle />,
-  },
-  {
     name: "brands",
     displayName: "Brands",
     route: "/brands",
     icon: <TbBrandDenodo />,
   },
-  { name: "users", displayName: "Users", route: "/users", icon: <FaRegUser /> },
   {
     name: "enquiries",
     displayName: "Enquiries",
     route: "/enquiries",
+    items: [
+      {
+        name: "Sample Requests",
+        displayName: "Sample Requests",
+        route: "/enquiries/sample",
+      },
+      {
+        name: "Quote Requests",
+        displayName: "Quote Requests",
+        route: "/enquiries/quote",
+      },
+    ],
     icon: <RiCustomerServiceLine />,
   },
 ];
 
 const Sidebar = ({ collapsed }) => {
+  const navigate = useNavigate();
   const [openSubmenus, setOpenSubmenus] = useState({});
 
   const toggleSubmenu = (name) => {
@@ -98,7 +104,7 @@ const Sidebar = ({ collapsed }) => {
                     <div
                       key={subItem.name}
                       className={subItemClasses}
-                      onClick={() => (window.location.href = subItem.route)}
+                      onClick={() => navigate(subItem.route)}
                     >
                       <span>{subItem.displayName}</span>
                     </div>
@@ -114,7 +120,7 @@ const Sidebar = ({ collapsed }) => {
         <div
           key={`${item.name}-${index}`}
           className={itemClasses}
-          onClick={() => (window.location.href = item.route)}
+          onClick={() => navigate(item.route)}
         >
           <div className="flex items-center">
             <div className="mr-2">{item.icon}</div>
@@ -123,7 +129,7 @@ const Sidebar = ({ collapsed }) => {
         </div>
       );
     });
-  }, [collapsed, openSubmenus]);
+  }, [collapsed, openSubmenus, navigate]);
 
   return (
     <div

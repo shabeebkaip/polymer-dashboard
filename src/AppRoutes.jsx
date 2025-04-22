@@ -3,6 +3,7 @@ import Users from "./modules/users/containers/Users";
 import Products from "./modules/products/containers/Products";
 import Industries from "./modules/industries/containers/Industries";
 import ProductFamilies from "./modules/productFamilies/containers/ProductFamilies";
+import Quote from "./modules/requests/containers/Quote";
 
 const AppRoutes = () => {
   return (
@@ -12,6 +13,7 @@ const AppRoutes = () => {
         <Route path="/" exact element={<Products />} />
         <Route path="/industries" exact element={<Industries />} />
         <Route path="/product-families" exact element={<ProductFamilies />} />
+        <Route path="/enquiries/quote" exact element={<Quote />} />
 
         <Route path={"/users"} element={<Users />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />

@@ -1,0 +1,55 @@
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { setModal } from "../../../slices/requestSlice";
+import PropTypes from "prop-types";
+import LabelValue from "../../../shared/LabelValue";
+
+const QuoteModal = () => {
+  const dispatch = useDispatch();
+  const { modal, quote } = useSelector((state) => state.requestState);
+  const closeModal = () => {
+    dispatch(setModal(false));
+  };
+  console.log("QuoteModal", quote);
+  return (
+    <Dialog open={modal} onClose={closeModal} fullWidth maxWidth="md">
+      <DialogTitle>Quote Request</DialogTitle>
+      <DialogContent dividers>
+        <div className="grid grid-cols-3 gap-4">
+          <LabelValue
+            label="Product Name"
+            value={quote?.productDetails?.name}
+          />
+          <LabelValue label="User Name" value={quote?.userDetails?.name} />
+          <LabelValue label="Email" value={quote?.userDetails?.email} />
+          <LabelValue label="Industry" value={quote?.industryDetails?.name} />
+          <LabelValue label="Quantity" value={quote?.quantity} />
+          <LabelValue label="UOM" value={quote?.uom} />
+          <LabelValue label="Created At" value={quote?.createdAt} type="date" />
+          <LabelValue label="Updated At" value={quote?.updatedAt} type="date" />
+          <LabelValue label="Status" value={quote?.status} />
+          <LabelValue label="Application" value={quote?.application} />
+          <LabelValue label="Message" value={quote?.message} />
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeModal} color="primary" variant="outlined">
+          Close{" "}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+LabelValue.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  type: PropTypes.string,
+};
+
+export default QuoteModal;
