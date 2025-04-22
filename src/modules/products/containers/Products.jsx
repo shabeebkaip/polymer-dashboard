@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { getProductsApi } from "../api";
 import {
   setProductCrud,
@@ -11,7 +11,7 @@ import PageLoader from "../../../shared/PageLoader";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductsList from "../components/ProductsList";
-import { setPageTitle } from "../../../slices/sharedSlice";
+import { setMode, setPageTitle } from "../../../slices/sharedSlice";
 import AddEditProduct from "../components/AddEditProduct";
 
 const Products = () => {
@@ -19,8 +19,7 @@ const Products = () => {
   const { products, productLoader } = useSelector(
     (state) => state.productState
   );
-
-  useEffect(() => {
+  const fetchProducts = useCallback(() => {
     dispatch(setPageTitle("Products"));
     dispatch(setProductLoader(true));
     getProductsApi({}).then((response) => {
@@ -30,6 +29,10 @@ const Products = () => {
       }
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
   return (
     <div>
       <Title
@@ -41,6 +44,7 @@ const Products = () => {
             handleOnClick={() => {
               dispatch(setProductModal(true));
               dispatch(setProductCrud({}));
+              dispatch(setMode("add"));
             }}
             textColor="#ffffff"
             bgColor="rgb(41, 82, 255)"
@@ -56,7 +60,7 @@ const Products = () => {
           <ProductsList products={products?.list} />
         </div>
       )}
-      <AddEditProduct />
+      <AddEditProduct getResponseBack={fetchProducts} />
     </div>
   );
 };

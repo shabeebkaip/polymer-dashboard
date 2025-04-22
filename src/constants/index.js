@@ -1,0 +1,15 @@
+export const uomDropdown = [
+    "Kilogram",
+    "Gram",
+    "Milligram",
+    "Metric Ton",
+    "Pound",
+    "Ounce",
+    "Liter",
+    "Milliliter",
+    "Cubic Meter",
+    "Cubic Centimeter",
+    "Gallon",
+    "Quart",
+    "Pint",
+]

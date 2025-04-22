@@ -8,7 +8,11 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setProductCrud, setProductModal } from "../../../slices/productSlice";
+import {
+  setProductCrud,
+  setProductLoader,
+  setProductModal,
+} from "../../../slices/productSlice";
 import DialogActionButtons from "../../../shared/DialogActionButtons";
 import ImageUpload from "../../../shared/ImageUpload";
 import {
@@ -20,8 +24,12 @@ import {
 } from "../../../shared/api";
 import { getIndustriesApi } from "../../industries/api";
 import { getProductFamiliesApi } from "../../productFamilies/api";
+import { uomDropdown } from "../../../constants";
+import { createProductApi } from "../api";
+import PropTypes from "prop-types";
+import { enqueueSnackbar } from "notistack";
 
-const AddEditProduct = () => {
+const AddEditProduct = ({ getResponseBack }) => {
   const dispatch = useDispatch();
   const {
     mode,
@@ -62,6 +70,60 @@ const AddEditProduct = () => {
   const onFieldChange = (key, value) => {
     setData((prev) => ({ ...prev, [key]: value }));
   };
+  const handleSave = () => {
+    dispatch(setProductLoader(true));
+    let payload = Object.assign({}, data);
+    payload = {
+      ...payload,
+      brand: payload.brand ? payload.brand._id : null,
+      industry: payload.industry
+        ? payload.industry.map((item) => item._id)
+        : [],
+      appearance: payload.appearance
+        ? payload.appearance.map((item) => item._id)
+        : [],
+      substance: payload.substance
+        ? payload.substance.map((item) => item._id)
+        : [],
+      grade: payload.grade ? payload.grade.map((item) => item._id) : [],
+      incoterms: payload.incoterms
+        ? payload.incoterms.map((item) => item._id)
+        : [],
+      product_family: payload.product_family
+        ? payload.product_family.map((item) => item._id)
+        : [],
+    };
+    if (mode === "add") {
+      createProductApi(payload)
+        .then((response) => {
+          if (response.success) {
+            enqueueSnackbar(response.message, {
+              variant: "success",
+              anchorOrigin: {
+                vertical: "top",
+                horizontal: "right",
+              },
+            });
+            getResponseBack();
+          }
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message, {
+            variant: "error",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right",
+            },
+          });
+        })
+        .finally(() => {
+          dispatch(setProductLoader(false));
+          closeModal();
+        });
+    } else {
+      // update
+    }
+  };
   return (
     <Dialog open={productModal} onClose={closeModal} fullWidth maxWidth="lg">
       <DialogTitle>
@@ -83,7 +145,7 @@ const AddEditProduct = () => {
             renderInput={(params) => (
               <TextField {...params} label="Brand" variant="outlined" />
             )}
-            onChange={(event, value) => onFieldChange("category", value)}
+            onChange={(event, value) => onFieldChange("brand", value)}
             value={data.category}
           />
           <Autocomplete
@@ -159,8 +221,8 @@ const AddEditProduct = () => {
             // required
           />
           <Autocomplete
-            options={[]}
-            getOptionLabel={(option) => option.label}
+            options={uomDropdown}
+            getOptionLabel={(option) => option}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -222,14 +284,16 @@ const AddEditProduct = () => {
         <DialogActionButtons
           closeModal={closeModal}
           mode={mode}
-          handleSave={() => {
-            // Handle save logic here
-          }}
+          handleSave={handleSave}
           loader={productLoader} // Replace with actual loading state if needed
         />
       </DialogActions>
     </Dialog>
   );
+};
+
+AddEditProduct.propTypes = {
+  getResponseBack: PropTypes.func,
 };
 
 export default AddEditProduct;
