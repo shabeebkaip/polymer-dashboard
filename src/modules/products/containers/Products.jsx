@@ -19,6 +19,15 @@ import {
 import AddEditProduct from "../components/AddEditProduct";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import {
+  getAppearancesApi,
+  getBrandsApi,
+  getGradesApi,
+  getIncotermsApi,
+  getSubstancesApi,
+} from "../../../shared/api";
+import { getIndustriesApi } from "../../industries/api";
+import { getProductFamiliesApi } from "../../productFamilies/api";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -26,6 +35,16 @@ const Products = () => {
     (state) => state.productState
   );
   const { deleteId } = useSelector((state) => state.sharedState);
+
+  const fetchDropdowns = useCallback(() => {
+    dispatch(getBrandsApi());
+    dispatch(getIndustriesApi());
+    dispatch(getProductFamiliesApi());
+    dispatch(getAppearancesApi());
+    dispatch(getSubstancesApi());
+    dispatch(getGradesApi());
+    dispatch(getIncotermsApi());
+  }, [dispatch]);
   const fetchProducts = useCallback(() => {
     dispatch(setPageTitle("Products"));
     dispatch(setProductLoader(true));
@@ -40,6 +59,10 @@ const Products = () => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  useEffect(() => {
+    fetchDropdowns();
+  }, [fetchDropdowns]);
 
   const handleDelete = () => {
     dispatch(setProductLoader(true));

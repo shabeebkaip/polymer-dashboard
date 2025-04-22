@@ -1,6 +1,7 @@
 import {
   globalDeleteService,
   globalPostService,
+  globalPutService,
 } from "../../utils/globalApiServices";
 
 export const getProductsApi = async (query) => {
@@ -23,7 +24,7 @@ export const createProductApi = async (data) => {
 
 export const updateProductApi = async (data) => {
   try {
-    let response = await globalPostService(`/product/edit/${data._id}`, data);
+    let response = await globalPutService(`/product/edit/${data._id}`, data);
     return response.data;
   } catch (err) {
     console.log(err);

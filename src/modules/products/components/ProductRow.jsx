@@ -3,7 +3,12 @@ import EditAction from "../../../shared/EditAction";
 import ViewAction from "../../../shared/ViewAction";
 import DeleteAction from "../../../shared/DeleteAction";
 import { useDispatch } from "react-redux";
-import { setDeleteId, setDeleteModal } from "../../../slices/sharedSlice";
+import {
+  setDeleteId,
+  setDeleteModal,
+  setMode,
+} from "../../../slices/sharedSlice";
+import { setProductCrud, setProductModal } from "../../../slices/productSlice";
 
 const ProductRow = ({ index, isLastRow, product }) => {
   const dispatch = useDispatch();
@@ -14,7 +19,7 @@ const ProductRow = ({ index, isLastRow, product }) => {
       }`}
     >
       <td className="p-4 ">{product.name}</td>
-      <td>{product?.brand || "--"}</td>
+      <td>{product?.brand?.name || "--"}</td>
       <td>{product?.category || "--"}</td>
       <td>
         <div className="flex items-center gap-2">
@@ -25,7 +30,9 @@ const ProductRow = ({ index, isLastRow, product }) => {
           />
           <EditAction
             handleClick={() => {
-              console.log("Edit action clicked");
+              dispatch(setProductModal(true));
+              dispatch(setMode("edit"));
+              dispatch(setProductCrud(product));
             }}
           />
           <DeleteAction

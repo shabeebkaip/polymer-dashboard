@@ -6,7 +6,7 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   setProductCrud,
@@ -15,17 +15,8 @@ import {
 } from "../../../slices/productSlice";
 import DialogActionButtons from "../../../shared/DialogActionButtons";
 import ImageUpload from "../../../shared/ImageUpload";
-import {
-  getAppearancesApi,
-  getBrandsApi,
-  getGradesApi,
-  getIncotermsApi,
-  getSubstancesApi,
-} from "../../../shared/api";
-import { getIndustriesApi } from "../../industries/api";
-import { getProductFamiliesApi } from "../../productFamilies/api";
 import { uomDropdown } from "../../../constants";
-import { createProductApi } from "../api";
+import { createProductApi, updateProductApi } from "../api";
 import PropTypes from "prop-types";
 import { enqueueSnackbar } from "notistack";
 
@@ -44,35 +35,19 @@ const AddEditProduct = ({ getResponseBack }) => {
   const { productCrud, productModal, productLoader } = useSelector(
     (state) => state.productState
   );
-  const [data, setData] = useState(productCrud);
-  const fetchDropdowns = useCallback(() => {
-    dispatch(getBrandsApi());
-    dispatch(getIndustriesApi());
-    dispatch(getProductFamiliesApi());
-    dispatch(getAppearancesApi());
-    dispatch(getSubstancesApi());
-    dispatch(getGradesApi());
-    dispatch(getIncotermsApi());
-  }, [dispatch]);
-
-  useEffect(() => {
-    setData(productCrud);
-  }, [productCrud]);
-  useEffect(() => {
-    fetchDropdowns();
-  }, [fetchDropdowns]);
 
   const closeModal = () => {
     dispatch(setProductModal(false));
-    dispatch(setProductCrud({}));
+    // dispatch(setProductCrud({}));
   };
 
   const onFieldChange = (key, value) => {
-    setData((prev) => ({ ...prev, [key]: value }));
+    dispatch(setProductCrud({ ...productCrud, [key]: value }));
   };
+
   const handleSave = () => {
     dispatch(setProductLoader(true));
-    let payload = Object.assign({}, data);
+    let payload = Object.assign({}, productCrud);
     const transformArray = (items) =>
       items ? items.map((item) => item._id) : [];
     payload = {
@@ -113,9 +88,36 @@ const AddEditProduct = ({ getResponseBack }) => {
           closeModal();
         });
     } else {
+      updateProductApi(payload)
+        .then((response) => {
+          if (response.success) {
+            enqueueSnackbar(response.message, {
+              variant: "success",
+              anchorOrigin: {
+                vertical: "top",
+                horizontal: "right",
+              },
+            });
+            getResponseBack();
+            closeModal();
+          }
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message, {
+            variant: "error",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right",
+            },
+          });
+        })
+        .finally(() => {
+          dispatch(setProductLoader(false));
+        });
       // update
     }
   };
+  console.log("data", productCrud);
   return (
     <Dialog open={productModal} onClose={closeModal} fullWidth maxWidth="lg">
       <DialogTitle>
@@ -127,68 +129,105 @@ const AddEditProduct = ({ getResponseBack }) => {
             label="Name"
             variant="outlined"
             fullWidth
-            value={data.name || ""}
+            value={productCrud.name || ""}
             onChange={(e) => onFieldChange("name", e.target.value)}
             required
+            InputLabelProps={{ shrink: true }}
           />
           <Autocomplete
             options={brands}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
-              <TextField {...params} label="Brand" variant="outlined" />
+              <TextField
+                {...params}
+                label="Brand"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             )}
-            onChange={(event, value) => onFieldChange("brand", value)}
-            value={data.category}
+            onChange={(_, value) => onFieldChange("brand", value)}
+            value={productCrud?.brand}
+            disabled={brands.length === 0}
           />
           <Autocomplete
             options={industries}
             multiple
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
-              <TextField {...params} label="Industry" variant="outlined" />
+              <TextField
+                {...params}
+                label="Industry"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             )}
-            onChange={(event, value) => onFieldChange("industry", value)}
-            value={data.industry}
+            onChange={(_, value) => onFieldChange("industry", value)}
+            value={productCrud?.industry}
+            disabled={industries.length === 0}
           />
           <Autocomplete
             options={appearance}
             multiple
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
-              <TextField {...params} label="Apperance" variant="outlined" />
+              <TextField
+                {...params}
+                label="Appearance"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             )}
-            onChange={(event, value) => onFieldChange("appearance", value)}
-            value={data.appearance}
+            onChange={(_, value) => onFieldChange("appearance", value)}
+            value={productCrud.appearance}
+            disabled={appearance.length === 0}
           />
           <Autocomplete
             options={substance}
             multiple
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
-              <TextField {...params} label="Substance" variant="outlined" />
+              <TextField
+                {...params}
+                label="Substance"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             )}
-            onChange={(event, value) => onFieldChange("substance", value)}
-            value={data.substance}
+            onChange={(_, value) => onFieldChange("substance", value)}
+            value={productCrud?.substance}
+            disabled={substance.length === 0}
           />
           <Autocomplete
             options={grade}
             multiple
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
-              <TextField {...params} label="Grade" variant="outlined" />
+              <TextField
+                {...params}
+                label="Grade"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             )}
-            onChange={(event, value) => onFieldChange("grade", value)}
-            value={data.grade}
+            onChange={(_, value) => onFieldChange("grade", value)}
+            value={productCrud.grade}
+            disabled={grade.length === 0}
           />
           <Autocomplete
             options={incoterms}
             multiple
             getOptionLabel={(option) => `${option.name}-${option.fullForm}`}
             renderInput={(params) => (
-              <TextField {...params} label="Incoterms" variant="outlined" />
+              <TextField
+                {...params}
+                label="Incoterms"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             )}
-            onChange={(event, value) => onFieldChange("incoterms", value)}
-            value={data.incoterms}
+            onChange={(_, value) => onFieldChange("incoterms", value)}
+            value={productCrud.incoterms}
+            disabled={incoterms.length === 0}
           />
           <Autocomplete
             options={productFamilies}
@@ -199,18 +238,20 @@ const AddEditProduct = ({ getResponseBack }) => {
                 {...params}
                 label="Product Family"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
               />
             )}
             onChange={(_, value) => onFieldChange("product_family", value)}
-            value={data.product_family}
+            value={productCrud?.product_family}
+            disabled={productFamilies.length === 0}
           />
           <TextField
             label="Price"
             variant="outlined"
             fullWidth
-            value={data.price || ""}
+            value={productCrud.price || ""}
             onChange={(e) => onFieldChange("price", e.target.value)}
-            // required
+            InputLabelProps={{ shrink: true }}
           />
           <Autocomplete
             options={uomDropdown}
@@ -220,52 +261,53 @@ const AddEditProduct = ({ getResponseBack }) => {
                 {...params}
                 label="Unit of Measurement"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
               />
             )}
             onChange={(_, value) => onFieldChange("uom", value)}
-            value={data.uom}
+            value={uomDropdown.find((item) => item === productCrud.uom) || null}
+            disabled={uomDropdown.length === 0}
           />
           <TextField
             label="Stock"
             variant="outlined"
             fullWidth
-            value={data.stock || ""}
+            value={productCrud.stock || ""}
             onChange={(e) => onFieldChange("stock", e.target.value)}
-            // required
+            InputLabelProps={{ shrink: true }}
           />
-
           <TextField
             label="Minimum Order Quantity"
             variant="outlined"
             fullWidth
-            value={data.minimum_order_quantity || ""}
+            value={productCrud.minimum_order_quantity || ""}
             onChange={(e) =>
               onFieldChange("minimum_order_quantity", e.target.value)
             }
-            // required
+            InputLabelProps={{ shrink: true }}
           />
           <TextField
             label="Description"
             variant="outlined"
             fullWidth
             className="col-span-3"
-            value={data.description || ""}
+            value={productCrud.description || ""}
             onChange={(e) => onFieldChange("description", e.target.value)}
             multiline
             rows={4}
-            // required
+            InputLabelProps={{ shrink: true }}
           />
           <ImageUpload
             label="Image"
-            value={data.image || ""}
+            value={productCrud.image || ""}
             onChange={(value) => onFieldChange("image", value)}
             onRemove={() => onFieldChange("image", "")}
             onFileUpload={(imageUrl, id) => {
-              setData({ ...data, image: imageUrl, id });
+              dispatch(setProductCrud({ ...productCrud, image: imageUrl, id }));
             }}
-            preview={data.image}
+            preview={productCrud?.image}
             onImageClick={() => {
-              setData({ ...data, image: null });
+              dispatch(setProductCrud({ ...productCrud, image: null }));
             }}
             width="100%"
             height="150px"
@@ -277,7 +319,7 @@ const AddEditProduct = ({ getResponseBack }) => {
           closeModal={closeModal}
           mode={mode}
           handleSave={handleSave}
-          loader={productLoader} // Replace with actual loading state if needed
+          loader={productLoader}
         />
       </DialogActions>
     </Dialog>
