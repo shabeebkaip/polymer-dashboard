@@ -73,25 +73,17 @@ const AddEditProduct = ({ getResponseBack }) => {
   const handleSave = () => {
     dispatch(setProductLoader(true));
     let payload = Object.assign({}, data);
+    const transformArray = (items) =>
+      items ? items.map((item) => item._id) : [];
     payload = {
       ...payload,
       brand: payload.brand ? payload.brand._id : null,
-      industry: payload.industry
-        ? payload.industry.map((item) => item._id)
-        : [],
-      appearance: payload.appearance
-        ? payload.appearance.map((item) => item._id)
-        : [],
-      substance: payload.substance
-        ? payload.substance.map((item) => item._id)
-        : [],
-      grade: payload.grade ? payload.grade.map((item) => item._id) : [],
-      incoterms: payload.incoterms
-        ? payload.incoterms.map((item) => item._id)
-        : [],
-      product_family: payload.product_family
-        ? payload.product_family.map((item) => item._id)
-        : [],
+      industry: transformArray(payload.industry),
+      appearance: transformArray(payload.appearance),
+      substance: transformArray(payload.substance),
+      grade: transformArray(payload.grade),
+      incoterms: transformArray(payload.incoterms),
+      product_family: transformArray(payload.product_family),
     };
     if (mode === "add") {
       createProductApi(payload)

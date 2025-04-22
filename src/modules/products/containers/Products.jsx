@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { getProductsApi } from "../api";
+import { deleteProductApi, getProductsApi } from "../api";
 import {
   setProductCrud,
   setProductLoader,
@@ -11,14 +11,21 @@ import PageLoader from "../../../shared/PageLoader";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductsList from "../components/ProductsList";
-import { setMode, setPageTitle } from "../../../slices/sharedSlice";
+import {
+  setDeleteModal,
+  setMode,
+  setPageTitle,
+} from "../../../slices/sharedSlice";
 import AddEditProduct from "../components/AddEditProduct";
+import DeleteModal from "../../../shared/DeleteModal";
+import { enqueueSnackbar } from "notistack";
 
 const Products = () => {
   const dispatch = useDispatch();
   const { products, productLoader } = useSelector(
     (state) => state.productState
   );
+  const { deleteId } = useSelector((state) => state.sharedState);
   const fetchProducts = useCallback(() => {
     dispatch(setPageTitle("Products"));
     dispatch(setProductLoader(true));
@@ -33,6 +40,36 @@ const Products = () => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  const handleDelete = () => {
+    dispatch(setProductLoader(true));
+    deleteProductApi(deleteId)
+      .then((response) => {
+        if (response.success) {
+          dispatch(setDeleteModal(false));
+          fetchProducts();
+          enqueueSnackbar(response?.message, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        } else {
+          enqueueSnackbar(response?.message, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        }
+      })
+      .catch(() => {
+        dispatch(setProductLoader(false));
+        enqueueSnackbar("Error deleting product", {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+      })
+      .finally(() => {
+        dispatch(setProductLoader(false));
+      });
+  };
   return (
     <div>
       <Title
@@ -61,6 +98,7 @@ const Products = () => {
         </div>
       )}
       <AddEditProduct getResponseBack={fetchProducts} />
+      <DeleteModal handleDelete={handleDelete} />
     </div>
   );
 };
