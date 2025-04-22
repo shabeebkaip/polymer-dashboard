@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import EditAction from "../../../shared/EditAction";
-import ViewAction from "../../../shared/ViewAction";
 import DeleteAction from "../../../shared/DeleteAction";
 import { useDispatch } from "react-redux";
 import {
@@ -9,6 +8,7 @@ import {
   setMode,
 } from "../../../slices/sharedSlice";
 import { setProductCrud, setProductModal } from "../../../slices/productSlice";
+import { Chip } from "@mui/material";
 
 const ProductRow = ({ index, isLastRow, product }) => {
   const dispatch = useDispatch();
@@ -20,14 +20,22 @@ const ProductRow = ({ index, isLastRow, product }) => {
     >
       <td className="p-4 ">{product.name}</td>
       <td>{product?.brand?.name || "--"}</td>
-      <td>{product?.category || "--"}</td>
+      <td className="max-w-xs">
+        <div className="flex flex-wrap gap-2 p-1">
+          {product?.industry?.map((item, index) => (
+            <Chip label={item?.name} key={index} />
+          )) || "--"}
+        </div>
+      </td>
+      <td className="max-w-xs">
+        <div className="flex flex-wrap gap-2">
+          {product?.product_family?.map((item, index) => (
+            <Chip label={item?.name} key={index} />
+          )) || "--"}
+        </div>
+      </td>
       <td>
         <div className="flex items-center gap-2">
-          <ViewAction
-            handleClick={() => {
-              console.log("View action clicked");
-            }}
-          />
           <EditAction
             handleClick={() => {
               dispatch(setProductModal(true));

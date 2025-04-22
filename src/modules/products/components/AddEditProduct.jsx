@@ -6,7 +6,6 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   setProductCrud,
@@ -114,10 +113,8 @@ const AddEditProduct = ({ getResponseBack }) => {
         .finally(() => {
           dispatch(setProductLoader(false));
         });
-      // update
     }
   };
-  console.log("data", productCrud);
   return (
     <Dialog open={productModal} onClose={closeModal} fullWidth maxWidth="lg">
       <DialogTitle>
