@@ -2,11 +2,10 @@ import TableRow from "../../../shared/TableRow";
 import PropTypes from "prop-types";
 import ViewAction from "../../../shared/ViewAction";
 import { useDispatch } from "react-redux";
-import { setModal, setSample, setSamples } from "../../../slices/requestSlice";
+import { setModal, setSample } from "../../../slices/requestSlice";
 
 const SampleRow = ({ isLastRow, sample, index }) => {
   const dispatch = useDispatch();
-  console.log("SampleRow", sample);
 
   return (
     <TableRow isLastRow={isLastRow} index={index}>

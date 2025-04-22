@@ -6,8 +6,6 @@ import {
   InputAdornment,
   CircularProgress,
 } from "@mui/material";
-import loginBanner from "../../../assets/1728384308140.jpg";
-import logo from "../../../assets/btc_networks_logo.jpg";
 
 import { useNavigate } from "react-router-dom";
 import { loginApi } from "../api";
@@ -28,9 +26,21 @@ const Login = () => {
         setLoading(true);
         loginApi({ email, password })
           .then((res) => {
-            localStorage.setItem("token", res.token);
-            localStorage.setItem("user", JSON.stringify(res.user));
-            navigate("/");
+            console.log(res.user, "res");
+            if (["superadmin", "sellers"].includes(res.user.role)) {
+              localStorage.setItem("token", res.token);
+              localStorage.setItem("user", JSON.stringify(res.user));
+              enqueueSnackbar("Login Successful", {
+                anchorOrigin: { vertical: "top", horizontal: "right" },
+                variant: "success",
+              });
+              navigate("/");
+            } else {
+              enqueueSnackbar("You are not authorized to access this page", {
+                anchorOrigin: { vertical: "top", horizontal: "right" },
+                variant: "error",
+              });
+            }
           })
           .catch((error) => {
             console.log(error, "56");
@@ -81,10 +91,10 @@ const Login = () => {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="max-w-auto w-[441px] h-[554px] p-6 bg-transparent rounded-lg">
               <div className="flex justify-center mb-6">
-                <img src={logo} alt="Logo" />
+                <img src={"/polymer.svg"} alt="Logo" className="w-20" />
               </div>
-              <h1 className="mb-8 text-3xl font-medium">
-                Manage your employees!
+              <h1 className="mb-8 text-3xl font-medium text-center">
+                Welcome Back!!
               </h1>
               <form onSubmit={handleSubmit}>
                 <div className="mb-5">
@@ -98,6 +108,9 @@ const Login = () => {
                     error={!!errors.email}
                     helperText={errors.email}
                     onFocus={() => setErrors({ ...errors, email: "" })}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 </div>
                 <div className="mb-5">
@@ -112,6 +125,9 @@ const Login = () => {
                     error={!!errors.password}
                     helperText={errors.password}
                     onFocus={() => setErrors({ ...errors, password: "" })}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     slotProps={{
                       input: {
                         endAdornment: (
@@ -135,7 +151,7 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="w-full px-4 py-2 text-white bg-[#00aeaa] rounded-md hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  className="w-full px-4 py-2 text-white rounded-md bg-[#2952FF] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                   {loading ? (
                     <CircularProgress
@@ -146,12 +162,6 @@ const Login = () => {
                     "Login"
                   )}
                 </button>
-                <p className="mt-2">
-                  Dont have an Account ?{" "}
-                  <a href="/signup" className="text-blue-700">
-                    Register
-                  </a>{" "}
-                </p>
               </form>
             </div>
           </div>
@@ -160,7 +170,7 @@ const Login = () => {
       <div className="flex-1">
         <div
           style={{
-            backgroundImage: `url(${loginBanner})`,
+            backgroundImage: `url("/login-img.jpg")`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             height: "100%",
