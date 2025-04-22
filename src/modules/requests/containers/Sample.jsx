@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { setPageTitle } from "../../../slices/sharedSlice";
 import Title from "../../../shared/Title";
 import { getSampleRequestApi } from "../api";
+import SampleList from "../components/SampleList";
 
 const Sample = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,9 @@ const Sample = () => {
         title="Sample Enquiries"
         description="Display all the Sample Requests"
       />
+      <div className="mt-4">
+        <SampleList />
+      </div>
     </div>
   );
 };

@@ -1,30 +1,31 @@
 import { useSelector } from "react-redux";
 import TableUI from "../../../shared/TableUI";
-import QuoteRow from "./QuoteRow";
+import SampleRow from "./SampleRow";
 
-const QuoteList = () => {
-  const { quotes } = useSelector((state) => state.requestState);
-  console.log("Quotes", quotes);
+const SampleList = () => {
+  const { samples } = useSelector((state) => state.requestState); // Assuming you have a sampleState in your Redux store
+  console.log("Samples", samples);
+
   return (
     <div>
       <TableUI
         tableHeader={[
           "Product Name",
           "Requested By",
-          "Email",
           "Industry",
           "Quantity",
           "UOM",
+          "Status",
           "Action",
         ]}
-        noRecord={quotes?.length === 0}
+        noRecord={samples?.length === 0}
       >
-        {quotes?.map((quote, index) => {
-          const isLastRow = index === quotes.length - 1;
+        {samples?.map((sample, index) => {
+          const isLastRow = index === samples.length - 1;
           return (
-            <QuoteRow
+            <SampleRow
               isLastRow={isLastRow}
-              quote={quote}
+              sample={sample}
               key={index}
               index={index}
             />
@@ -35,4 +36,4 @@ const QuoteList = () => {
   );
 };
 
-export default QuoteList;
+export default SampleList;

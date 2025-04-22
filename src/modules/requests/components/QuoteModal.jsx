@@ -16,7 +16,6 @@ const QuoteModal = () => {
   const closeModal = () => {
     dispatch(setModal(false));
   };
-  console.log("QuoteModal", quote);
   return (
     <Dialog open={modal} onClose={closeModal} fullWidth maxWidth="md">
       <DialogTitle>Quote Request</DialogTitle>
