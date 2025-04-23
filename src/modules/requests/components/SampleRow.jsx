@@ -9,9 +9,9 @@ const SampleRow = ({ isLastRow, sample, index }) => {
 
   return (
     <TableRow isLastRow={isLastRow} index={index}>
-      <td className="p-4">{sample?.product?.name}</td>
-      <td>{sample?.user}</td>
-      <td>{sample?.industry?.name}</td>
+      <td className="p-4">{sample?.productDetails?.name}</td>
+      <td>{sample?.userDetails?.name}</td>
+      <td>{sample?.industryDetails?.name}</td>
       <td>{sample.quantity}</td>
       <td>{sample.uom}</td>
       <td>

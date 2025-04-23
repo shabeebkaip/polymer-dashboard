@@ -4,7 +4,6 @@ import { RxCaretDown, RxCaretRight } from "react-icons/rx";
 import { MdCategory } from "react-icons/md";
 import { IoLogoPolymer } from "react-icons/io";
 import { GiFamilyTree } from "react-icons/gi";
-import { TbBrandDenodo } from "react-icons/tb";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -27,12 +26,6 @@ const menuItems = [
     displayName: "industries",
     route: "/industries",
     icon: <MdCategory />,
-  },
-  {
-    name: "brands",
-    displayName: "Brands",
-    route: "/brands",
-    icon: <TbBrandDenodo />,
   },
   {
     name: "enquiries",
