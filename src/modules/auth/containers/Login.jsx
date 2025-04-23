@@ -27,7 +27,7 @@ const Login = () => {
         loginApi({ email, password })
           .then((res) => {
             console.log(res.user, "res");
-            if (["superadmin", "sellers"].includes(res.user.role)) {
+            if (["superadmin", "seller"].includes(res.user.role)) {
               localStorage.setItem("token", res.token);
               localStorage.setItem("user", JSON.stringify(res.user));
               enqueueSnackbar("Login Successful", {
