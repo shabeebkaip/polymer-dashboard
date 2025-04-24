@@ -21,7 +21,10 @@ const SampleModal = () => {
       <DialogTitle>Sample Request</DialogTitle>
       <DialogContent dividers>
         <div className="grid grid-cols-3 gap-4">
-          <LabelValue label="Product Name" value={sample?.product?.name} />
+          <LabelValue
+            label="Product Name"
+            value={sample?.productDetails?.name}
+          />
           <LabelValue
             label="User Name"
             value={sample?.userDetails?.name || "--"}
@@ -30,7 +33,7 @@ const SampleModal = () => {
             label="Email"
             value={sample?.userDetails?.email || "--"}
           />
-          <LabelValue label="Industry" value={sample?.industry?.name} />
+          <LabelValue label="Industry" value={sample?.industryDetails?.name} />
           <LabelValue label="Quantity" value={sample?.quantity} />
           <LabelValue label="UOM" value={sample?.uom} />
           <LabelValue

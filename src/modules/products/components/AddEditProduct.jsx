@@ -72,6 +72,14 @@ const AddEditProduct = ({ getResponseBack }) => {
             });
             getResponseBack();
             closeModal();
+          }else {
+            enqueueSnackbar(response.message, {
+              variant: "error",
+              anchorOrigin: {
+                vertical: "top",
+                horizontal: "right",
+              },
+            });
           }
         })
         .catch((error) => {
@@ -85,7 +93,6 @@ const AddEditProduct = ({ getResponseBack }) => {
         })
         .finally(() => {
           dispatch(setProductLoader(false));
-          
         });
     } else {
       updateProductApi(payload)
