@@ -71,6 +71,7 @@ const AddEditProduct = ({ getResponseBack }) => {
               },
             });
             getResponseBack();
+            closeModal();
           }
         })
         .catch((error) => {
@@ -84,7 +85,7 @@ const AddEditProduct = ({ getResponseBack }) => {
         })
         .finally(() => {
           dispatch(setProductLoader(false));
-          closeModal();
+          
         });
     } else {
       updateProductApi(payload)
