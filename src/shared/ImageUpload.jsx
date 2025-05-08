@@ -12,7 +12,7 @@ const ImageUpload = ({
   onImageClick,
   width = "100%",
   height = "150px",
-  text = "Image ",
+  text = "File ",
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -22,13 +22,13 @@ const ImageUpload = ({
       if (!file) return;
 
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("file", file);
 
       setLoading(true);
       try {
         const response = await postFileUpload(formData);
-        const { imageUrl, id } = response.data;
-        onFileUpload(imageUrl, id);
+        const { fileUrl, id } = response.data;
+        onFileUpload(fileUrl, id);
       } catch (error) {
         console.error("Error uploading file:", error);
       } finally {
@@ -41,7 +41,6 @@ const ImageUpload = ({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: "image/*",
-    multiple: true,
   });
 
   return (

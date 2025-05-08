@@ -51,15 +51,9 @@ import { setPageTitle } from "../../../slices/sharedSlice";
     const [cloudinaryImage1, setCloudinaryImage1] = useState({});
     const [errors, setErrors] = useState({});   
     const [productDetail, setProductDetail] = useState({
-        productName: "",
-        //  chemicalFamily: "",
-        // other properties
+       
       });
 console.log(productDetail , "setProductDetail");
-
-    useEffect(() => {
-        console.log(id, 'id from useParams');
-      }, [id]);
 
   const fetchDropdowns = useCallback(() => {
     dispatch(getBrandsApi());
@@ -124,21 +118,35 @@ useEffect(() => {
         const newErrors = {};
         if (!productDetail.productName)
           newErrors.productName = "Product Name is required";
-        // if (!data.theoryTitle) newErrors.theoryTitle = "Theory Type is required";
-        // if (!data.itinerary) newErrors.itinerary = "Itinerary Name is required";
-        // if (!data?.description || data.description === "<p><br></p>") {
-        //   newErrors.description = "English description is required";
-        // }
-        // if (!data?.ar_description || data.ar_description === "<p><br></p>") {
-        //   newErrors.ar_description = "Arabic description is required";
-        // }
+        if (!productDetail.chemicalName)
+          newErrors.chemicalName = "Chemical  Name is required";
+        if (!productDetail.chemicalFamily)
+          newErrors.chemicalFamily = "chemical Familyis required";
+        if (!productDetail.polymerType)
+          newErrors.polymerType = "polymer Type is required";
+        if (!productDetail.industry)
+          newErrors.industry = "industry is required";
+        if (!productDetail.physicalForm)
+          newErrors.physicalForm = "physical Form is required";
+        if (!productDetail.minimum_order_quantity)
+          newErrors.minimum_order_quantity = "minimum order quantityis required";
+        if (!productDetail.stock)
+          newErrors.stock = "stock is required";
+        if (!productDetail.uom)
+          newErrors.uom = "uom is required";
+        if (!productDetail.price)
+          newErrors.price = "price is required";
+        if (!productDetail.incoterms)
+          newErrors.incoterms = "incoterms is required";
+        if (!productDetail.price)
+          newErrors.price = "price is required";
+
         setErrors(newErrors);
         setTimeout(() => {
           setErrors({});
-        }, 500); //
+        }, 2000); 
         return Object.keys(newErrors).length === 0;
       };
-      console.log(errors);
       
   
     const handleSave = () => {
@@ -229,6 +237,10 @@ useEffect(() => {
             onChange={(e) => onFieldChange("chemicalName", e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
+            error={!!errors.chemicalName}
+            helperText={
+              <div>{errors.chemicalName}</div>
+            }
           />
           <TextField
             label="Trade Name "
@@ -248,6 +260,10 @@ useEffect(() => {
   )}
   onChange={(_, value) => onFieldChange("chemicalFamily", value?._id)} 
   value={productDetail?.chemicalFamily}
+  error={!!errors.chemicalFamily}
+            helperText={
+              <div>{errors.chemicalFamily}</div>
+            }
 />
        
           
@@ -260,7 +276,12 @@ useEffect(() => {
       label="Polymer Type"
       variant="outlined"
       InputLabelProps={{ shrink: true }}
+      error={!!errors.polymerType}
+            helperText={
+              <div>{errors.polymerType}</div>
+            }
     />
+
   )}
   onChange={(_, value) => onFieldChange("polymerType", value)}
   value={productDetail?.polymerType || null}
@@ -294,6 +315,10 @@ useEffect(() => {
             onChange={(_, value) => onFieldChange("industry", value)}
             value={productDetail?.industry}
             disabled={industries.length === 0}
+            error={!!errors.industry}
+            helperText={
+              <div>{errors.industry}</div>
+            }
           />
           <TextField
             label="Manufacturing Method"
@@ -312,6 +337,10 @@ useEffect(() => {
             )}
             onChange={(_, value) => onFieldChange("physicalForm", value)}
             value={productDetail?.physicalForm}
+            error={!!errors.physicalForm}
+            helperText={
+              <div>{errors.physicalForm}</div>
+            }
           />
 <Autocomplete
   options={countries.map((country) => country.name)} 
@@ -397,6 +426,10 @@ useEffect(() => {
   value={productDetail.minimum_order_quantity || ""}
   onChange={(e) => onFieldChange("minimum_order_quantity", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
+  error={!!errors.minimum_order_quantity}
+            helperText={
+              <div>{errors.minimum_order_quantity}</div>
+            }
 />  
 <TextField
             label="Stock Available "
@@ -406,6 +439,10 @@ useEffect(() => {
             value={productDetail.stock || ""}
             onChange={(e) => onFieldChange("stock", e.target.value)}
             InputLabelProps={{ shrink: true }}
+            error={!!errors.stock}
+            helperText={
+              <div>{errors.stock}</div>
+            }
           />
            <TextField
             label="Price"
@@ -415,6 +452,10 @@ useEffect(() => {
             value={productDetail.price || ""}
             onChange={(e) => onFieldChange("price", e.target.value)}
             InputLabelProps={{ shrink: true }}
+            error={!!errors.price}
+            helperText={
+              <div>{errors.price}</div>
+            }
           />
          <Autocomplete
   options={["fixed", "negotiable"]}
@@ -445,6 +486,10 @@ useEffect(() => {
             onChange={(_, value) => onFieldChange("incoterms", value)}
             value={productDetail.incoterms}
             disabled={incoterms.length === 0}
+            error={!!errors.incoterms}
+            helperText={
+              <div>{errors.incoterms}</div>
+            }
           />
            <LocalizationProvider dateAdapter={AdapterMoment}>
       <DatePicker

@@ -22,7 +22,6 @@ import AddEditProduct from "../components/AddEditProduct";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import Pagination from "../../../shared/Pagination";
 import Filters from "../../../shared/sharedComponents/filter/Filters";
 import Footer from "../../../shared/sharedComponents/footer/Footer";
 import eventBus from "../../../utils/eventBus";
