@@ -23,8 +23,14 @@ const menuItems = [
   },
   {
     name: "Industries",
-    displayName: "industries",
+    displayName: "Industries",
     route: "/industries",
+    icon: <MdCategory />,
+  },
+  {
+    name: "chemical_family",
+    displayName: "Chemical Families",
+    route: "/chemical-families",
     icon: <MdCategory />,
   },
   {

@@ -5,6 +5,7 @@ import Industries from "./modules/industries/containers/Industries";
 import ProductFamilies from "./modules/productFamilies/containers/ProductFamilies";
 import Quote from "./modules/requests/containers/Quote";
 import Sample from "./modules/requests/containers/Sample";
+import ChemicalFamilies from "./modules/chemicalFamilies/containers/chemicalFamilies";
 
 const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
         <Route path="/" exact element={<Products />} />
         <Route path="/industries" exact element={<Industries />} />
         <Route path="/product-families" exact element={<ProductFamilies />} />
+        <Route path="/chemical-families" exact element={<ChemicalFamilies />} />
         <Route path="/enquiries/quote" exact element={<Quote />} />
         <Route path="/enquiries/sample" exact element={<Sample />} />
 

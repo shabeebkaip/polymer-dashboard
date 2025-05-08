@@ -16,6 +16,9 @@ const sharedSlice = createSlice({
     productFamilies: [],
     productFamilyModal: false,
     productFamilyCrud: {},
+    chemicalFamilies: [],
+    chemicalFamilyModal: false,
+    chemicalFamilyCrud: {},
     // Brands
     brands: [],
     // appearance
@@ -57,11 +60,20 @@ const sharedSlice = createSlice({
     setProductFamilies: (state, action) => {
       state.productFamilies = action.payload;
     },
+    setChemicalFamilies: (state, action) => {
+      state.chemicalFamilies = action.payload;
+    },
     setProductFamilyModal: (state, action) => {
       state.productFamilyModal = action.payload;
     },
     setProductFamilyCrud: (state, action) => {
       state.productFamilyCrud = action.payload;
+    },
+    setChemicalFamilyModal: (state, action) => {
+      state.chemicalFamilyModal = action.payload;
+    },
+    setChemicalFamilyCrud: (state, action) => {
+      state.chemicalFamilyCrud = action.payload;
     },
     // Brands
     setBrands: (state, action) => {
@@ -98,8 +110,11 @@ export const {
   setIndustryCrud,
   // product families
   setProductFamilies,
+  setChemicalFamilies,
   setProductFamilyModal,
   setProductFamilyCrud,
+  setChemicalFamilyModal,
+  setChemicalFamilyCrud,
   // Brands
   setBrands,
   // appearance
