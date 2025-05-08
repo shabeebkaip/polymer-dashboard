@@ -41,6 +41,7 @@ const ImageUpload = ({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: "image/*",
+    multiple: true,
   });
 
   return (

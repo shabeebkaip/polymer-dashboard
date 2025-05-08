@@ -1,8 +1,13 @@
 import {
   setAppearance,
   setBrands,
+  setChemicalFamily,
   setGrade,
   setIncoterms,
+  setPackagingType,
+  setPaymentTerms,
+  setPhysicalForm,
+  setPolymerType,
   setSubstance,
 } from "../slices/sharedSlice";
 import {
@@ -55,6 +60,67 @@ export const getSubstancesApi = () => async (dispatch) => {
     return response;
   } catch (error) {
     console.error("Error fetching substances:", error);
+    throw error;
+  }
+};
+export const getChemicalFamilyApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/chemical-family/list`);
+    if (response.data.success) {
+      dispatch(setChemicalFamily(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching Chemical Family:", error);
+    throw error;
+  }
+};
+export const getPolymerTypeApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/polymer-type/list`);
+    if (response.data.success) {
+      dispatch(setPolymerType(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching Polymer Type:", error);
+    throw error;
+  }
+};
+export const getPaymentTermsApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/payment-terms/list`);
+    if (response.data.success) {
+      dispatch(setPaymentTerms(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching payment terms:", error);
+    throw error;
+  }
+};
+export const getPackagingTypeApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/packaging-type/list`);
+    if (response.data.success) {
+      dispatch(setPackagingType(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching packaging type:", error);
+    throw error;
+  }
+};
+
+export const getphysicalFormApi = () => async (dispatch) => {
+  try {
+    const response = await globalGetService(`/physical-form/list`);
+    if (response.data.success) {
+      dispatch(setPhysicalForm(response.data.data));
+    }
+    return response;
+  } catch (error) {
+    console.error("Error fetching physical form:", error);
     throw error;
   }
 };

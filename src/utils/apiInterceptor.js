@@ -1,5 +1,6 @@
 import axios from "axios";
-const baseURL = "https://polymer-nodejs.vercel.app/api";
+// const baseURL = "https://polymer-nodejs.vercel.app/api";
+const baseURL = "http://localhost:7000/api";
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
@@ -8,10 +9,12 @@ const a = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MDYyYTRkYTkxYjc4NTcz
 const token = localStorage.getItem("token") || null;
 
 
+console.log(token,"ui");
+
 axiosInstance.interceptors.request.use(
   function (config) {
     if (token) {
-      config.headers["Authorization"] = `Bearer ${a}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },

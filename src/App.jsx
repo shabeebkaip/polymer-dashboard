@@ -18,6 +18,7 @@ const IsLogged = () => {
   return !logged ? <Outlet /> : <Navigate to="/" />;
 };
 
+
 function App() {
   const [collapsed, setCollapsed] = useState(true);
 

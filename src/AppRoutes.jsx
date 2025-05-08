@@ -5,12 +5,15 @@ import Industries from "./modules/industries/containers/Industries";
 import ProductFamilies from "./modules/productFamilies/containers/ProductFamilies";
 import Quote from "./modules/requests/containers/Quote";
 import Sample from "./modules/requests/containers/Sample";
+import AddEditProductPage from "./modules/products/components/AddEditProductPage";
 
 const AppRoutes = () => {
   return (
     <div className="p-5">
       <Routes>
         <Route path="/products" exact element={<Products />} />
+        <Route path="/add-product" exact element={<AddEditProductPage />} />
+        <Route path="/edit-product/:id" exact element={<AddEditProductPage />} />
         <Route path="/" exact element={<Products />} />
         <Route path="/industries" exact element={<Industries />} />
         <Route path="/product-families" exact element={<ProductFamilies />} />

@@ -5,6 +5,7 @@ const sharedSlice = createSlice({
   initialState: {
     pageTitle: "",
     loader: false,
+    openFilter: { name: '', module: null, isOpen: false },
     deleteModal: false,
     deleteId: null,
     mode: "add",
@@ -28,6 +29,9 @@ const sharedSlice = createSlice({
     incoterms: [],
   },
   reducers: {
+    setOpenFilter: (state, action) => {
+      state.openFilter = action.payload;
+    },
     setLoader: (state, action) => {
       state.loader = action.payload;
     },
@@ -67,6 +71,18 @@ const sharedSlice = createSlice({
     setBrands: (state, action) => {
       state.brands = action.payload;
     },
+    setPolymerType: (state, action) => {
+      state.polymerType = action.payload;
+    },
+    setChemicalFamily: (state, action) => {
+      state.chemicalFamily = action.payload;
+    },
+    setPaymentTerms: (state, action) => {
+      state.paymentTerms = action.payload;
+    },
+    setPackagingType: (state, action) => {
+      state.packagingType = action.payload;
+    },
     // appearance
     setAppearance: (state, action) => {
       state.appearance = action.payload;
@@ -74,6 +90,12 @@ const sharedSlice = createSlice({
     // substance
     setSubstance: (state, action) => {
       state.substance = action.payload;
+    },
+    setPhysicalForm: (state, action) => {
+      state.physicalForm = action.payload;
+    },
+    setProductFamily: (state, action) => {
+      state.productFamily = action.payload;
     },
     // grade
     setGrade: (state, action) => {
@@ -87,6 +109,7 @@ const sharedSlice = createSlice({
 });
 
 export const {
+  setOpenFilter,
   setLoader,
   setMode,
   setPageTitle,
@@ -105,7 +128,13 @@ export const {
   // appearance
   setAppearance,
   // substance
+  setChemicalFamily,
+  setPackagingType,
+  setPolymerType,
+  setPaymentTerms,
   setSubstance,
+  setPhysicalForm,
+
   // grade
   setGrade,
   // incoterms
