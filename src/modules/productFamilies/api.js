@@ -6,12 +6,19 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getProductFamiliesApi = () => async (dispatch) => {
+export const getProductFamiliesApi = (query = {}) => async (dispatch) => {
   try {
     dispatch(setLoader(true));
-    let response = await globalGetService("/product-family/list");
+    
+    if (!query.page) {
+      query.page = 1;
+    }
+
+    let response = await globalGetService("/product-family/list", query);
+
     if (response.data.success) {
       dispatch(setProductFamilies(response.data.data));
+      return response.data;
     }
   } catch (err) {
     console.log(err);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDeleteModal,
@@ -8,7 +8,10 @@ import {
   setProductFamilyCrud,
   setProductFamilyModal,
 } from "../../../slices/sharedSlice";
-import { deleteProductFamilyApi, getProductFamiliesApi } from "../api";
+import {
+  deleteProductFamilyApi,
+  getProductFamiliesApi,
+} from "../api";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductFamilyList from "../components/ProductFamilyList";
@@ -16,21 +19,43 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditProductFamily from "../components/AddEditProductFamily";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const ProductFamilies = () => {
+  const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { loader, productFamilyModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getProductFamiliesApi());
+  const fetchProducts = useCallback((query = { page: 1 }) => {
+    setLoading(true);
+    dispatch(getProductFamiliesApi(query))
+      .then((response) => {
+        if (response?.success) {
+          const paginationData = {
+            total: response.pagination.totalItems,
+            currentPage: response.pagination.currentPage,
+            totalPages: response.pagination.totalPages,
+          };
+          setPagination(paginationData);
+          setProducts(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching product families:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setLoader(true));
     dispatch(setPageTitle("Product Families"));
-    fetchProducts();
+    fetchProducts(); 
   }, [dispatch, fetchProducts]);
 
   const handleDelete = () => {
@@ -50,7 +75,7 @@ const ProductFamilies = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchProducts(); // refresh list after deletion
       });
   };
 
@@ -60,7 +85,7 @@ const ProductFamilies = () => {
         title="Product Families"
         description="Displaying all the Product Families"
         actions={
-          <div className="flex items-center justify-between ">
+          <div className="flex items-center justify-between">
             <ActionButton
               buttonText="Add Product Family"
               handleOnClick={() => {
@@ -70,16 +95,21 @@ const ProductFamilies = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/tools/create.svg"}
+              icon="/tools/create.svg"
             />
           </div>
         }
-      ></Title>
-      {loader ? (
+      />
+      {loading ? (
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <ProductFamilyList />
+          <ProductFamilyList data={products} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchProducts({ page })}
+          />
         </div>
       )}
       <AddEditProductFamily
