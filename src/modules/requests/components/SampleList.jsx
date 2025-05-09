@@ -3,7 +3,7 @@ import TableUI from "../../../shared/TableUI";
 import SampleRow from "./SampleRow";
 
 const SampleList = () => {
-  const { samples } = useSelector((state) => state.requestState); // Assuming you have a sampleState in your Redux store
+  const { samples } = useSelector((state) => state.requestState); 
   console.log("Samples", samples);
 
   return (
