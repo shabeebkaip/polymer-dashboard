@@ -4,6 +4,9 @@ import {
     Button,
     CircularProgress,
     MenuItem,
+    Box,
+    Stack,
+    IconButton,
   } from "@mui/material";
   import { useParams } from "react-router-dom";
   import { useDispatch, useSelector } from "react-redux";
@@ -39,7 +42,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import FileUpload from "../../../shared/sharedComponents/file-uploads/FileUpload";
 import { setPageTitle } from "../../../slices/sharedSlice";
-
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
   
   const AddEditProductPage = ({ getResponseBack }) => {
@@ -49,10 +53,33 @@ import { setPageTitle } from "../../../slices/sharedSlice";
     const { id } = useParams(); 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [cloudinaryImage1, setCloudinaryImage1] = useState({});
-    const [errors, setErrors] = useState({});   
+    const [errors, setErrors] = useState({}); 
+      
     const [productDetail, setProductDetail] = useState({
-       
-      });
+    
+      additionalInfo: [""], 
+    });
+  
+
+
+    const handleAddAdditionalInfo = () => {
+      setProductDetail((prev) => ({
+        ...prev,
+        additionalInfo: [...prev.additionalInfo, ""],
+      }));
+    };
+  
+    const handleRemoveAdditionalInfo = (index) => {
+      const updated = [...productDetail.additionalInfo];
+      updated.splice(index, 1);
+      setProductDetail((prev) => ({ ...prev, additionalInfo: updated }));
+    };
+  
+    const handleChangeAdditionalInfo = (index, value) => {
+      const updated = [...productDetail.additionalInfo];
+      updated[index] = value;
+      setProductDetail((prev) => ({ ...prev, additionalInfo: updated }));
+    };
 console.log(productDetail , "setProductDetail");
 
   const fetchDropdowns = useCallback(() => {
@@ -215,6 +242,7 @@ useEffect(() => {
   
     return (
 <div className="container mx-auto p-6 h-[calc(100dvh-140px)] overflow-y-auto">
+
 <h1 className="text-xl  py-4">General Product Information</h1>
 <div className="grid grid-cols-3 gap-4"> 
 <TextField
@@ -253,6 +281,7 @@ useEffect(() => {
             required
             InputLabelProps={{ shrink: true }}
           />   
+         
            <TextField
             label="Description"
             variant="outlined"
@@ -265,6 +294,28 @@ useEffect(() => {
             InputLabelProps={{ shrink: true }}
           />
   </div>
+  <Box display="flex" flexWrap="wrap" gap={2} alignItems="center" sx={{ my: 4 }}>
+      {productDetail.additionalInfo.map((info, index) => (
+  <Box key={index} display="flex" alignItems="center" gap={1}>
+    <TextField
+      label={`AdditionalInfo ${index + 1}`}
+      value={info}
+      onChange={(e) => handleChangeAdditionalInfo(index, e.target.value)}
+    />
+    <IconButton
+      onClick={() => handleRemoveAdditionalInfo(index)}
+      color="error"
+      disabled={productDetail.additionalInfo.length === 1}
+    >
+      <RemoveIcon />
+    </IconButton>
+  </Box>
+))}
+
+      <IconButton onClick={handleAddAdditionalInfo} color="primary">
+        <AddIcon />
+      </IconButton>
+    </Box>
   <h1 className="text-xl  py-4">Product Details</h1>
 
 <div className="grid grid-cols-3 gap-4"> 
@@ -520,6 +571,7 @@ useEffect(() => {
   <div className="grid grid-cols-3 gap-4">
   <Autocomplete
             options={packagingType}
+            multiple
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="Packaging Type" variant="outlined" InputLabelProps={{ shrink: true }} />

@@ -10,7 +10,7 @@ const IncotermList = () => {
       <TableUI
         tableHeader={[
           "Name",
-          "Description",
+          "Full Form",
           "",
           "Actions",
         ]}

@@ -34,7 +34,7 @@ export const createIncotermsApi = async (data) => {
 export const updateIncotermsApi = async (data) => {
   try {
     let response = await globalPutService(
-      `/incoterms/edit/${data._id}`,
+      `/incoterm/edit/${data._id}`,
       data
     );
     return response.data;

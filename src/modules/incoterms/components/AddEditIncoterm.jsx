@@ -43,8 +43,8 @@ import {
             }
           })
           .catch((error) => {
-            console.error("Error creating packaging type:", error);
-            enqueueSnackbar("Error creating packaging type", {
+            console.error("Error creating incoterms:", error);
+            enqueueSnackbar("Error creating incoterms", {
               variant: "error",
               anchorOrigin: { vertical: "top", horizontal: "right" },
             });
@@ -66,8 +66,8 @@ import {
             }
           })
           .catch((error) => {
-            console.error("Error updating packaging type:", error);
-            enqueueSnackbar("Error updating packaging type", {
+            console.error("Error updating incoterms:", error);
+            enqueueSnackbar("Error updating incoterms", {
               variant: "error",
               anchorOrigin: { vertical: "top", horizontal: "right" },
             });
@@ -85,7 +85,7 @@ import {
     return (
       <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
         <DialogTitle>
-          <h4 className="capitalize">{mode} packaging type</h4>
+          <h4 className="capitalize">{mode} Incoterm</h4>
         </DialogTitle>
         <DialogContent dividers>
           <div className="grid grid-cols-2 gap-4">
@@ -103,11 +103,11 @@ import {
               }}
             />
             <TextField
-              label="Description"
+              label="Full Form"
               variant="outlined"
               fullWidth
-              value={data.description || ""}
-              onChange={(e) => setData({ ...data, description: e.target.value })}
+              value={data.fullForm || ""}
+              onChange={(e) => setData({ ...data, fullForm: e.target.value })}
               required
               slotProps={{
                 inputLabel: {

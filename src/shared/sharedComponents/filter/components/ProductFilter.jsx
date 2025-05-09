@@ -60,13 +60,13 @@ const ProductFilter = ({ module, route, onFilterChange }) => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-5">
+          <div className="grid grid-cols-1 gap-5 mb-20">
             {filters.map((filter, index) => (
               <FormRegistry data={filter} key={index} onChange={handleDataChange} />
             ))}
           </div>
 
-          <div className="absolute bottom-0 flex justify-center pl-24 bg-white">
+          <div className="absolute bottom-0 flex justify-center pl-24 bg-white z-10">
             <Box sx={{ padding: "8px 16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
               {filters.length > 0 && (
                 <>

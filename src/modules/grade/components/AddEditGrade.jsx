@@ -43,8 +43,8 @@ import {
             }
           })
           .catch((error) => {
-            console.error("Error creating packaging type:", error);
-            enqueueSnackbar("Error creating packaging type", {
+            console.error("Error creating Grade:", error);
+            enqueueSnackbar("Error creating Grade", {
               variant: "error",
               anchorOrigin: { vertical: "top", horizontal: "right" },
             });
@@ -66,8 +66,8 @@ import {
             }
           })
           .catch((error) => {
-            console.error("Error updating packaging type:", error);
-            enqueueSnackbar("Error updating packaging type", {
+            console.error("Error updating Grade:", error);
+            enqueueSnackbar("Error updating Grade", {
               variant: "error",
               anchorOrigin: { vertical: "top", horizontal: "right" },
             });
@@ -85,7 +85,7 @@ import {
     return (
       <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
         <DialogTitle>
-          <h4 className="capitalize">{mode} packaging type</h4>
+          <h4 className="capitalize">{mode} Grade</h4>
         </DialogTitle>
         <DialogContent dividers>
           <div className="grid grid-cols-2 gap-4">

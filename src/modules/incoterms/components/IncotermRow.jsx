@@ -23,7 +23,7 @@ const IncotermRow = ({ incoterm, index, isLastRow }) => {
   return (
     <TableRow index={index} isLastRow={isLastRow}>
       <td className="p-4">{incoterm?.name}</td>
-      <td>{incoterm?.description || "--"}</td>
+      <td>{incoterm?.fullForm || "--"}</td>
       <td>
       </td>
       <td>
