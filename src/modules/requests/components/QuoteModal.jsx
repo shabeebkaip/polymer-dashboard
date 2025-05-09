@@ -31,10 +31,25 @@ const QuoteModal = () => {
           <LabelValue label="Quantity" value={quote?.quantity} />
           <LabelValue label="UOM" value={quote?.uom} />
           <LabelValue label="Grade" value={quote?.grade?.name} />
+          <LabelValue label="Incotern" value={quote?.incoterm?.name} />
+          <LabelValue label="Packaging Type" value={quote?.packagingType?.name} />
+          <LabelValue label="Post Code" value={quote?.postCode} />
+          <LabelValue label="City" value={quote?.city} />
+          <LabelValue label="Destination" value={quote?.destination} />
+          <LabelValue label="Packaging Size" value={quote?.packaging_size} />
+          <LabelValue label="Expected Annual Volume " value={quote?.expected_annual_volume} />
+          <LabelValue label="Delivery Date " value={quote?.delivery_date} />
+          <LabelValue label="Pricing" value={quote?.pricing} />
+          <LabelValue label="Application" value={quote?.application} />
+          <LabelValue label="Requested Document" value={quote?.request_document} />
+            <LabelValue
+            label="Open for Request"
+            value={quote?.open_request === true ? 'Yes' : quote?.open_request === false ? 'No' : 'N/A'}
+          />  
           <LabelValue label="Created At" value={quote?.createdAt} type="date" />
           <LabelValue label="Updated At" value={quote?.updatedAt} type="date" />
           <LabelValue label="Status" value={quote?.status} />
-          <LabelValue label="Application" value={quote?.application} />
+     
           <LabelValue label="Message" value={quote?.message} />
         </div>
       </DialogContent>

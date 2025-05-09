@@ -25,7 +25,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
     });
   };
   
-  const tableHeader = ["SL No", "Name", "Email", "Status" , "Action"];
+  const tableHeader = ["SL No", "Name", "Email","User Type", "Status" , "Action"];
   return (
     <div className="mt-4">
       <table className="w-full border-collapse">
@@ -67,6 +67,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
                   <td className="p-4 border-b ">{index + 1}</td>
                   <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
+                  <td className="p-4 border-b">{row.user_type}</td>
                   <td className="p-4 border-b">{row.verification}</td>
                   <td className="p-4 border-b ">
                     <div className="flex items-center gap-4 ">

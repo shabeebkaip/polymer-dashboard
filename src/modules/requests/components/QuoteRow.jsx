@@ -14,6 +14,8 @@ const QuoteRow = ({ isLastRow, quote, index }) => {
       <td>{quote?.user?.email}</td>
       <td>{quote?.quantity}</td>
       <td>{quote?.uom}</td>
+      <td>{quote?.status}</td>
+
       <td>
         <ViewAction
           handleClick={() => {

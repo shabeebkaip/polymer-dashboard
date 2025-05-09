@@ -14,6 +14,7 @@ const QuoteList = () => {
           "Email",
           "Quantity",
           "UOM",
+          "Status",
           "Action",
         ]}
         noRecord={quotes?.length === 0}

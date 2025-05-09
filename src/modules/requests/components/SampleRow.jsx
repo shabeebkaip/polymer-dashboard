@@ -12,6 +12,7 @@ const SampleRow = ({ isLastRow, sample, index }) => {
     <TableRow isLastRow={isLastRow} index={index}>
       <td className="p-4">{sample?.product?.productName}</td>
       <td>{sample?.user?.name}</td>
+      <td>{sample?.user?.email}</td>
       <td>{sample.quantity}</td>
       <td>{sample.uom}</td>
       <td>
