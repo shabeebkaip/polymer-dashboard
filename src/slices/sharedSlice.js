@@ -17,6 +17,22 @@ const sharedSlice = createSlice({
     productFamilies: [],
     productFamilyModal: false,
     productFamilyCrud: {},
+    // polymer type
+    polymerType: [],
+    polymerTypeModal: false,
+    polymerTypeCrud: {},
+    // payment terms
+    paymentTerms: [],
+    paymentTermsModal: false,
+    paymentTermsCrud: {},
+    // payment terms
+    packagingType: [],
+    packagingTypeModal: false,
+    packagingTypeCrud: {},
+    // physical form
+    physicalForm: [],
+    physicalFormModal: false,
+    physicalFormCrud: {},
     // Brands
     brands: [],
     // appearance
@@ -25,8 +41,16 @@ const sharedSlice = createSlice({
     substance: [],
     // grade
     grade: [],
+    gradeModal: false,
+    gradeCrud: {},
     // incoterms
     incoterms: [],
+    incotermsModal: false,
+    incotermsCrud: {},
+    // chemical family
+    chemicalFamily: [],
+    chemicalFamilyModal: false,
+    chemicalFamilyCrud: {},
   },
   reducers: {
     setOpenFilter: (state, action) => {
@@ -67,6 +91,46 @@ const sharedSlice = createSlice({
     setProductFamilyCrud: (state, action) => {
       state.productFamilyCrud = action.payload;
     },
+    // polymer type
+    setPolymerType: (state, action) => {
+      state.polymerType = action.payload;
+    },
+    setPolymerTypeModal: (state, action) => {
+      state.polymerTypeModal = action.payload;
+    },
+    setPolymerTypeCrud: (state, action) => {
+      state.polymerTypeCrud = action.payload;
+    },
+    // payment terms
+     setPaymentTerms: (state, action) => {
+      state.paymentTerms = action.payload;
+    },
+    setPaymentTermsModal: (state, action) => {
+      state.paymentTermsModal = action.payload;
+    },
+    setPaymentTermsCrud: (state, action) => {
+      state.paymentTermsCrud = action.payload;
+    },
+    // packaging type
+    setPackagingType: (state, action) => {
+      state.packagingType = action.payload;
+    },
+    setPackagingTypeModal: (state, action) => {
+      state.packagingTypeModal = action.payload;
+    },
+    setPackagingTypeCrud: (state, action) => {
+      state.packagingTypeCrud = action.payload;
+    },
+    // physical form
+    setPhysicalForm: (state, action) => {
+      state.physicalForm = action.payload;
+    },
+    setPhysicalFormModal: (state, action) => {
+      state.physicalFormModal = action.payload;
+    },
+    setPhysicalFormCrud: (state, action) => {
+      state.physicalFormCrud = action.payload;
+    },
     // Brands
     setBrands: (state, action) => {
       state.brands = action.payload;
@@ -74,9 +138,17 @@ const sharedSlice = createSlice({
     setPolymerType: (state, action) => {
       state.polymerType = action.payload;
     },
+    // chemical family
     setChemicalFamily: (state, action) => {
       state.chemicalFamily = action.payload;
     },
+    setChemicalFamilyModal: (state, action) => {
+      state.chemicalFamilyModal = action.payload;
+    },
+    setChemicalFamilyCrud: (state, action) => {
+      state.chemicalFamilyCrud = action.payload;
+    },
+
     setPaymentTerms: (state, action) => {
       state.paymentTerms = action.payload;
     },
@@ -97,13 +169,34 @@ const sharedSlice = createSlice({
     setProductFamily: (state, action) => {
       state.productFamily = action.payload;
     },
+    setPolymerType: (state, action) => {
+      state.polymerType = action.payload;
+    },
+    setPackagingType: (state, action) => {
+      state.packagingType = action.payload;
+    },
+    setPaymentTerms: (state, action) => {
+      state.paymentTerms = action.payload;
+    },
     // grade
     setGrade: (state, action) => {
       state.grade = action.payload;
     },
+    setGradeModal: (state, action) => {
+      state.gradeModal = action.payload;
+    },
+    setGradeCrud: (state, action) => {
+      state.gradeCrud = action.payload;
+    },
     // incoterms
     setIncoterms: (state, action) => {
       state.incoterms = action.payload;
+    },
+    setIncotermsModal: (state, action) => {
+      state.incotermsModal = action.payload;
+    },
+    setIncotermsCrud: (state, action) => {
+      state.incotermsCrud = action.payload;
     },
   },
 });
@@ -123,21 +216,43 @@ export const {
   setProductFamilies,
   setProductFamilyModal,
   setProductFamilyCrud,
+  // polymertype
+  setPolymerType,
+  setPolymerTypeModal,
+  setPolymerTypeCrud,
+  //packaging type
+  setPackagingType,
+  setPackagingTypeModal,
+  setPackagingTypeCrud,
+  //payment terms
+  setPaymentTerms,
+  setPaymentTermsModal,
+  setPaymentTermsCrud,
+  //physical form
+  setPhysicalForm,
+  setPhysicalFormModal,
+  setPhysicalFormCrud,
+  
+
   // Brands
   setBrands,
   // appearance
   setAppearance,
-  // substance
+  // chemical family
   setChemicalFamily,
-  setPackagingType,
-  setPolymerType,
-  setPaymentTerms,
+  setChemicalFamilyModal,
+  setChemicalFamilyCrud,
+  // substance
   setSubstance,
-  setPhysicalForm,
-
   // grade
   setGrade,
+  setGradeModal,
+  setGradeCrud,
   // incoterms
   setIncoterms,
+  setIncotermsModal,
+  setIncotermsCrud,
+
+
 } = sharedSlice.actions;
 export const sharedReducer = sharedSlice.reducer;

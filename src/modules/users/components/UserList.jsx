@@ -2,25 +2,30 @@ import { Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import deleteIcon from "../../../assets/actions/delete.svg";
-import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
-import { deleteUserApi } from "../api";
-const UserList = ({ users, getResponseBack }) => {
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
-  const handleDelete = (id) => {
-    deleteUserApi(id).then((response) => {
-      if (response.success) {
+import UpdateStatusModal from "./UpdateStatusModal";
+import { PatchUserApi } from "../api";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+  const UserList = ({ users, getResponseBack }) => {
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null); 
+  const allowedStatuses = ["pending", "approved", "rejected"];
+  const handleStatusUpdate = (status) => {
+    const payload = { verification: status };
+    PatchUserApi(selectedUserId, payload).then((response) => {
+      if (response?.success) {
         enqueueSnackbar(response.message, {
           variant: "success",
           anchorOrigin: { horizontal: "right", vertical: "top" },
-        });
+        }); 
         getResponseBack();
-        setDeleteModal(false);
       }
+      setStatusModalOpen(false);
+      setSelectedUserId(null);
     });
   };
-  const tableHeader = ["SL No", "Name", "Email", "Action"];
+  
+  const tableHeader = ["SL No", "Name", "Email", "Status" , "Action"];
   return (
     <div className="mt-4">
       <table className="w-full border-collapse">
@@ -62,17 +67,18 @@ const UserList = ({ users, getResponseBack }) => {
                   <td className="p-4 border-b ">{index + 1}</td>
                   <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
+                  <td className="p-4 border-b">{row.verification}</td>
                   <td className="p-4 border-b ">
                     <div className="flex items-center gap-4 ">
-                      <Tooltip title="Delete" arrow>
-                        <button
+                      <Tooltip title="Update status" arrow>
+                      <button
                           className="btn"
                           onClick={() => {
-                            setDeleteModal(true);
-                            setDeleteId(row._id);
+                            setStatusModalOpen(true);
+                            setSelectedUserId(row._id);
                           }}
                         >
-                          <img src={deleteIcon} alt="Delete" />
+                          <MoreVertIcon/>
                         </button>
                       </Tooltip>
                     </div>
@@ -93,14 +99,12 @@ const UserList = ({ users, getResponseBack }) => {
           </tfoot>
         )}
       </table>
-      <DeleteModal
-        open={deleteModal}
-        closeModal={() => {
-          setDeleteId(null);
-          setDeleteModal(false);
-        }}
-        handleDelete={() => handleDelete(deleteId)}
-      />
+      <UpdateStatusModal
+  open={statusModalOpen}
+  onClose={() => setStatusModalOpen(false)}
+  onConfirm={handleStatusUpdate}
+  allowedStatuses={allowedStatuses}
+/>
     </div>
   );
 };

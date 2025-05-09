@@ -215,8 +215,9 @@ useEffect(() => {
   
     return (
 <div className="container mx-auto p-6 h-[calc(100dvh-140px)] overflow-y-auto">
-        <div className="grid grid-cols-3 gap-4">
-          <TextField
+<h1 className="text-xl  py-4">General Product Information</h1>
+<div className="grid grid-cols-3 gap-4"> 
+<TextField
             label="Product Name"
             variant="outlined"
             fullWidth
@@ -229,6 +230,7 @@ useEffect(() => {
               <div>{errors.productName}</div>
             }
           />
+          
           <TextField
             label="Chemical Name "
             variant="outlined"
@@ -250,8 +252,22 @@ useEffect(() => {
             onChange={(e) => onFieldChange("tradeName", e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
+          />   
+           <TextField
+            label="Description"
+            variant="outlined"
+            fullWidth
+            className="col-span-3"
+            value={productDetail.description || ""}
+            onChange={(e) => onFieldChange("description", e.target.value)}
+            multiline
+            rows={4}
+            InputLabelProps={{ shrink: true }}
           />
-         
+  </div>
+  <h1 className="text-xl  py-4">Product Details</h1>
+
+<div className="grid grid-cols-3 gap-4"> 
          <Autocomplete
   options={chemicalFamily}
   getOptionLabel={(option) => option.name}
@@ -265,8 +281,7 @@ useEffect(() => {
               <div>{errors.chemicalFamily}</div>
             }
 />
-       
-          
+
 <Autocomplete
   options={polymerType}
   getOptionLabel={(option) => option.name || ""}
@@ -286,26 +301,7 @@ useEffect(() => {
   onChange={(_, value) => onFieldChange("polymerType", value)}
   value={productDetail?.polymerType || null}
 />
-          <Autocomplete
-            options={packagingType}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Packaging Type" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("packagingType", value)}
-            value={productDetail?.packagingType}
-          />
-          <Autocomplete
-            options={paymentTerms}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Payment terms" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("packagingType", value)}
-            value={productDetail?.paymentTerms}
-          />
-         
-          <Autocomplete
+<Autocomplete
             options={industries}
             multiple
             getOptionLabel={(option) => option.name}
@@ -320,7 +316,7 @@ useEffect(() => {
               <div>{errors.industry}</div>
             }
           />
-          <TextField
+           <TextField
             label="Manufacturing Method"
             variant="outlined"
             fullWidth
@@ -342,7 +338,7 @@ useEffect(() => {
               <div>{errors.physicalForm}</div>
             }
           />
-<Autocomplete
+          <Autocomplete
   options={countries.map((country) => country.name)} 
   renderInput={(params) => (
     <TextField {...params} label="Country Of Origin" variant="outlined" required />
@@ -363,7 +359,12 @@ useEffect(() => {
             required
             InputLabelProps={{ shrink: true }}
           />
-          <TextField
+  </div>
+
+  <h1 className="text-xl  py-4">Technical Properties</h1>
+
+  <div className="grid grid-cols-3 gap-4">
+  <TextField
   label="Density g/cm2"
   type="number" 
   variant="outlined"
@@ -417,8 +418,11 @@ useEffect(() => {
   onChange={(e) => onFieldChange("waterAbsorption", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
 />  
-         
-          <TextField
+  </div>
+  <h1 className="text-xl  py-4">Trade Information</h1>
+ 
+  <div className="grid grid-cols-3 gap-4">
+  <TextField
   label="Minimum Order Quantity "
   type="number" 
   variant="outlined"
@@ -444,6 +448,15 @@ useEffect(() => {
               <div>{errors.stock}</div>
             }
           />
+           <Autocomplete
+            options={uomDropdown}
+            getOptionLabel={(option) => option}
+            renderInput={(params) => (
+              <TextField {...params} label="Unit of Measurement" variant="outlined" InputLabelProps={{ shrink: true }} />
+            )}
+            onChange={(_, value) => onFieldChange("uom", value)}
+            value={uomDropdown.find((item) => item === productDetail.uom) || null}
+          />
            <TextField
             label="Price"
             type="number" 
@@ -465,18 +478,7 @@ useEffect(() => {
   value={productDetail.priceTerms || "fixed"}
   onChange={(e, newValue) => onFieldChange("priceTerms", newValue)}
 />
-          <Autocomplete
-            options={grade}
-            multiple
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Grade" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("grade", value)}
-            value={productDetail.grade}
-            disabled={grade.length === 0}
-          />
-          <Autocomplete
+<Autocomplete
             options={incoterms}
             multiple
             getOptionLabel={(option) => `${option.name}-${option.fullForm}`}
@@ -501,39 +503,38 @@ useEffect(() => {
         )}
       />
     </LocalizationProvider>
-          <Autocomplete
-            options={productFamilies}
-            multiple
+
+    <Autocomplete
+            options={paymentTerms}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
-              <TextField {...params} label="Product Family" variant="outlined" InputLabelProps={{ shrink: true }} />
+              <TextField {...params} label="Payment terms" variant="outlined" InputLabelProps={{ shrink: true }} />
             )}
-            onChange={(_, value) => onFieldChange("product_family", value)}
-            value={productDetail?.product_family}
-            disabled={productFamilies.length === 0}
+            onChange={(_, value) => onFieldChange("packagingType", value)}
+            value={productDetail?.paymentTerms}
           />
          
-          <Autocomplete
-            options={uomDropdown}
-            getOptionLabel={(option) => option}
-            renderInput={(params) => (
-              <TextField {...params} label="Unit of Measurement" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("uom", value)}
-            value={uomDropdown.find((item) => item === productDetail.uom) || null}
-          />
-           <div className="mt-2">
-           <FileUpload
-  key="productImages"
-  onFileUpload={handleImageUpload}
-  onClear={handleImageClear}
-  existingFiles={productDetail.productImages ? [productDetail.productImages] : []}
-  multiple={false}
-/>  
+  </div>
 
-          </div>
-          
-           <FormControlLabel
+  <h1 className="text-xl  py-4">Packaging</h1>
+  <div className="grid grid-cols-3 gap-4">
+  <Autocomplete
+            options={packagingType}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <TextField {...params} label="Packaging Type" variant="outlined" InputLabelProps={{ shrink: true }} />
+            )}
+            onChange={(_, value) => onFieldChange("packagingType", value)}
+            value={productDetail?.packagingType}
+          />
+
+</div>
+
+
+<h1 className="text-xl  py-4">Environmental</h1>
+
+<div className="grid grid-cols-3 gap-4"> 
+<FormControlLabel
         control={
           <Checkbox
             checked={productDetail.recyclable || false}
@@ -551,8 +552,12 @@ useEffect(() => {
           />
         }
         label="Bio Degradable"
-      />
-      <FormControlLabel
+      />  
+</div>
+<h1 className="text-xl  py-4">Certifications</h1>
+
+<div className="grid grid-cols-3 gap-4">   
+<FormControlLabel
         control={
           <Checkbox
             checked={productDetail.fdaApproved || false}
@@ -570,17 +575,45 @@ useEffect(() => {
         }
         label="Medical Grade"
       />
-          <TextField
-            label="Description"
-            variant="outlined"
-            fullWidth
-            className="col-span-3"
-            value={productDetail.description || ""}
-            onChange={(e) => onFieldChange("description", e.target.value)}
-            multiline
-            rows={4}
-            InputLabelProps={{ shrink: true }}
+</div>
+        <div className="grid grid-cols-3 gap-4">
+          <Autocomplete
+            options={grade}
+            multiple
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <TextField {...params} label="Grade" variant="outlined" InputLabelProps={{ shrink: true }} />
+            )}
+            onChange={(_, value) => onFieldChange("grade", value)}
+            value={productDetail.grade}
+            disabled={grade.length === 0}
           />
+        
+          <Autocomplete
+            options={productFamilies}
+            multiple
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <TextField {...params} label="Product Family" variant="outlined" InputLabelProps={{ shrink: true }} />
+            )}
+            onChange={(_, value) => onFieldChange("product_family", value)}
+            value={productDetail?.product_family}
+            disabled={productFamilies.length === 0}
+          />
+           <div className="mt-2">
+           <FileUpload
+  key="productImages"
+  onFileUpload={handleImageUpload}
+  onClear={handleImageClear}
+  existingFiles={productDetail.productImages ? [productDetail.productImages] : []}
+  multiple={false}
+/>  
+
+          </div>
+          
+          
+      
+         
         {/* <MultiImageUpload
   label="Images"
   multiple 

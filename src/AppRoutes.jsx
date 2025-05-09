@@ -6,6 +6,13 @@ import ProductFamilies from "./modules/productFamilies/containers/ProductFamilie
 import Quote from "./modules/requests/containers/Quote";
 import Sample from "./modules/requests/containers/Sample";
 import AddEditProductPage from "./modules/products/components/AddEditProductPage";
+import PolymerType from "./modules/polymer-type/containers/PolymerType";
+import PaymentTerms from "./modules/payment-terms/containers/Paymentterms";
+import PackagingType from "./modules/packaging-type/containers/PackagingType";
+import PhysicalForm from "./modules/physical-form/containers/PhysicalForm";
+import ChemicalFamily from "./modules/chemical-family/containers/ChemicalFamily";
+import Incoterm from "./modules/incoterms/containers/Incoterm";
+import Grade from "./modules/grade/containers/Grade";
 
 const AppRoutes = () => {
   return (
@@ -19,6 +26,13 @@ const AppRoutes = () => {
         <Route path="/product-families" exact element={<ProductFamilies />} />
         <Route path="/enquiries/quote" exact element={<Quote />} />
         <Route path="/enquiries/sample" exact element={<Sample />} />
+        <Route path="/polymer-type" exact element={<PolymerType />} />
+        <Route path="/payment-terms" exact element={<PaymentTerms />} />
+        <Route path="/packaging-type" exact element={<PackagingType />} />
+        <Route path="/physical-form" exact element={<PhysicalForm />} />
+        <Route path="/grade" exact element={<Grade />} />
+        <Route path="/incoterm" exact element={<Incoterm />} />
+        <Route path="/chemical-family" exact element={<ChemicalFamily />} />
 
         <Route path={"/users"} element={<Users />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />

@@ -12,7 +12,6 @@ const SampleList = () => {
         tableHeader={[
           "Product Name",
           "Requested By",
-          "Industry",
           "Quantity",
           "UOM",
           "Status",

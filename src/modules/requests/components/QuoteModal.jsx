@@ -23,13 +23,14 @@ const QuoteModal = () => {
         <div className="grid grid-cols-3 gap-4">
           <LabelValue
             label="Product Name"
-            value={quote?.productDetails?.name}
+            value={quote?.product?.productName}
           />
-          <LabelValue label="User Name" value={quote?.userDetails?.name} />
-          <LabelValue label="Email" value={quote?.userDetails?.email} />
-          <LabelValue label="Industry" value={quote?.industryDetails?.name} />
+          <LabelValue label="User Name" value={quote?.user?.name} />
+          <LabelValue label="Email" value={quote?.user?.email} />
+          <LabelValue label="Compamy" value={quote?.user?.company} />
           <LabelValue label="Quantity" value={quote?.quantity} />
           <LabelValue label="UOM" value={quote?.uom} />
+          <LabelValue label="Grade" value={quote?.grade?.name} />
           <LabelValue label="Created At" value={quote?.createdAt} type="date" />
           <LabelValue label="Updated At" value={quote?.updatedAt} type="date" />
           <LabelValue label="Status" value={quote?.status} />

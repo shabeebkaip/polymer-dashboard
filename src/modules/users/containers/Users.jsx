@@ -4,35 +4,47 @@ import UserList from "../components/UserList";
 import { getUsersApi } from "../api";
 import PaginationContainer from "../../../shared/PaginationContainer";
 import PageLoader from "../../../shared/PageLoader";
+import { setPageTitle } from "../../../slices/sharedSlice";
+import { useDispatch } from "react-redux";
 
 const Users = () => {
+
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     fetchUsers();
   }, []);
   const fetchUsers = (query) => {
     setLoading(true);
+    dispatch(setPageTitle("User List"));
     getUsersApi(query).then((response) => {
       setLoading(false);
       if (response.success) {
         setUsers(response.data);
-        setPagination(response.pagination);
+  
+        const paginationData = {
+          total: response.total,
+          currentPage: response.page, 
+          totalPages: response.totalPages,
+        };
+        setPagination(paginationData);
       } else {
         console.log("Error While Fetching Users");
       }
     });
   };
+  
   return (
     <div>
       {loading && <PageLoader />}
-      <Title
+      {/* <Title
         title="Users"
         description={
           "A comprehensive list of all registered users within the system."
         }
-      />
+      /> */}
       <UserList users={users} getResponseBack={() => fetchUsers()} />
       <PaginationContainer
         totalPages={pagination?.totalPages}

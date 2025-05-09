@@ -12,7 +12,6 @@ const QuoteList = () => {
           "Product Name",
           "Requested By",
           "Email",
-          "Industry",
           "Quantity",
           "UOM",
           "Action",

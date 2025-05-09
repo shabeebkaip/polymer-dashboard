@@ -15,16 +15,11 @@ const menuItems = [
     route: "/products",
     icon: <IoLogoPolymer />,
   },
+  
   {
-    name: "products_family",
-    displayName: "Product Families",
-    route: "/product-families",
-    icon: <GiFamilyTree />,
-  },
-  {
-    name: "Industries",
-    displayName: "industries",
-    route: "/industries",
+    name: "users",
+    displayName: "Users",
+    route: "/users",
     icon: <MdCategory />,
   },
   {
@@ -41,6 +36,59 @@ const menuItems = [
         name: "Quote Requests",
         displayName: "Quote Requests",
         route: "/enquiries/quote",
+      },
+    ],
+    icon: <RiCustomerServiceLine />,
+  },
+  {
+    name: "dropdown",
+    displayName: "Dropdown",
+    route: "/dropdown",
+    icon:  <GiFamilyTree/>,
+    items: [
+      {
+        name: "products_family",
+        displayName: "Product Families",
+        route: "/product-families",
+      },
+      {
+        name: "Industries",
+        displayName: "industries",
+        route: "/industries",
+      },
+      {
+        name: "polymer_type",
+        displayName: "Polymer Types",
+        route: "/polymer-type",      },
+      {
+        name: "payment_terms",
+        displayName: "Payment Terms",
+        route: "/payment-terms",
+      },
+      {
+        name: "packaging_type",
+        displayName: "Packaging Types",
+        route: "/packaging-type",
+      },
+      {
+        name: "physical_form",
+        displayName: "Physical Form",
+        route: "/physical-form",
+      },
+      {
+        name: "grade",
+        displayName: "Grade",
+        route: "/grade",
+      },
+      {
+        name: "incoterm",
+        displayName: "Incoterm",
+        route: "/incoterm",
+      },
+      {
+        name: "chemical_family",
+        displayName: "Chemical Family",
+        route: "/chemical-family",
       },
     ],
     icon: <RiCustomerServiceLine />,

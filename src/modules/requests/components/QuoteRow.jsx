@@ -9,10 +9,9 @@ const QuoteRow = ({ isLastRow, quote, index }) => {
   console.log("QuoteRow", quote);
   return (
     <TableRow isLastRow={isLastRow} index={index}>
-      <td className="p-4">{quote?.productDetails?.name}</td>
-      <td>{quote?.userDetails?.name}</td>
-      <td>{quote?.userDetails?.email}</td>
-      <td>{quote?.industryDetails?.name}</td>
+      <td className="p-4">{quote?.product?.productName}</td>
+      <td>{quote?.user?.name}</td>
+      <td>{quote?.user?.email}</td>
       <td>{quote?.quantity}</td>
       <td>{quote?.uom}</td>
       <td>

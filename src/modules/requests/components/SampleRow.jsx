@@ -6,12 +6,12 @@ import { setModal, setSample } from "../../../slices/requestSlice";
 
 const SampleRow = ({ isLastRow, sample, index }) => {
   const dispatch = useDispatch();
+  
 
   return (
     <TableRow isLastRow={isLastRow} index={index}>
-      <td className="p-4">{sample?.productDetails?.name}</td>
-      <td>{sample?.userDetails?.name}</td>
-      <td>{sample?.industryDetails?.name}</td>
+      <td className="p-4">{sample?.product?.productName}</td>
+      <td>{sample?.user?.name}</td>
       <td>{sample.quantity}</td>
       <td>{sample.uom}</td>
       <td>

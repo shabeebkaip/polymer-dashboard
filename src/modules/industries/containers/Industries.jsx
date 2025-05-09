@@ -9,6 +9,7 @@ import {
   setIndustryModal,
   setLoader,
   setMode,
+  setPageTitle,
 } from "../../../slices/sharedSlice";
 import IndustriesList from "../components/IndustriesList";
 import PageLoader from "../../../shared/PageLoader";
@@ -20,6 +21,7 @@ const Industries = () => {
   const { loader, deleteId } = useSelector((state) => state.sharedState);
   const dispatch = useDispatch();
   const fetchIndustries = useCallback(() => {
+    dispatch(setPageTitle("Industries"));
     dispatch(getIndustriesApi());
   }, [dispatch]);
 
