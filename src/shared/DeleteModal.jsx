@@ -37,7 +37,6 @@ const DeleteModal = ({ handleDelete }) => {
 };
 
 DeleteModal.propTypes = {
-  module: PropTypes.string.isRequired,
   handleDelete: PropTypes.func.isRequired,
 };
 

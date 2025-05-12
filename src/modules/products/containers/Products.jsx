@@ -201,7 +201,7 @@ const Products = () => {
         </div>
       )}
       <AddEditProduct getResponseBack={fetchProducts} />
-      <DeleteModal handleDelete={handleDelete} />
+      <DeleteModal  handleDelete={handleDelete} />
       <Filters/>
       <Footer 
        totalPages={pages.totalPages}

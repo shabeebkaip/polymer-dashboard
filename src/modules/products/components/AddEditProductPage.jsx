@@ -3,16 +3,14 @@ import {
     TextField,
     Button,
     CircularProgress,
-    MenuItem,
     Box,
-    Stack,
     IconButton,
   } from "@mui/material";
+  import moment from "moment";
   import { useParams } from "react-router-dom";
   import { useDispatch, useSelector } from "react-redux";
   import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
   import {
-    setProductCrud,
     setProductLoader,
   } from "../../../slices/productSlice";
   import { uomDropdown } from "../../../constants";
@@ -21,7 +19,6 @@ import {
   import { enqueueSnackbar } from "notistack";
   import { useNavigate } from "react-router-dom";
   import { useCountries } from "use-react-countries";
-import MultiImageUpload from "../../../shared/MultiImageUpload";
 import { useCallback, useEffect, useState } from "react";
 import {
     getAppearancesApi,
@@ -44,6 +41,7 @@ import FileUpload from "../../../shared/sharedComponents/file-uploads/FileUpload
 import { setPageTitle } from "../../../slices/sharedSlice";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import MultipleFileUpload from "../../../shared/MultipleFileUpload";
 
   
   const AddEditProductPage = ({ getResponseBack }) => {
@@ -51,36 +49,80 @@ import RemoveIcon from "@mui/icons-material/Remove";
     const { countries } = useCountries();
     const navigate = useNavigate();
     const { id } = useParams(); 
-    const [uploadedFiles, setUploadedFiles] = useState([]);
     const [cloudinaryImage1, setCloudinaryImage1] = useState({});
     const [errors, setErrors] = useState({}); 
-      
-    const [productDetail, setProductDetail] = useState({
     
-      additionalInfo: [""], 
+    const [productDetail, setProductDetail] = useState({
+      additionalInfo: [{ title: "", description: "" }],
     });
-  
 
+    const [data, setData] = useState({ 
+      productName: "",
+      chemicalName : "",
+      description: "" ,
+      additionalInfo:  [{ title: "", description: "" }] ,
+      tradeName : "",
+      chemicalFamily : "",
+      polymerType :"",
+      industry: [] ,
+      grade :[],
+      manufacturingMethod :"",
+      physicalForm :"",
+      countryOfOrigin :"",
+      color :"",
+      productImages :[ ],
+      density :null,
+      mfi : null,
+      tensileStrength :null,
+      elongationAtBreak :null,
+      shoreHardness :null,
+      waterAbsorption :null,
+      minimum_order_quantity :null,
+      stock :null,
+      uom :"",
+      price :null,
+      priceTerms :"fixed",
+      incoterms :[],
+      leadTime :"",
+      paymentTerms :"",
+      packagingType :[],
+      packagingWeight :"",
+      storageConditions :"",
+      shelfLife :"",
+      recyclable :false,
+      bioDegradable :false,
+      fdaApproved : false,
+      medicalGrade :false,
+      product_family :[],
+      productImages :[],
+
+
+      
+      
+      _id: id, 
+    });
+    
+   
 
     const handleAddAdditionalInfo = () => {
       setProductDetail((prev) => ({
         ...prev,
-        additionalInfo: [...prev.additionalInfo, ""],
+        additionalInfo: [...prev.additionalInfo, { title: "", description: "" }],
       }));
     };
-  
+    
     const handleRemoveAdditionalInfo = (index) => {
-      const updated = [...productDetail.additionalInfo];
+      const updated = [...data.additionalInfo];
       updated.splice(index, 1);
-      setProductDetail((prev) => ({ ...prev, additionalInfo: updated }));
+      setData((prev) => ({ ...prev, additionalInfo: updated }));
     };
-  
-    const handleChangeAdditionalInfo = (index, value) => {
-      const updated = [...productDetail.additionalInfo];
-      updated[index] = value;
-      setProductDetail((prev) => ({ ...prev, additionalInfo: updated }));
+    
+    const handleChangeAdditionalInfo = (index, field, value) => {
+      const updated = [...data.additionalInfo];
+      updated[index] = { ...updated[index], [field]: value };
+      setData((prev) => ({ ...prev, additionalInfo: updated }));
     };
-console.log(productDetail , "setProductDetail");
+   
 
   const fetchDropdowns = useCallback(() => {
     dispatch(getBrandsApi());
@@ -102,6 +144,8 @@ console.log(productDetail , "setProductDetail");
     dispatch(setPageTitle(mode === "edit" ? "Edit Product" : "Add Product"));
   }, [fetchDropdowns]);
 
+  
+
 useEffect(() => {
     if (!id) return;
   
@@ -115,11 +159,8 @@ useEffect(() => {
     
     const {
       mode,
-      brands,
       industries,
       productFamilies,
-    //   appearance,
-    //   substance,
       grade,
       incoterms,
       physicalForm,
@@ -128,12 +169,74 @@ useEffect(() => {
       chemicalFamily,
       polymerType
     } = useSelector((state) => state.sharedState);
-    const { productCrud, productLoader } = useSelector(
+    const {  productLoader } = useSelector(
       (state) => state.productState
     );
-  
+
+    
+
+    useEffect(() => {
+      if (mode === "edit" || (id) && productDetail) {
+        setData({
+
+          //general product information 
+          productName: productDetail.productName,
+          chemicalName: productDetail.chemicalName,
+          tradeName: productDetail.tradeName,
+          description: productDetail.description,
+          chemicalFamily: productDetail.chemicalFamily,
+          product_family: productDetail.product_family,
+          polymerType: productDetail.polymerType,
+          industry: productDetail.industry,
+          manufacturingMethod: productDetail.manufacturingMethod,
+          physicalForm: productDetail.physicalForm,
+          color: productDetail.color,
+          productImages: productDetail.productImages,
+          countryOfOrigin: productDetail.countryOfOrigin,
+          additionalInfo: productDetail.additionalInfo,
+
+
+          // techinical properties 
+          density: productDetail.density,
+          mfi: productDetail.mfi,
+          tensileStrength: productDetail.tensileStrength,
+          elongationAtBreak: productDetail.elongationAtBreak,
+          shoreHardness: productDetail.shoreHardness,
+          waterAbsorption: productDetail.waterAbsorption,
+          grade: productDetail.grade,
+
+
+          //trade information
+          minimum_order_quantity: productDetail.minimum_order_quantity,
+          stock: productDetail.stock,
+          uom: productDetail.uom,
+          price: productDetail.price,
+          priceTerms: productDetail.priceTerms,
+          leadTime: productDetail.leadTime,
+          paymentTerms: productDetail.paymentTerms, 
+
+          //packaging 
+          packagingType: productDetail.packagingType,
+          packagingWeight: productDetail.packagingWeight,
+          storageConditions: productDetail.storageConditions,
+          shelfLife :productDetail.shelfLife,
+
+          // environmental
+          recyclable: productDetail.recyclable,
+          bioDegradable: productDetail.bioDegradable,
+          fdaApproved: productDetail.fdaApproved,
+          medicalGrade: productDetail.medicalGrade,
+          incoterms: productDetail.incoterms,
+          packagingType: productDetail.packagingType,
+          
+          _id: id,  
+
+        });
+      }
+    }, [mode, productDetail]);
+   
     const onFieldChange = (key, value) => {
-        setProductDetail((prev) => ({
+        setData((prev) => ({
           ...prev,
           [key]: value,
         }));
@@ -143,29 +246,29 @@ useEffect(() => {
       
       const validate = () => {
         const newErrors = {};
-        if (!productDetail.productName)
+        if (!data.productName)
           newErrors.productName = "Product Name is required";
-        if (!productDetail.chemicalName)
+        if (!data.chemicalName)
           newErrors.chemicalName = "Chemical  Name is required";
-        if (!productDetail.chemicalFamily)
-          newErrors.chemicalFamily = "chemical Familyis required";
-        if (!productDetail.polymerType)
+        if (!data.chemicalFamily)
+          newErrors.chemicalFamily = "chemical Family is required";
+        if (!data.polymerType)
           newErrors.polymerType = "polymer Type is required";
-        if (!productDetail.industry)
+        if (!data.industry)
           newErrors.industry = "industry is required";
-        if (!productDetail.physicalForm)
+        if (!data.physicalForm)
           newErrors.physicalForm = "physical Form is required";
-        if (!productDetail.minimum_order_quantity)
+        if (!data.minimum_order_quantity)
           newErrors.minimum_order_quantity = "minimum order quantityis required";
-        if (!productDetail.stock)
+        if (!data.stock)
           newErrors.stock = "stock is required";
-        if (!productDetail.uom)
+        if (!data.uom)
           newErrors.uom = "uom is required";
-        if (!productDetail.price)
+        if (!data.price)
           newErrors.price = "price is required";
-        if (!productDetail.incoterms)
+        if (!data.incoterms)
           newErrors.incoterms = "incoterms is required";
-        if (!productDetail.price)
+        if (!data.price)
           newErrors.price = "price is required";
 
         setErrors(newErrors);
@@ -175,25 +278,13 @@ useEffect(() => {
         return Object.keys(newErrors).length === 0;
       };
       
+  console.log(data?.packagingType ,"data?.chemicalFamily");
   
     const handleSave = () => {
       if (!validate()) return; 
       dispatch(setProductLoader(true));
-      let payload = { ...productDetail }; 
-            const transformArray = (items) =>
-        items ? items.map((item) => item._id) : [];
-      payload = {
-        ...payload,
-        // brand: payload.brand ? payload.brand._id : null,
-        // industry: transformArray(payload.industry),
-        // appearance: transformArray(payload.appearance),
-        // substance: transformArray(payload.substance),
-        // grade: transformArray(payload.grade),
-        // incoterms: transformArray(payload.incoterms),
-        // product_family: transformArray(payload.product_family),
-        // physicalForm: transformArray(payload.physicalForm),
-        // polymerType: transformArray(payload.polymerType),
-      }; 
+      let payload = { ...data }; 
+           
 
       console.log("Final Payload:", payload);
       const apiCall = mode === "add" ? createProductApi : updateProductApi;
@@ -226,7 +317,7 @@ useEffect(() => {
     };
 
     const handleImageUpload = (file) => {
-        (setProductDetail({ ...productDetail, productImages: file }));
+        (setData({ ...data, productImages: file }));
       };
       
     
@@ -237,7 +328,7 @@ useEffect(() => {
           productImages: null,
         }));
         setCloudinaryImage1({});
-      };
+      };  
     
   
     return (
@@ -249,7 +340,7 @@ useEffect(() => {
             label="Product Name"
             variant="outlined"
             fullWidth
-            value={productDetail.productName || ""}
+            value={data.productName || ""}
             onChange={(e) => onFieldChange("productName", e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
@@ -263,7 +354,7 @@ useEffect(() => {
             label="Chemical Name "
             variant="outlined"
             fullWidth
-            value={productDetail.chemicalName || ""}
+            value={data.chemicalName || ""}
             onChange={(e) => onFieldChange("chemicalName", e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
@@ -276,7 +367,7 @@ useEffect(() => {
             label="Trade Name "
             variant="outlined"
             fullWidth
-            value={productDetail.tradeName || ""}
+            value={data.tradeName || ""}
             onChange={(e) => onFieldChange("tradeName", e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
@@ -287,7 +378,7 @@ useEffect(() => {
             variant="outlined"
             fullWidth
             className="col-span-3"
-            value={productDetail.description || ""}
+            value={data.description || ""}
             onChange={(e) => onFieldChange("description", e.target.value)}
             multiline
             rows={4}
@@ -295,44 +386,64 @@ useEffect(() => {
           />
   </div>
   <Box display="flex" flexWrap="wrap" gap={2} alignItems="center" sx={{ my: 4 }}>
-      {productDetail.additionalInfo.map((info, index) => (
-  <Box key={index} display="flex" alignItems="center" gap={1}>
-    <TextField
-      label={`AdditionalInfo ${index + 1}`}
-      value={info}
-      onChange={(e) => handleChangeAdditionalInfo(index, e.target.value)}
-    />
-    <IconButton
-      onClick={() => handleRemoveAdditionalInfo(index)}
-      color="error"
-      disabled={productDetail.additionalInfo.length === 1}
-    >
-      <RemoveIcon />
-    </IconButton>
-  </Box>
-))}
-
-      <IconButton onClick={handleAddAdditionalInfo} color="primary">
-        <AddIcon />
+  {data.additionalInfo.map((info, index) => (
+    <Box key={index} display="flex" alignItems="center" gap={1}>
+      <TextField
+        label={`Title ${index + 1}`}
+        value={info.title}
+        onChange={(e) => handleChangeAdditionalInfo(index, "title", e.target.value)}
+      />
+      <TextField
+        label={`Description ${index + 1}`}
+        value={info.description}
+        onChange={(e) => handleChangeAdditionalInfo(index, "description", e.target.value)}
+      />
+      <IconButton
+        onClick={() => handleRemoveAdditionalInfo(index)}
+        color="error"
+        disabled={productDetail.additionalInfo.length === 1}
+      >
+        <RemoveIcon />
       </IconButton>
     </Box>
+  ))}
+
+  <IconButton onClick={handleAddAdditionalInfo} color="primary">
+    <AddIcon />
+  </IconButton>
+</Box>
+
   <h1 className="text-xl  py-4">Product Details</h1>
 
 <div className="grid grid-cols-3 gap-4"> 
-         <Autocomplete
+<Autocomplete
   options={chemicalFamily}
   getOptionLabel={(option) => option.name}
   renderInput={(params) => (
-    <TextField {...params} label="Chemical Family" variant="outlined" InputLabelProps={{ shrink: true }} />
+    <TextField
+      {...params}
+      label="Chemical Family"
+      variant="outlined"
+      InputLabelProps={{ shrink: true }}
+    />
   )}
-  onChange={(_, value) => onFieldChange("chemicalFamily", value?._id)} 
-  value={productDetail?.chemicalFamily}
+  onChange={(_, value) => onFieldChange("chemicalFamily", value?._id)}
+  value={chemicalFamily.find((item) => item._id === data?.chemicalFamily?._id) || null}
   error={!!errors.chemicalFamily}
-            helperText={
-              <div>{errors.chemicalFamily}</div>
-            }
-/>
+  helperText={<div>{errors.chemicalFamily}</div>}
+/>  
 
+<Autocomplete
+            options={productFamilies}
+            multiple
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <TextField {...params} label="Product Family" variant="outlined" InputLabelProps={{ shrink: true }} />
+            )}
+            onChange={(_, value) => onFieldChange("product_family", value)}
+            value={data?.product_family || []}
+            disabled={productFamilies.length === 0}
+          />
 <Autocomplete
   options={polymerType}
   getOptionLabel={(option) => option.name || ""}
@@ -350,7 +461,8 @@ useEffect(() => {
 
   )}
   onChange={(_, value) => onFieldChange("polymerType", value)}
-  value={productDetail?.polymerType || null}
+  value={polymerType.find((item) => item._id === data?.polymerType?._id) || null}
+
 />
 <Autocomplete
             options={industries}
@@ -360,7 +472,7 @@ useEffect(() => {
               <TextField {...params} label="Industry" variant="outlined" InputLabelProps={{ shrink: true }} />
             )}
             onChange={(_, value) => onFieldChange("industry", value)}
-            value={productDetail?.industry}
+            value={data?.industry || []}
             disabled={industries.length === 0}
             error={!!errors.industry}
             helperText={
@@ -371,24 +483,28 @@ useEffect(() => {
             label="Manufacturing Method"
             variant="outlined"
             fullWidth
-            value={productDetail.manufacturingMethod || ""}
+            value={data.manufacturingMethod || ""}
             onChange={(e) => onFieldChange("manufacturingMethod", e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
           />
            <Autocomplete
-            options={physicalForm}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Physical Form" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("physicalForm", value)}
-            value={productDetail?.physicalForm}
-            error={!!errors.physicalForm}
-            helperText={
-              <div>{errors.physicalForm}</div>
-            }
-          />
+  options={physicalForm}
+  getOptionLabel={(option) => option.name}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Physical Form"
+      variant="outlined"
+      InputLabelProps={{ shrink: true }}
+    />
+  )}
+  onChange={(_, value) => onFieldChange("physicalForm", value?._id)}
+  value={physicalForm.find((item) => item._id === data?.physicalForm?._id) || null}
+  error={!!errors.physicalForm}
+  helperText={<div>{errors.physicalForm}</div>}
+/>
+
           <Autocomplete
   options={countries.map((country) => country.name)} 
   renderInput={(params) => (
@@ -398,14 +514,14 @@ useEffect(() => {
     console.log('Selected country:', newValue); 
     onFieldChange("countryOfOrigin", newValue);
   }}
-  value={productDetail.countryOfOrigin || ""}
+  value={data.countryOfOrigin || ""}
 />
 
      <TextField
             label="Color "
             variant="outlined"
             fullWidth
-            value={productDetail.color || ""}
+            value={data.color || ""}
             onChange={(e) => onFieldChange("color", e.target.value)}
             required
             InputLabelProps={{ shrink: true }}
@@ -420,7 +536,7 @@ useEffect(() => {
   type="number" 
   variant="outlined"
   fullWidth
-  value={productDetail.density || ""}
+  value={data.density || ""}
   onChange={(e) => onFieldChange("density", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
 />
@@ -429,7 +545,7 @@ useEffect(() => {
   type="number" 
   variant="outlined"
   fullWidth
-  value={productDetail.mfi || ""}
+  value={data.mfi || ""}
   onChange={(e) => onFieldChange("mfi", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
 />
@@ -438,7 +554,7 @@ useEffect(() => {
   type="number" 
   variant="outlined"
   fullWidth
-  value={productDetail.tensileStrength || ""}
+  value={data.tensileStrength || ""}
   onChange={(e) => onFieldChange("tensileStrength", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
 />
@@ -447,7 +563,7 @@ useEffect(() => {
   type="number" 
   variant="outlined"
   fullWidth
-  value={productDetail.elongationAtBreak || ""}
+  value={data.elongationAtBreak || ""}
   onChange={(e) => onFieldChange("elongationAtBreak", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
 />
@@ -456,7 +572,7 @@ useEffect(() => {
   type="number" 
   variant="outlined"
   fullWidth
-  value={productDetail.shoreHardness || ""}
+  value={data.shoreHardness || ""}
   onChange={(e) => onFieldChange("shoreHardness", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
 />
@@ -465,10 +581,27 @@ useEffect(() => {
   type="number" 
   variant="outlined"
   fullWidth
-  value={productDetail.waterAbsorption || ""}
+  value={data.waterAbsorption || ""}
   onChange={(e) => onFieldChange("waterAbsorption", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
 />  
+<Autocomplete
+  options={grade || []}
+  multiple
+  getOptionLabel={(option) => option?.name || ""}
+  value={data.grade || []}
+  onChange={(_, value) => onFieldChange("grade", value)}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Grade"
+      variant="outlined"
+      InputLabelProps={{ shrink: true }}
+    />
+  )}
+  disabled={(grade || []).length === 0}
+/>
+
   </div>
   <h1 className="text-xl  py-4">Trade Information</h1>
  
@@ -478,7 +611,7 @@ useEffect(() => {
   type="number" 
   variant="outlined"
   fullWidth
-  value={productDetail.minimum_order_quantity || ""}
+  value={data.minimum_order_quantity || ""}
   onChange={(e) => onFieldChange("minimum_order_quantity", Number(e.target.value))}
   InputLabelProps={{ shrink: true }}
   error={!!errors.minimum_order_quantity}
@@ -491,7 +624,7 @@ useEffect(() => {
             type='number'
             variant="outlined"
             fullWidth
-            value={productDetail.stock || ""}
+            value={data.stock || ""}
             onChange={(e) => onFieldChange("stock", e.target.value)}
             InputLabelProps={{ shrink: true }}
             error={!!errors.stock}
@@ -506,14 +639,14 @@ useEffect(() => {
               <TextField {...params} label="Unit of Measurement" variant="outlined" InputLabelProps={{ shrink: true }} />
             )}
             onChange={(_, value) => onFieldChange("uom", value)}
-            value={uomDropdown.find((item) => item === productDetail.uom) || null}
+            value={uomDropdown.find((item) => item === data.uom) || null}
           />
            <TextField
             label="Price"
             type="number" 
             variant="outlined"
             fullWidth
-            value={productDetail.price || ""}
+            value={data.price || ""}
             onChange={(e) => onFieldChange("price", e.target.value)}
             InputLabelProps={{ shrink: true }}
             error={!!errors.price}
@@ -526,7 +659,7 @@ useEffect(() => {
   renderInput={(params) => (
     <TextField {...params} label="Price Terms" variant="outlined" required />
   )}
-  value={productDetail.priceTerms || "fixed"}
+  value={data.priceTerms || "fixed"}
   onChange={(e, newValue) => onFieldChange("priceTerms", newValue)}
 />
 <Autocomplete
@@ -537,33 +670,38 @@ useEffect(() => {
               <TextField {...params} label="Incoterms" variant="outlined" InputLabelProps={{ shrink: true }} />
             )}
             onChange={(_, value) => onFieldChange("incoterms", value)}
-            value={productDetail.incoterms}
+            value={data.incoterms || []}
             disabled={incoterms.length === 0}
             error={!!errors.incoterms}
             helperText={
               <div>{errors.incoterms}</div>
             }
           />
-           <LocalizationProvider dateAdapter={AdapterMoment}>
-      <DatePicker
-        label="Lead Time"
-        value={productDetail.leadTime || null}
-        onChange={(newValue) => onFieldChange("leadTime", newValue)}
-        renderInput={(params) => (
-          <TextField {...params} fullWidth InputLabelProps={{ shrink: true }} />
-        )}
-      />
-    </LocalizationProvider>
-
+         <LocalizationProvider dateAdapter={AdapterMoment}>
+  <DatePicker
+    label="Lead Time"
+    value={data.leadTime ? moment(data.leadTime) : null}
+    onChange={(newValue) => onFieldChange("leadTime", newValue)}
+    renderInput={(params) => (
+      <TextField {...params} fullWidth InputLabelProps={{ shrink: true }} />
+    )}
+  />
+</LocalizationProvider>
     <Autocomplete
-            options={paymentTerms}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Payment terms" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("packagingType", value)}
-            value={productDetail?.paymentTerms}
-          />
+  options={paymentTerms}
+  getOptionLabel={(option) => option.name}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Payment terms"
+      variant="outlined"
+      InputLabelProps={{ shrink: true }}
+    />
+  )}
+  onChange={(_, value) => onFieldChange("paymentTerms", value?._id)}
+  value={data?.paymentTerms || ""}
+/>
+
          
   </div>
 
@@ -577,7 +715,35 @@ useEffect(() => {
               <TextField {...params} label="Packaging Type" variant="outlined" InputLabelProps={{ shrink: true }} />
             )}
             onChange={(_, value) => onFieldChange("packagingType", value)}
-            value={productDetail?.packagingType}
+            value={data?.packagingType || []}
+            />
+
+<TextField
+            label="Packaging weight"
+            variant="outlined"
+            fullWidth
+            value={data.packagingWeight || ""}
+            onChange={(e) => onFieldChange("packagingWeight", e.target.value)}
+            required
+            InputLabelProps={{ shrink: true }}
+          />
+<TextField
+            label="Storage conditions"
+            variant="outlined"
+            fullWidth
+            value={data.storageConditions || ""}
+            onChange={(e) => onFieldChange("storageConditions", e.target.value)}
+            required
+            InputLabelProps={{ shrink: true }}
+          />
+<TextField
+            label="Shelf Life"
+            variant="outlined"
+            fullWidth
+            value={data.shelfLife || ""}
+            onChange={(e) => onFieldChange("shelfLife", e.target.value)}
+            required
+            InputLabelProps={{ shrink: true }}
           />
 
 </div>
@@ -589,7 +755,7 @@ useEffect(() => {
 <FormControlLabel
         control={
           <Checkbox
-            checked={productDetail.recyclable || false}
+            checked={data.recyclable || false}
             onChange={(e) => onFieldChange("recyclable", e.target.checked)}
           />
         }
@@ -599,7 +765,7 @@ useEffect(() => {
       <FormControlLabel
         control={
           <Checkbox
-            checked={productDetail.bioDegradable || false}
+            checked={data.bioDegradable || false}
             onChange={(e) => onFieldChange("bioDegradable", e.target.checked)}
           />
         }
@@ -612,7 +778,7 @@ useEffect(() => {
 <FormControlLabel
         control={
           <Checkbox
-            checked={productDetail.fdaApproved || false}
+            checked={data.fdaApproved || false}
             onChange={(e) => onFieldChange("fdaApproved", e.target.checked)}
           />
         }
@@ -621,7 +787,7 @@ useEffect(() => {
       <FormControlLabel
         control={
           <Checkbox
-            checked={productDetail.medicalGrade || false}
+            checked={data.medicalGrade || false}
             onChange={(e) => onFieldChange("medicalGrade", e.target.checked)}
           />
         }
@@ -629,71 +795,28 @@ useEffect(() => {
       />
 </div>
         <div className="grid grid-cols-3 gap-4">
-          <Autocomplete
-            options={grade}
-            multiple
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Grade" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("grade", value)}
-            value={productDetail.grade}
-            disabled={grade.length === 0}
-          />
+         
         
-          <Autocomplete
-            options={productFamilies}
-            multiple
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Product Family" variant="outlined" InputLabelProps={{ shrink: true }} />
-            )}
-            onChange={(_, value) => onFieldChange("product_family", value)}
-            value={productDetail?.product_family}
-            disabled={productFamilies.length === 0}
-          />
+         
            <div className="mt-2">
-           <FileUpload
-  key="productImages"
-  onFileUpload={handleImageUpload}
-  onClear={handleImageClear}
-  existingFiles={productDetail.productImages ? [productDetail.productImages] : []}
-  multiple={false}
-/>  
+  
 
           </div>
           
           
-      
+          <h1 className="text-xl  py-4 col-span-3">Product Images</h1>
+          
+                   <MultipleFileUpload onFileUpload={handleImageUpload} existingFiles={productDetail.productImages ? [data.productImages] : []}/>
+
          
-        {/* <MultiImageUpload
-  label="Images"
-  multiple 
-  value={productDetail.productImages || []}
-  onChange={(value) => onFieldChange("productImages", value)} 
-  onRemove={(indexToRemove) => {
-    const updated = productDetail.productImages.filter((_, i) => i !== indexToRemove);
-    onFieldChange("productImages", updated);
-  }}
-  onFileUpload={(imageUrl) => {
-    const updated = [...(productDetail.productImages || []), imageUrl];
-    dispatch(setProductCrud({ ...productDetail, productImages: updated }));
-  }}
-  preview={productDetail.productImages}
-  onImageClick={(indexToRemove) => {
-    const updated = productDetail.productImages.filter((_, i) => i !== indexToRemove);
-    dispatch(setProductCrud({ ...productDetail, productImages: updated }));
-  }}
-  width="100%"
-  height="150px"
-/> */}
+      
 
         </div>
   
         <div className="flex justify-end gap-4 mt-6">
           <Button variant="outlined" 
         onClick={() => {
-            dispatch(setProductCrud({})); 
+            // dispatch(setProductCrud({})); 
             navigate(-1);                
           }}
           >

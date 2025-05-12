@@ -66,7 +66,7 @@ const ProductFilter = ({ module, route, onFilterChange }) => {
             ))}
           </div>
 
-          <div className="absolute bottom-0 flex justify-center pl-24 bg-white z-10">
+          <div className="absolute bottom-0 flex justify-center px-20 bg-white z-10">
             <Box sx={{ padding: "8px 16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
               {filters.length > 0 && (
                 <>
