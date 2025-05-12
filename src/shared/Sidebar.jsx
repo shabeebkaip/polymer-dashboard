@@ -15,12 +15,26 @@ const menuItems = [
     route: "/products",
     icon: <IoLogoPolymer />,
   },
-  
   {
     name: "users",
     displayName: "Users",
     route: "/users",
     icon: <MdCategory />,
+
+    items: [
+      {
+        name: "buyers",
+        displayName: "Buyers",
+        route: "/buyers-list",
+        icon: <MdCategory />,
+      },
+      {
+        name: "sellers",
+        displayName: "Sellers",
+        route: "/sellers-list",
+        icon: <MdCategory />,
+      },
+    ],
   },
   {
     name: "enquiries",

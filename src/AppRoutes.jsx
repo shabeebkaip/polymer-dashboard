@@ -13,6 +13,7 @@ import PhysicalForm from "./modules/physical-form/containers/PhysicalForm";
 import ChemicalFamily from "./modules/chemical-family/containers/ChemicalFamily";
 import Incoterm from "./modules/incoterms/containers/Incoterm";
 import Grade from "./modules/grade/containers/Grade";
+import Sellers from "./modules/users/containers/Sellers";
 
 const AppRoutes = () => {
   return (
@@ -34,7 +35,8 @@ const AppRoutes = () => {
         <Route path="/incoterm" exact element={<Incoterm />} />
         <Route path="/chemical-family" exact element={<ChemicalFamily />} />
 
-        <Route path={"/users"} element={<Users />} />
+        <Route path={"/sellers-list"} element={<Sellers />} />
+        <Route path={"/buyers-list"} element={<Users />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </div>

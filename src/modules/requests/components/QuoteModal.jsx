@@ -17,7 +17,7 @@ const QuoteModal = () => {
     dispatch(setModal(false));
   };
   return (
-    <Dialog open={modal} onClose={closeModal} fullWidth maxWidth="md">
+    <Dialog open={modal} onClose={closeModal} fullWidth maxWidth="xl">
       <DialogTitle>Quote Request</DialogTitle>
       <DialogContent dividers>
         <div className="grid grid-cols-3 gap-4">
