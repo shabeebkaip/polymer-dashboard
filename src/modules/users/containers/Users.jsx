@@ -18,8 +18,9 @@ const Users = () => {
   }, []);
   const fetchUsers = (query) => {
     setLoading(true);
-    dispatch(setPageTitle("User List"));
-    getUsersApi(query).then((response) => {
+    dispatch(setPageTitle("Buyers List"));
+    const updatedQuery = { ...query, type: 'buyer' };
+    getUsersApi(updatedQuery).then((response) => {
       setLoading(false);
       if (response.success) {
         setUsers(response.data);

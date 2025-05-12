@@ -19,7 +19,8 @@ const Sellers = () => {
   const fetchUsers = (query) => {
     setLoading(true);
     dispatch(setPageTitle("Sellers List"));
-    getUsersApi(query).then((response) => {
+    const updatedQuery = { ...query, type: 'seller' };
+    getUsersApi(updatedQuery).then((response) => {
       setLoading(false);
       if (response.success) {
         setUsers(response.data);
