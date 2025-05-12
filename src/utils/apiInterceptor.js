@@ -1,15 +1,15 @@
 import axios from "axios";
 // const baseURL = "https://polymer-nodejs.vercel.app/api";
-const baseURL = "http://localhost:7000/api";
+// const baseURL = "http://localhost:7000/api";
+const baseURL = "https://polymer-backend.code-ox.com/api";
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
 });
-const a = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MDYyYTRkYTkxYjc4NTczNjhiZDk0YiIsImVtYWlsIjoiam9obi5kb2VAZXhhbXBsZS5jb20iLCJuYW1lIjoiSm9obiBEb2UiLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTc0NTUwMjA3MiwiZXhwIjoxNzQ1Njc0ODcyLCJpc3MiOiJjb2RlLW94In0.s8CxupRiBuZeyQskxlBOLDEe1OqXA0-ksPuJqhSzol4"
+
 const token = localStorage.getItem("token") || null;
 
-
-console.log(token,"ui");
+console.log(token, "ui");
 
 axiosInstance.interceptors.request.use(
   function (config) {

@@ -49,6 +49,9 @@ const AddEditProduct = ({ getResponseBack }) => {
     let payload = Object.assign({}, productCrud);
     const transformArray = (items) =>
       items ? items.map((item) => item._id) : [];
+
+    const productFamily = transformArray(payload.product_family);
+    console.log(productFamily, "productFamily");
     payload = {
       ...payload,
       brand: payload.brand ? payload.brand._id : null,
@@ -58,6 +61,7 @@ const AddEditProduct = ({ getResponseBack }) => {
       grade: transformArray(payload.grade),
       incoterms: transformArray(payload.incoterms),
       product_family: transformArray(payload.product_family),
+      chemicalFamily: payload?.chemicalFamily?._id,
     };
     if (mode === "add") {
       createProductApi(payload)
@@ -72,7 +76,7 @@ const AddEditProduct = ({ getResponseBack }) => {
             });
             getResponseBack();
             closeModal();
-          }else {
+          } else {
             enqueueSnackbar(response.message, {
               variant: "error",
               anchorOrigin: {
