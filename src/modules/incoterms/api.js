@@ -6,12 +6,18 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getIncotermsApi = () => async (dispatch) => {
+export const getIncotermsApi = ( query = {}) => async (dispatch) => {
   try {
     dispatch(setLoader(true));
-    let response = await globalGetService("/incoterm/list");
+
+    if (!query.page) {
+      query.page = 1;
+    }
+
+    let response = await globalGetService("/incoterm/list", query);
     if (response.data.success) {
       dispatch(setIncoterms(response.data.data));
+      return response.data
     }
   } catch (err) {
     console.log(err);

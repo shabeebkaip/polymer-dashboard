@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDeleteModal,
@@ -16,22 +16,46 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditPaymentTerms from "../components/AddEditPaymentTerms";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const PaymentTerms = () => {
+  const [paymentTerms, setPaymentTerms] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { loader, PaymentTermsModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getPaymentTermsApi());
-  }, [dispatch]);
+   const fetchPayments = useCallback((query = { page: 1 }) => {
+     setLoading(true);
+     dispatch(getPaymentTermsApi(query))
+       .then((response) => {
+         if (response?.success) {
+           const paginationData = {
+             total: response.pagination.totalItems,
+             currentPage: response.pagination.currentPage,
+             totalPages: response.pagination.totalPages,
+           };
+           setPagination(paginationData);
+           setPaymentTerms(response.data);
+         }
+       })
+       .catch((error) => {
+         console.error("Error fetching payment terms:", error);
+       })
+       .finally(() => {
+         setLoading(false);
+       });
+   }, [dispatch]);
+ 
 
   useEffect(() => {
     dispatch(setLoader(true));
     dispatch(setPageTitle("Payment Terms"));
-    fetchProducts();
-  }, [dispatch, fetchProducts]);
+    fetchPayments();
+  }, [dispatch, fetchPayments]);
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -50,7 +74,7 @@ const PaymentTerms = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchPayments();
       });
   };
 
@@ -79,13 +103,18 @@ const PaymentTerms = () => {
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <PaymentTermsList />
+          <PaymentTermsList data={paymentTerms} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchPayments({ page })}
+          />
         </div>
       )}
       <AddEditPaymentTerms
         open={PaymentTermsModal}
         mode="add"
-        getResponseBack={() => fetchProducts()}
+        getResponseBack={() => fetchPayments()}
       />
       <DeleteModal handleDelete={handleDelete} />
     </div>

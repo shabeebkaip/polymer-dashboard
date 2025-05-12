@@ -1,3 +1,4 @@
+import { setChemicalFamily, setGrade, setIncoterms, setIndustries, setLoader, setPackagingType, setPaymentTerms, setPhysicalForm, setPolymerType, setProductFamilies } from "../../slices/sharedSlice";
 import {
   globalDeleteService,
   globalGetService,
@@ -47,5 +48,152 @@ export const deleteProductApi = async (id) => {
     return response.data;
   } catch (err) {
     console.log(err);
+  }
+};
+
+//Drop down api without pagination
+
+export const listChemicalFamily = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    let response = await globalGetService("/chemical-family/list");
+    if (response.data.success) {
+      dispatch(setChemicalFamily(response.data.data));
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+
+export const listPolymerType = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    let response = await globalGetService("/polymer-type/list", );
+    if (response.data.success) {
+      dispatch(setPolymerType(response.data.data));
+    
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+export const listIndustries = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    const response = await globalGetService("/industry/list");
+    if (response.data.success) {
+      dispatch(setIndustries(response.data.data));
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+
+export const listPhysicalForm = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    let response = await globalGetService("/physical-form/list");
+    if (response.data.success) {
+      dispatch(setPhysicalForm(response.data.data));
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+
+export const listProductFamilies = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+    
+    let response = await globalGetService("/product-family/list");
+
+    if (response.data.success) {
+      dispatch(setProductFamilies(response.data.data));
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+
+export const listGrade = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    let response = await globalGetService("/grade/list");
+    if (response.data.success) {
+      dispatch(setGrade(response.data.data));
+     
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+export const listIncoterms = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    let response = await globalGetService("/incoterm/list");
+    if (response.data.success) {
+      dispatch(setIncoterms(response.data.data));
+     
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+export const listPaymentTerms = () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    let response = await globalGetService("/payment-terms/list");
+    if (response.data.success) {
+      dispatch(setPaymentTerms(response.data.data));
+      
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+export const listPackagingType= () => async (dispatch) => {
+  try {
+    dispatch(setLoader(true));
+
+    let response = await globalGetService("/packaging-type/list");
+    if (response.data.success) {
+      dispatch(setPackagingType(response.data.data));
+     
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    dispatch(setLoader(false));
   }
 };

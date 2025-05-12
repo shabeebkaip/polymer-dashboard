@@ -6,12 +6,18 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getPhysicalFormApi = () => async (dispatch) => {
+export const getPhysicalFormApi = (query = {}) => async (dispatch) => {
   try {
     dispatch(setLoader(true));
-    let response = await globalGetService("/physical-form/list");
+
+    if (!query.page) {
+      query.page = 1;
+    }
+
+    let response = await globalGetService("/physical-form/list", query);
     if (response.data.success) {
       dispatch(setPhysicalForm(response.data.data));
+      return response.data
     }
   } catch (err) {
     console.log(err);
@@ -21,8 +27,8 @@ export const getPhysicalFormApi = () => async (dispatch) => {
 };
 
 export const createPhysicalFormApi = async (data) => {
-    console.log(data);
-    
+  console.log(data);
+
   try {
     let response = await globalPostService("/physical-form/create", data);
     return response.data;
@@ -51,4 +57,3 @@ export const deletePhysicalFormApi = async (id) => {
     console.log(err);
   }
 };
- 

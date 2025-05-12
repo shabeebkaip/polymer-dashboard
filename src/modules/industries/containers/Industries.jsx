@@ -19,42 +19,42 @@ import { enqueueSnackbar } from "notistack";
 import PaginationContainer from "../../../shared/PaginationContainer";
 
 const Industries = () => {
-   const [industries, setIndustries] = useState([]);
-    const [pagination, setPagination] = useState({});
-    const [loading, setLoading] = useState(true);
+  const [industries, setIndustries] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const { loader, industryModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-    const fetchIndustries = useCallback((query = { page: 1 }) => {
-      setLoading(true);
-      dispatch(getIndustriesApi(query))
-        .then((response) => {
-          if (response?.success) {
-            const paginationData = {
-              total: response.pagination.totalItems,
-              currentPage: response.pagination.currentPage,
-              totalPages: response.pagination.totalPages,
-            };
-            setPagination(paginationData);
-            setIndustries(response.data);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching industries:", error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }, [dispatch]);
-  
-    useEffect(() => {
-        dispatch(setPageTitle("Industries"));
-        fetchIndustries(); 
-      }, [dispatch, fetchIndustries]);
-    
+  const fetchIndustries = useCallback((query = { page: 1 }) => {
+    setLoading(true);
+    dispatch(getIndustriesApi(query))
+      .then((response) => {
+        if (response?.success) {
+          const paginationData = {
+            total: response.pagination.totalItems,
+            currentPage: response.pagination.currentPage,
+            totalPages: response.pagination.totalPages,
+          };
+          setPagination(paginationData);
+          setIndustries(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching industries:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(setPageTitle("Industries"));
+    fetchIndustries();
+  }, [dispatch, fetchIndustries]);
+
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -109,22 +109,22 @@ const Industries = () => {
         }
       />
       {loading ? (
-              <PageLoader />
-            ) : (
-              <div className="mt-4">
-                <IndustriesList data={industries} />
-                <PaginationContainer
-                  totalPages={pagination?.totalPages}
-                  currentPage={pagination?.currentPage}
-                  handlePageChange={(page) => fetchIndustries({ page })}
-                />
-              </div>
-            )}
+        <PageLoader />
+      ) : (
+        <div className="mt-4">
+          <IndustriesList data={industries} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchIndustries({ page })}
+          />
+        </div>
+      )}
       <AddEditIndustries
-             open={industryModal}
-             mode="add"
-             getResponseBack={() => fetchIndustries()}
-           />
+        open={industryModal}
+        mode="add"
+        getResponseBack={() => fetchIndustries()}
+      />
       <DeleteModal handleDelete={handleDelete} />
     </div>
   );

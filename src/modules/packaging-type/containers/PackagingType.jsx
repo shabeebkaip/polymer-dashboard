@@ -16,22 +16,46 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditPackagingType from "../components/AddEditPackagingType";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const PackagingType = () => {
+   const [packagingTypes, setPackagingType] = useState([]);
+    const [pagination, setPagination] = useState({});
+    const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { loader, PackagingTypeModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getPackagingTypeApi());
-  }, [dispatch]);
+ const fetchPackage = useCallback((query = { page: 1 }) => {
+     setLoading(true);
+     dispatch(getPackagingTypeApi(query))
+       .then((response) => {
+         if (response?.success) {
+           const paginationData = {
+             total: response.pagination.totalItems,
+             currentPage: response.pagination.currentPage,
+             totalPages: response.pagination.totalPages,
+           };
+           setPagination(paginationData);
+           setPackagingType(response.data);
+         }
+       })
+       .catch((error) => {
+         console.error("Error fetching packaging types:", error);
+       })
+       .finally(() => {
+         setLoading(false);
+       });
+   }, [dispatch]);
 
   useEffect(() => {
     dispatch(setLoader(true));
     dispatch(setPageTitle("Packaging Type"));
-    fetchProducts();
-  }, [dispatch, fetchProducts]);
+    fetchPackage();
+  }, [dispatch, fetchPackage]);
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -50,7 +74,7 @@ const PackagingType = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchPackage();
       });
   };
 
@@ -79,13 +103,18 @@ const PackagingType = () => {
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <PackagingTypeList />
+          <PackagingTypeList data={packagingTypes} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchPackage({ page })}
+          />
         </div>
       )}
       <AddEditPackagingType
         open={PackagingTypeModal}
         mode="add"
-        getResponseBack={() => fetchProducts()}
+        getResponseBack={() => fetchPackage()}
       />
       <DeleteModal handleDelete={handleDelete} />
     </div>

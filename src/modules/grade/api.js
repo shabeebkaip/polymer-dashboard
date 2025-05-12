@@ -6,12 +6,18 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getGradeApi = () => async (dispatch) => {
+export const getGradeApi = ( query = {}) => async (dispatch) => {
   try {
     dispatch(setLoader(true));
-    let response = await globalGetService("/grade/list");
+
+    if (!query.page) {
+      query.page = 1;
+    }
+
+    let response = await globalGetService("/grade/list", query);
     if (response.data.success) {
       dispatch(setGrade(response.data.data));
+      return response.data
     }
   } catch (err) {
     console.log(err);

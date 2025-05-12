@@ -16,22 +16,46 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditPolymerType from "../components/AddEditPolymerType";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const PolymerType = () => {
+  const [polymerTypes, setPolymerType] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { loader, polymerTypeModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getPolymerTypeApi());
-  }, [dispatch]);
-
+  const fetchPolymer = useCallback((query = { page: 1 }) => {
+     setLoading(true);
+     dispatch(getPolymerTypeApi(query))
+       .then((response) => {
+         if (response?.success) {
+           const paginationData = {
+             total: response.pagination.totalItems,
+             currentPage: response.pagination.currentPage,
+             totalPages: response.pagination.totalPages,
+           };
+           setPagination(paginationData);
+           setPolymerType(response.data);
+         }
+       })
+       .catch((error) => {
+         console.error("Error fetching polymer type:", error);
+       })
+       .finally(() => {
+         setLoading(false);
+       });
+   }, [dispatch]);
+ 
   useEffect(() => {
     dispatch(setLoader(true));
-    dispatch(setPageTitle("Product Families"));
-    fetchProducts();
-  }, [dispatch, fetchProducts]);
+    dispatch(setPageTitle("Polymer Types"));
+    fetchPolymer();
+  }, [dispatch, fetchPolymer]);
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -46,19 +70,19 @@ const PolymerType = () => {
         }
       })
       .catch((error) => {
-        console.error("Error deleting product family:", error);
+        console.error("Error deleting polyer type:", error);
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchPolymer();
       });
   };
 
   return (
     <div>
       <Title
-        title="Product Families"
-        description="Displaying all the Product Families"
+        title="Polymer Types"
+        description="Displaying all the Polymer Types"
         actions={
           <div className="flex items-center justify-between ">
             <ActionButton
@@ -79,13 +103,18 @@ const PolymerType = () => {
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <PolymerTypeList />
-        </div>
+        <PolymerTypeList data={polymerTypes} />
+        <PaginationContainer
+          totalPages={pagination?.totalPages}
+          currentPage={pagination?.currentPage}
+          handlePageChange={(page) => fetchPolymer({ page })}
+        />
+      </div>
       )}
       <AddEditPolymerType
         open={polymerTypeModal}
         mode="add"
-        getResponseBack={() => fetchProducts()}
+        getResponseBack={() => fetchPolymer()}
       />
       <DeleteModal handleDelete={handleDelete} />
     </div>

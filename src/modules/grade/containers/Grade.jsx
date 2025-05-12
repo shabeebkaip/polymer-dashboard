@@ -16,22 +16,46 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditGrade from "../components/AddEditGrade";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const Grade = () => {
+  const [grades, setGrades] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { loader, GradeModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getGradeApi());
+  const fetchGrade = useCallback((query = { page: 1 }) => {
+    setLoading(true);
+    dispatch(getGradeApi(query))
+      .then((response) => {
+        if (response?.success) {
+          const paginationData = {
+            total: response.pagination.totalItems,
+            currentPage: response.pagination.currentPage,
+            totalPages: response.pagination.totalPages,
+          };
+          setPagination(paginationData);
+          setGrades(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching grade:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(setLoader(true));
     dispatch(setPageTitle("Grade"));
-    fetchProducts();
-  }, [dispatch, fetchProducts]);
+    fetchGrade();
+  }, [dispatch, fetchGrade]);
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -50,7 +74,7 @@ const Grade = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchGrade();
       });
   };
 
@@ -79,13 +103,18 @@ const Grade = () => {
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <GradeList />
+          <GradeList data={grades} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchGrade({ page })}
+          />
         </div>
       )}
       <AddEditGrade
         open={GradeModal}
         mode="add"
-        getResponseBack={() => fetchProducts()}
+        getResponseBack={() => fetchGrade()}
       />
       <DeleteModal handleDelete={handleDelete} />
     </div>

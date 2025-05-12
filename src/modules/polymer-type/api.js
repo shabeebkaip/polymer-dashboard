@@ -6,12 +6,18 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getPolymerTypeApi = () => async (dispatch) => {
+export const getPolymerTypeApi = (query = {}) => async (dispatch) => {
   try {
     dispatch(setLoader(true));
-    let response = await globalGetService("/polymer-type/list");
+
+    if (!query.page) {
+      query.page = 1;
+    }
+
+    let response = await globalGetService("/polymer-type/list", query);
     if (response.data.success) {
       dispatch(setPolymerType(response.data.data));
+      return response.data
     }
   } catch (err) {
     console.log(err);

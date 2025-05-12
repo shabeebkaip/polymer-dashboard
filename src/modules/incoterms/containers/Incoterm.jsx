@@ -16,22 +16,46 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditIncoterm from "../components/AddEditIncoterm";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const Incoterm = () => {
+  const [incoterms, setIncoterms] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { loader, IncotermModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getIncotermsApi());
+  const fetchIncoterms = useCallback((query = { page: 1 }) => {
+    setLoading(true);
+    dispatch(getIncotermsApi(query))
+      .then((response) => {
+        if (response?.success) {
+          const paginationData = {
+            total: response.pagination.totalItems,
+            currentPage: response.pagination.currentPage,
+            totalPages: response.pagination.totalPages,
+          };
+          setPagination(paginationData);
+          setIncoterms(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching Incoterms:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(setLoader(true));
     dispatch(setPageTitle("Incoterm"));
-    fetchProducts();
-  }, [dispatch, fetchProducts]);
+    fetchIncoterms();
+  }, [dispatch, fetchIncoterms]);
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -50,7 +74,7 @@ const Incoterm = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchIncoterms();
       });
   };
 
@@ -79,13 +103,18 @@ const Incoterm = () => {
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <IncotermList />
+          <IncotermList data={incoterms} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchIncoterms({ page })}
+          />
         </div>
       )}
       <AddEditIncoterm
         open={IncotermModal}
         mode="add"
-        getResponseBack={() => fetchProducts()}
+        getResponseBack={() => fetchIncoterms()}
       />
       <DeleteModal handleDelete={handleDelete} />
     </div>

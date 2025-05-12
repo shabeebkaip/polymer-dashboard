@@ -6,12 +6,18 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getChemicalFamilyApi = () => async (dispatch) => {
+export const getChemicalFamilyApi = ( query = {}) => async (dispatch) => {
   try {
     dispatch(setLoader(true));
-    let response = await globalGetService("/chemical-family/list");
+
+    if (!query.page) {
+      query.page = 1;
+    }
+
+    let response = await globalGetService("/chemical-family/list", query);
     if (response.data.success) {
       dispatch(setChemicalFamily(response.data.data));
+      return response.data
     }
   } catch (err) {
     console.log(err);

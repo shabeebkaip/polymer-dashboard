@@ -6,12 +6,18 @@ import {
   globalPutService,
 } from "../../utils/globalApiServices";
 
-export const getPackagingTypeApi = () => async (dispatch) => {
+export const getPackagingTypeApi = (query = {}) => async (dispatch) => {
   try {
     dispatch(setLoader(true));
-    let response = await globalGetService("/packaging-type/list");
+
+    if (!query.page) {
+      query.page = 1;
+    }
+
+    let response = await globalGetService("/packaging-type/list", query);
     if (response.data.success) {
       dispatch(setPackagingType(response.data.data));
+      return response.data
     }
   } catch (err) {
     console.log(err);

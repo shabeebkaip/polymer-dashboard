@@ -16,22 +16,45 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditChemicalFamily from "../components/AddEditChemicalFamily";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const ChemicalFamily = () => {
+  const [chemicalFamilies, setChemicalFamilies] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { loader, ChemicalFamilyModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getChemicalFamilyApi());
+  const fetchChemical = useCallback((query = { page: 1 }) => {
+    setLoading(true);
+    dispatch(getChemicalFamilyApi(query))
+      .then((response) => {
+        if (response?.success) {
+          const paginationData = {
+            total: response.pagination.totalItems,
+            currentPage: response.pagination.currentPage,
+            totalPages: response.pagination.totalPages,
+          };
+          setPagination(paginationData);
+          setChemicalFamilies(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching chemical family:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(setLoader(true));
     dispatch(setPageTitle("ChemicalFamily"));
-    fetchProducts();
-  }, [dispatch, fetchProducts]);
+    fetchChemical();
+  }, [dispatch, fetchChemical]);
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -50,7 +73,7 @@ const ChemicalFamily = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchChemical();
       });
   };
 
@@ -79,13 +102,18 @@ const ChemicalFamily = () => {
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <ChemicalFamilyList />
+          <ChemicalFamilyList data={chemicalFamilies} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchChemical({ page })}
+          />
         </div>
       )}
       <AddEditChemicalFamily
         open={ChemicalFamilyModal}
         mode="add"
-        getResponseBack={() => fetchProducts()}
+        getResponseBack={() => fetchChemical()}
       />
       <DeleteModal handleDelete={handleDelete} />
     </div>

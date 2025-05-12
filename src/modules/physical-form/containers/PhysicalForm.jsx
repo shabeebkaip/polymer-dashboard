@@ -16,22 +16,46 @@ import PageLoader from "../../../shared/PageLoader";
 import AddEditPhysicalForm from "../components/AddEditPhysicalForm";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const PhysicalForm = () => {
+  const [physicalForms, setPhysicalForm] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { loader, PhysicalFormModal, deleteId } = useSelector(
     (state) => state.sharedState
   );
 
-  const fetchProducts = useCallback(() => {
-    dispatch(getPhysicalFormApi());
+  const fetchPhysicalForms = useCallback((query = { page: 1 }) => {
+    setLoading(true);
+    dispatch(getPhysicalFormApi(query))
+      .then((response) => {
+        if (response?.success) {
+          const paginationData = {
+            total: response.pagination.totalItems,
+            currentPage: response.pagination.currentPage,
+            totalPages: response.pagination.totalPages,
+          };
+          setPagination(paginationData);
+          setPhysicalForm(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching physical form:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(setLoader(true));
     dispatch(setPageTitle("Physical Form"));
-    fetchProducts();
-  }, [dispatch, fetchProducts]);
+    fetchPhysicalForms();
+  }, [dispatch, fetchPhysicalForms]);
 
   const handleDelete = () => {
     dispatch(setLoader(true));
@@ -50,7 +74,7 @@ const PhysicalForm = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts();
+        fetchPhysicalForms();
       });
   };
 
@@ -79,13 +103,18 @@ const PhysicalForm = () => {
         <PageLoader />
       ) : (
         <div className="mt-4">
-          <PhysicalFormList />
+          <PhysicalFormList data={physicalForms} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchPhysicalForms({ page })}
+          />
         </div>
       )}
       <AddEditPhysicalForm
         open={PhysicalFormModal}
         mode="add"
-        getResponseBack={() => fetchProducts()}
+        getResponseBack={() => fetchPhysicalForms()}
       />
       <DeleteModal handleDelete={handleDelete} />
     </div>
