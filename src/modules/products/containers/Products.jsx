@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { deleteProductApi, getProductsApi } from "../api";
 import filterIcon from "./../../../assets/tools/filters.svg"
+import clearFilterIcon from "./../../../assets/tools/clears.svg"
 import {
   setProductCrud,
   setProductLoader,
@@ -26,7 +27,8 @@ import { useNavigate } from "react-router-dom";
 import Filters from "../../../shared/sharedComponents/filter/Filters";
 import Footer from "../../../shared/sharedComponents/footer/Footer";
 import eventBus from "../../../utils/eventBus";
-import { TextField } from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -43,6 +45,11 @@ const Products = () => {
     const value = e.target.value;
     setSearchQuery(value);
     fetchProducts({ search: value });
+  };
+
+  const handleClear = () => {
+    setSearchQuery("");
+    fetchProducts({ search: "" });
   };
   const fetchProducts = useCallback((filters = {}) => {
     dispatch(setPageTitle("Products"));
@@ -154,27 +161,37 @@ const Products = () => {
           <div className="flex gap-2">
 
 <div className="relative">
-      <TextField
-        label="Search Products"
-        variant="outlined"
-        value={searchQuery}
-        onChange={handleSearch}
-        fullWidth
-        InputProps={{
-          endAdornment: (
-            <SearchIcon sx={{ color: "gray", fontSize: "24px" }} />
-          ),
-        }}
-        className="search-input"
-        size="small"
-      />
+<TextField
+  label="Search Products"
+  variant="outlined"
+  value={searchQuery}
+  onChange={handleSearch}
+  fullWidth
+  size="small"
+  className="search-input"
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        {searchQuery ? (
+          <IconButton onClick={handleClear} size="small">
+            <ClearIcon sx={{ fontSize: "20px" }} />
+          </IconButton>
+        ) : (
+          <SearchIcon sx={{ color: "gray", fontSize: "24px" }} />
+        )}
+      </InputAdornment>
+    ),
+  }}
+/>
     </div>       
         <ActionButton
               buttonText={filterActive ? "Clear Filter" : "Filter"} 
               handleOnClick={filterActive ? handleClearFilter : handleFilterToggle}  
               textColor={filterActive ? "#fa1c1c" : "#ffffff"} 
               bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"} 
-              icon={filterIcon}
+              icon={filterActive ? clearFilterIcon : filterIcon}
+
+
             />
              <ActionButton
             buttonText="Add Product"
@@ -195,13 +212,19 @@ const Products = () => {
         }
       />
 
-      {productLoader ? (
-        <PageLoader />
-      ) : (
-        <div className="mt-4">
-          <ProductsList products={products} />
-        </div>
-      )}
+     {productLoader ? (
+  <PageLoader />
+) : (
+  <div className="mt-4">
+    {products && products.length > 0 ? (
+      <ProductsList products={products} />
+    ) : (
+      <div className="text-center text-gray-500 text-lg py-10">
+        No data found
+      </div>
+    )}
+  </div>
+)}
       <AddEditProduct getResponseBack={fetchProducts} />
       <DeleteModal  handleDelete={handleDelete} />
       <Filters/>

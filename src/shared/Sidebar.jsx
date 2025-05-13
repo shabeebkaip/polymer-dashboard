@@ -200,7 +200,7 @@ const Sidebar = ({ collapsed }) => {
         />
         <Typography color="primary">Polymers Hub</Typography>
       </div>
-      <div className="mt-4 overflow-y-auto h-[calc(100vh-100px)] customScrollbar">
+      <div className="mt-4 overflow-y-auto  customScrollbar">
         {renderMenuItems}
       </div>
     </div>
