@@ -7,6 +7,12 @@ import { GiFamilyTree } from "react-icons/gi";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ForumIcon from '@mui/icons-material/Forum';
+import GroupIcon from '@mui/icons-material/Group';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+
+
 
 const menuItems = [
   {
@@ -19,20 +25,18 @@ const menuItems = [
     name: "users",
     displayName: "Users",
     route: "/users",
-    icon: <MdCategory />,
+    icon: <GroupIcon />,
 
     items: [
       {
         name: "buyers",
         displayName: "Buyers",
         route: "/buyers-list",
-        icon: <MdCategory />,
       },
       {
         name: "sellers",
         displayName: "Sellers",
         route: "/sellers-list",
-        icon: <MdCategory />,
       },
     ],
   },
@@ -45,6 +49,7 @@ const menuItems = [
         name: "Sample Requests",
         displayName: "Sample Requests",
         route: "/enquiries/sample",
+        
       },
       {
         name: "Quote Requests",
@@ -52,13 +57,13 @@ const menuItems = [
         route: "/enquiries/quote",
       },
     ],
-    icon: <RiCustomerServiceLine />,
+    icon: <ForumIcon />,
   },
   {
     name: "dropdown",
     displayName: "Dropdown",
     route: "/dropdown",
-    icon:  <GiFamilyTree/>,
+    icon:  <ArrowDropDownIcon/>,
     items: [
       {
         name: "products_family",
@@ -105,7 +110,6 @@ const menuItems = [
         route: "/chemical-family",
       },
     ],
-    icon: <RiCustomerServiceLine />,
   },
 ];
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 // const baseURL = "https://polymer-nodejs.vercel.app/api";
-const baseURL = "http://localhost:7000/api";
-// const baseURL = "https://polymer-backend.code-ox.com/api";
+// const baseURL = "http://localhost:7000/api";
+const baseURL = "https://polymer-backend.code-ox.com/api";
 
 const axiosInstance = axios.create({
   baseURL: baseURL,

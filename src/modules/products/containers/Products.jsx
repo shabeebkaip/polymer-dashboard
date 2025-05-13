@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { deleteProductApi, getProductsApi } from "../api";
-import filterIcon from "./../../../assets/tools/filters.svg"
-import clearFilterIcon from "./../../../assets/tools/clears.svg"
+import filterIcon from "./../../../assets/tools/filters.svg";
+import clearFilterIcon from "./../../../assets/tools/clears.svg";
 import {
   setProductCrud,
   setProductLoader,
@@ -13,7 +13,7 @@ import PageLoader from "../../../shared/PageLoader";
 import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductsList from "../components/ProductsList";
-import SearchIcon from "@mui/icons-material/Search"; 
+import SearchIcon from "@mui/icons-material/Search";
 import {
   setDeleteModal,
   setMode,
@@ -35,13 +35,13 @@ const Products = () => {
   const navigate = useNavigate();
   const [pagination, setPagination] = useState({});
 
-  const [filterActive, setFilterActive] = useState(false); 
+  const [filterActive, setFilterActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { products, productLoader } = useSelector(
     (state) => state.productState
   );
   const { deleteId } = useSelector((state) => state.sharedState);
-  
+
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
@@ -52,22 +52,25 @@ const Products = () => {
     setSearchQuery("");
     fetchProducts({ search: "" });
   };
-  const fetchProducts = useCallback((filters = {}) => {
-    dispatch(setPageTitle("Products"));
-    dispatch(setProductLoader(true));
-    getProductsApi(filters).then((response) => {
-      dispatch(setProductLoader(false));
-      if (response.success) {
-        dispatch(setProducts(response.data));
-        const paginationData = {
-          total: response.pagination.total,
-          currentPage: response.pagination.page, 
-          totalPages: response.pagination.totalPages,
-        };
-        setPagination(paginationData);
-      }
-    });
-  }, [dispatch]);
+  const fetchProducts = useCallback(
+    (filters = {}) => {
+      dispatch(setPageTitle("Products"));
+      dispatch(setProductLoader(true));
+      getProductsApi(filters).then((response) => {
+        dispatch(setProductLoader(false));
+        if (response.success) {
+          dispatch(setProducts(response.data));
+          const paginationData = {
+            total: response.pagination.total,
+            currentPage: response.pagination.page,
+            totalPages: response.pagination.totalPages,
+          };
+          setPagination(paginationData);
+        }
+      });
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     fetchProducts();
@@ -107,29 +110,31 @@ const Products = () => {
     dispatch(
       setOpenFilter({
         name: "filter",
-        module: "PRODUCT", 
+        module: "PRODUCT",
         isOpen: true,
       })
     );
   };
 
   const handleClearFilter = () => {
-    setFilterActive(false); 
-    fetchProducts();  
+    setFilterActive(false);
+    fetchProducts();
   };
 
   useEffect(() => {
     const handleFilter = async (filterData) => {
-      dispatch(setOpenFilter({
-        name: "",
-        module: null,
-        isOpen: false,
-      }));
+      dispatch(
+        setOpenFilter({
+          name: "",
+          module: null,
+          isOpen: false,
+        })
+      );
       const rawFilters = filterData.data.data;
-      const cleanedFilters = {};   
+      const cleanedFilters = {};
       for (const key in rawFilters) {
         const value = rawFilters[key];
-    
+
         if (Array.isArray(value) && value.length > 0 && value[0]?._id) {
           cleanedFilters[key] = value.map((item) => item._id);
         } else {
@@ -154,80 +159,76 @@ const Products = () => {
         description="Displaying all the Products"
         actions={
           <div className="flex gap-2">
-
-<div className="relative">
-<TextField
-  label="Search Products"
-  variant="outlined"
-  value={searchQuery}
-  onChange={handleSearch}
-  fullWidth
-  size="small"
-  className="search-input"
-  InputProps={{
-    endAdornment: (
-      <InputAdornment position="end">
-        {searchQuery ? (
-          <IconButton onClick={handleClear} size="small">
-            <ClearIcon sx={{ fontSize: "20px" }} />
-          </IconButton>
-        ) : (
-          <SearchIcon sx={{ color: "gray", fontSize: "24px" }} />
-        )}
-      </InputAdornment>
-    ),
-  }}
-/>
-    </div>       
-        <ActionButton
-              buttonText={filterActive ? "Clear Filter" : "Filter"} 
-              handleOnClick={filterActive ? handleClearFilter : handleFilterToggle}  
-              textColor={filterActive ? "#fa1c1c" : "#ffffff"} 
-              bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"} 
+            <div className="relative">
+              <TextField
+                label="Search Products"
+                variant="outlined"
+                value={searchQuery}
+                onChange={handleSearch}
+                fullWidth
+                size="small"
+                className="search-input"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {searchQuery ? (
+                        <IconButton onClick={handleClear} size="small">
+                          <ClearIcon sx={{ fontSize: "20px" }} />
+                        </IconButton>
+                      ) : (
+                        <SearchIcon sx={{ color: "gray", fontSize: "24px" }} />
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
+            <ActionButton
+              buttonText={filterActive ? "Clear Filter" : "Filter"}
+              handleOnClick={
+                filterActive ? handleClearFilter : handleFilterToggle
+              }
+              textColor={filterActive ? "#fa1c1c" : "#ffffff"}
+              bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"}
               icon={filterActive ? clearFilterIcon : filterIcon}
-
-
             />
-             <ActionButton
-            buttonText="Add Product"
-            handleOnClick={() => {
-              // dispatch(setProductModal(true));
-              dispatch(setProductCrud({}));
-              dispatch(setMode("add"));
-              navigate("/add-product");
-
-            }}
-            textColor="#ffffff"
-            bgColor="rgb(41, 82, 255)"
-            icon={"/tools/create.svg"}
-          />
-      </div>
-          
-          
+            <ActionButton
+              buttonText="Add Product"
+              handleOnClick={() => {
+                // dispatch(setProductModal(true));
+                dispatch(setProductCrud({}));
+                dispatch(setMode("add"));
+                navigate("/add-product");
+              }}
+              textColor="#ffffff"
+              bgColor="rgb(41, 82, 255)"
+              icon={"/tools/create.svg"}
+            />
+          </div>
         }
       />
 
-     {productLoader ? (
-  <PageLoader />
-) : (
-  <div className="mt-4">
-    {products && products.length > 0 ? (
-      <ProductsList products={products} />
-    ) : (
-      <div className="text-center text-gray-500 text-lg py-10">
-        No data found
-      </div>
-    )}
-  </div>
-)}
+      {productLoader ? (
+        <PageLoader />
+      ) : (
+        <div className="mt-4">
+          {products && products.length > 0 ? (
+            <ProductsList products={products} />
+          ) : (
+            <div className="text-center text-gray-500 text-lg py-10">
+              No data found
+            </div>
+          )}
+        </div>
+      )}
       <AddEditProduct getResponseBack={fetchProducts} />
-      <DeleteModal  handleDelete={handleDelete} />
-      <Filters/>
-       <PaginationContainer
-              totalPages={pagination?.totalPages}
-              currentPage={pagination?.currentPage}
-              handlePageChange={(page) => fetchProducts({ page })}
-            />
+      <DeleteModal handleDelete={handleDelete} />
+      <Filters />
+      <PaginationContainer
+        totalPages={pagination?.totalPages}
+        currentPage={pagination?.currentPage}
+        handlePageChange={(page) => fetchProducts({ page })}
+      />
     </div>
   );
 };
