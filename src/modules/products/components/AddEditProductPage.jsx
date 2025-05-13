@@ -252,40 +252,53 @@ const AddEditProductPage = ({ getResponseBack }) => {
   };
 
   console.log(data?.packagingType, "data?.chemicalFamily");
-
+  const transformArray = (items) =>
+    items ? items.map((item) => item._id) : [];
   const handleSave = () => {
     if (!validate()) return;
     dispatch(setProductLoader(true));
     let payload = Object.assign({}, data);
+    payload = {
+      ...payload,
+      chemicalFamily: payload?.chemicalFamily?._id,
+      product_family: transformArray(payload.product_family),
+      industry: transformArray(payload.industry),
+      grade: transformArray(payload.grade),
+      paymentTerms: payload?.paymentTerms?._id,
+      packagingType: transformArray(payload.packagingType),
+      incoterms: transformArray(payload.incoterms),
+      polymerType: payload?.polymerType?._id,
+      physicalForm: payload?.physicalForm?._id,
+    };
 
     console.log("Final Payload:", payload);
     const apiCall = mode === "add" ? createProductApi : updateProductApi;
 
-    // apiCall(payload)
-    //   .then((response) => {
-    //     if (response.success) {
-    //       enqueueSnackbar(response.message, {
-    //         variant: "success",
-    //         anchorOrigin: { vertical: "top", horizontal: "right" },
-    //       });
-    //       if (getResponseBack) getResponseBack();
-    //       navigate(-1);
-    //     } else {
-    //       enqueueSnackbar(response.message, {
-    //         variant: "error",
-    //         anchorOrigin: { vertical: "top", horizontal: "right" },
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     enqueueSnackbar(error.message, {
-    //       variant: "error",
-    //       anchorOrigin: { vertical: "top", horizontal: "right" },
-    //     });
-    //   })
-    //   .finally(() => {
-    //     dispatch(setProductLoader(false));
-    //   });
+    apiCall(payload)
+      .then((response) => {
+        if (response.success) {
+          enqueueSnackbar(response.message, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+          if (getResponseBack) getResponseBack();
+          navigate(-1);
+        } else {
+          enqueueSnackbar(response.message, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.message, {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+      })
+      .finally(() => {
+        dispatch(setProductLoader(false));
+      });
   };
 
   const handleImageUpload = (file) => {
@@ -835,7 +848,7 @@ const AddEditProductPage = ({ getResponseBack }) => {
         <Button
           variant="contained"
           onClick={handleSave}
-          disabled={productLoader}
+          // disabled={productLoader}
         >
           {productLoader ? <CircularProgress size={20} /> : "Save"}
         </Button>
