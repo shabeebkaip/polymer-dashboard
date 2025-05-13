@@ -24,11 +24,30 @@ import {
       mode,
     } = useSelector((state) => state.sharedState);
     const [data, setData] = useState(incotermsCrud);
+    const [errors, setErrors] = useState({});
     const { loader } = useSelector((state) => state.sharedState);
     const closeModal = () => {
       dispatch(setIncotermsModal(false));
     };
+
+    const validateFields = () => {
+      const newErrors = {};
+      if (!data.name?.trim()) newErrors.name = "Name is required";
+      if (!data.fullForm?.trim()) newErrors.fullForm = "Full form is required";
+    
+      setErrors(newErrors);
+    
+      if (Object.keys(newErrors).length > 0) {
+        setTimeout(() => {
+          setErrors({});
+        }, 1000);
+        return false;
+      }
+      return true;
+    };
+    
     const handleSave = () => {
+      if (!validateFields()) return;
       dispatch(setLoader(true));
       if (mode === "add") {
         createIncotermsApi(data)
@@ -95,6 +114,8 @@ import {
               fullWidth
               value={data.name || ""}
               onChange={(e) => setData({ ...data, name: e.target.value })}
+              error={!!errors.name}
+              helperText={errors.name}
               required
               slotProps={{
                 inputLabel: {
@@ -108,6 +129,8 @@ import {
               fullWidth
               value={data.fullForm || ""}
               onChange={(e) => setData({ ...data, fullForm: e.target.value })}
+              error={!!errors.fullForm}
+  helperText={errors.fullForm}
               required
               slotProps={{
                 inputLabel: {

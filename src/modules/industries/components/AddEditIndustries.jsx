@@ -23,11 +23,29 @@ const AddEditIndustries = ({ getResponseBack }) => {
     mode,
   } = useSelector((state) => state.sharedState);
   const [data, setData] = useState(industryCrud);
+  const [errors, setErrors] = useState({});
   const { loader } = useSelector((state) => state.sharedState);
   const closeModal = () => {
     dispatch(setIndustryModal(false));
   };
+  const validateFields = () => {
+    const newErrors = {};
+    if (!data.name?.trim()) newErrors.name = "Name is required";
+    if (!data.description?.trim()) newErrors.description = "Description is required";
+  
+    setErrors(newErrors);
+  
+    if (Object.keys(newErrors).length > 0) {
+      setTimeout(() => {
+        setErrors({});
+      }, 1000);
+      return false;
+    }
+    return true;
+  };
+  
   const handleSave = () => {
+    if (!validateFields()) return;
     dispatch(setLoader(true));
     if (mode === "add") {
       createIndustryApi(data)
@@ -90,6 +108,8 @@ const AddEditIndustries = ({ getResponseBack }) => {
             variant="outlined"
             value={data?.name}
             onChange={(e) => setData({ ...data, name: e.target.value })}
+            error={!!errors.name}
+            helperText={errors.name}
             className=""
             required
             slotProps={{
@@ -103,6 +123,8 @@ const AddEditIndustries = ({ getResponseBack }) => {
             variant="outlined"
             value={data?.description}
             onChange={(e) => setData({ ...data, description: e.target.value })}
+            error={!!errors.description}
+            helperText={errors.description}
             className=""
             required
             slotProps={{

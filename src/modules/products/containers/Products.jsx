@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { deleteProductApi, getProductsApi } from "../api";
+import filterIcon from "./../../../assets/tools/filters.svg"
 import {
   setProductCrud,
   setProductLoader,
@@ -167,7 +168,15 @@ const Products = () => {
         className="search-input"
         size="small"
       />
-    </div>        <ActionButton
+    </div>       
+        <ActionButton
+              buttonText={filterActive ? "Clear Filter" : "Filter"} 
+              handleOnClick={filterActive ? handleClearFilter : handleFilterToggle}  
+              textColor={filterActive ? "#fa1c1c" : "#ffffff"} 
+              bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"} 
+              icon={filterIcon}
+            />
+             <ActionButton
             buttonText="Add Product"
             handleOnClick={() => {
               // dispatch(setProductModal(true));
@@ -180,13 +189,6 @@ const Products = () => {
             bgColor="rgb(41, 82, 255)"
             icon={"/tools/create.svg"}
           />
-        <ActionButton
-              buttonText={filterActive ? "Clear Filter" : "Filter"} 
-              handleOnClick={filterActive ? handleClearFilter : handleFilterToggle}  
-              textColor={filterActive ? "#fa1c1c" : "#ffffff"} 
-              bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"} 
-              icon={"/tools/filter.svg"}
-            />
       </div>
           
           

@@ -68,8 +68,17 @@ const UserList = ({ users, getResponseBack }) => {
     });
   };
 
-  const tableHeader = ["SL No", "Name", "Email", "User Type", "Status", "Action"];
-
+  const tableHeader = [
+    "SL No",
+    "Name",
+    "Email",
+    // "User Type",
+    ...(users.some(user => user?.company_logo) ? ["Company Logo"] : []),
+    "Status",
+    "Action"
+  ];
+  
+  
   return (
     <div className="mt-4">
       <table className="w-full border-collapse">
@@ -100,8 +109,13 @@ const UserList = ({ users, getResponseBack }) => {
                   <td className="p-4 border-b">{index + 1}</td>
                   <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
-                  <td className="p-4 border-b">{row.user_type}</td>
-                  <td className="p-4 border-b">{localStatus[row._id]}</td>
+                  {/* <td className="p-4 border-b">{row.user_type}</td> */}
+                  {row?.company_logo && (
+  <div className="px-10 py-1">
+    <img src={row.company_logo} className="w-16 h-16 rounded-md" />
+  </div>
+)}
+               <td className="p-4 border-b">{localStatus[row._id]}</td>
                   <td className="p-4 border-b">
                     <div className="flex items-center gap-4">
                       <Tooltip title="Toggle status" arrow>

@@ -2,6 +2,12 @@ import PropTypes from "prop-types";
 
 const TableUI = ({ noRecord, tableHeader, children }) => {
   return (
+    <div
+    className="w-full overflow-auto"
+    style={{
+      height: "calc(100dvh - 140px)",
+    }}
+  >
     <table className="w-full border-collapse">
       <thead>
         <tr
@@ -40,6 +46,7 @@ const TableUI = ({ noRecord, tableHeader, children }) => {
       )}
       <tbody>{children}</tbody>
     </table>
+    </div>
   );
 };
 
