@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { pageTitle } = useSelector((state) => state.sharedState);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleLogout = () => {
     setLoading(true);
     setTimeout(() => {
@@ -14,10 +19,21 @@ const Navbar = () => {
       window.location.href = "/login";
     }, 1000);
   };
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+  const showBackButton = location.pathname !== "/" && location.pathname !== "/products";
+
   return (
     <nav className="w-full bg-white shadow-custom  h-[80px]">
       <div className="flex items-center justify-between px-5 py-3.5">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3">
+        {showBackButton && (
+            <IconButton onClick={handleBack} size="small" className="mr-2">
+              <ArrowBackIcon sx={{ color: "#263238" }} />
+            </IconButton>
+          )}
           <h1 className="text-[#263238] text-2xl">{pageTitle}</h1>
         </div>
 
