@@ -79,7 +79,7 @@ const Grade = () => {
   };
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
         title="Grade"
         description="Displaying all the Grade"

@@ -79,7 +79,7 @@ const PhysicalForm = () => {
   };
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
         title="Physical Form"
         description="Displaying all the Physical Form"

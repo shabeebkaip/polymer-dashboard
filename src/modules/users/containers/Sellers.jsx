@@ -38,7 +38,7 @@ const Sellers = () => {
   };
   
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       {loading && <PageLoader />}
       {/* <Title
         title="Users"

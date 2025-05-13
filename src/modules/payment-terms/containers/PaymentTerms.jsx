@@ -79,7 +79,7 @@ const PaymentTerms = () => {
   };
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
         title="Payment Terms"
         description="Displaying all the Payment Terms"

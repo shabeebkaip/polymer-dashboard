@@ -25,15 +25,16 @@ import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import Filters from "../../../shared/sharedComponents/filter/Filters";
-import Footer from "../../../shared/sharedComponents/footer/Footer";
 import eventBus from "../../../utils/eventBus";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import PaginationContainer from "../../../shared/PaginationContainer";
 
 const Products = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [pages, setPages] = useState ("");
+  const [pagination, setPagination] = useState({});
+
   const [filterActive, setFilterActive] = useState(false); 
   const [searchQuery, setSearchQuery] = useState("");
   const { products, productLoader } = useSelector(
@@ -58,7 +59,12 @@ const Products = () => {
       dispatch(setProductLoader(false));
       if (response.success) {
         dispatch(setProducts(response.data));
-        setPages(response.pagination)
+        const paginationData = {
+          total: response.pagination.total,
+          currentPage: response.pagination.page, 
+          totalPages: response.pagination.totalPages,
+        };
+        setPagination(paginationData);
       }
     });
   }, [dispatch]);
@@ -112,17 +118,6 @@ const Products = () => {
     fetchProducts();  
   };
 
-
-  const handleListPage = async (page) => {
-    if (page) {
-      fetchProducts({ page: page });
-    }
-  };
-
-  const handlePage = (page) => {
-    handleListPage(page);
-  };
-
   useEffect(() => {
     const handleFilter = async (filterData) => {
       dispatch(setOpenFilter({
@@ -153,7 +148,7 @@ const Products = () => {
   }, []);
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
         title="Products"
         description="Displaying all the Products"
@@ -228,10 +223,11 @@ const Products = () => {
       <AddEditProduct getResponseBack={fetchProducts} />
       <DeleteModal  handleDelete={handleDelete} />
       <Filters/>
-      <Footer 
-       totalPages={pages.totalPages}
-       handlePageChange={handlePage}
-       />
+       <PaginationContainer
+              totalPages={pagination?.totalPages}
+              currentPage={pagination?.currentPage}
+              handlePageChange={(page) => fetchProducts({ page })}
+            />
     </div>
   );
 };

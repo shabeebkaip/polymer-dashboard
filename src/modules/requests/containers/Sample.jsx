@@ -45,7 +45,7 @@ const Sample = () => {
   }, []);
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
         title="Sample Enquiries"
         description="Display all the Sample Requests"

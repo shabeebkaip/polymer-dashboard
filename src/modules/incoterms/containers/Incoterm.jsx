@@ -79,7 +79,7 @@ const Incoterm = () => {
   };
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
         title="Incoterm"
         description="Displaying all the Incoterm"

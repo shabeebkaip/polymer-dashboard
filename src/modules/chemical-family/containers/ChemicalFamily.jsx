@@ -78,7 +78,7 @@ const ChemicalFamily = () => {
   };
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
         title="ChemicalFamily"
         description="Displaying all the ChemicalFamily"

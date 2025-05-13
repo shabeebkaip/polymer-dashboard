@@ -45,7 +45,7 @@ const Quote = () => {
   }, []); 
 
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title title="Quote Enquiries" description="Display all the Quote Requests" />
       <div className="mt-4">
         {loading ? <PageLoader /> : <QuoteList data={quotes} />} {/* Use quotes instead of samples */}
