@@ -4,7 +4,6 @@ import ChemicalFamilyRow from "./ChemicalFamilyRow";
 
 const ChemicalFamilyList = () => {
   const { chemicalFamily } = useSelector((state) => state.sharedState);
-  console.log("chemicalFamily", chemicalFamily);
   return (
     <div>
       <TableUI

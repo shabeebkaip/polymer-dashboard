@@ -44,6 +44,7 @@ import { setPageTitle } from "../../../slices/sharedSlice";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import MultipleFileUpload from "../../../shared/MultipleFileUpload";
+import UploadImage from "../../../shared/UploadImage";
 
 const AddEditProductPage = ({ getResponseBack }) => {
   const dispatch = useDispatch();
@@ -89,19 +90,22 @@ const AddEditProductPage = ({ getResponseBack }) => {
     packagingType: [],
     packagingWeight: "",
     storageConditions: "",
+    technical_data_sheet: {},
+    certificate_of_analysis: {},
+    safety_data_sheet: {},
     shelfLife: "",
     recyclable: false,
     bioDegradable: false,
     fdaApproved: false,
     medicalGrade: false,
     product_family: [],
-    productImages: [],
 
     _id: id,
   });
 
   const handleAddAdditionalInfo = () => {
-    setProductDetail((prev) => ({
+
+    setData((prev) => ({
       ...prev,
       additionalInfo: [...prev.additionalInfo, { title: "", description: "" }],
     }));
@@ -136,14 +140,13 @@ const AddEditProductPage = ({ getResponseBack }) => {
 
   useEffect(() => {
     fetchDropdowns();
-    dispatch(setPageTitle(mode === "edit" ? "Edit Product" : "Add Product"));
+    dispatch(setPageTitle(id ? "Edit Product" : "Add Product"));
   }, [fetchDropdowns]);
 
   useEffect(() => {
     if (!id) return;
 
     getProductsDetailApi(id).then((detail) => {
-      console.log("Product Detail:", detail);
       setProductDetail(detail.data);
     });
   }, [id]);
@@ -211,7 +214,9 @@ const AddEditProductPage = ({ getResponseBack }) => {
         fdaApproved: productDetail.fdaApproved,
         medicalGrade: productDetail.medicalGrade,
         incoterms: productDetail.incoterms,
-        packagingType: productDetail.packagingType,
+        safety_data_sheet: productDetail.safety_data_sheet,
+        certificate_of_analysis: productDetail.certificate_of_analysis,
+        technical_data_sheet: productDetail.technical_data_sheet,
 
         _id: id,
       });
@@ -251,7 +256,7 @@ const AddEditProductPage = ({ getResponseBack }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  console.log(data?.packagingType, "data?.chemicalFamily");
+  // console.log(countries, "data?.chemicalFamily");
   const transformArray = (items) =>
     items ? items.map((item) => item._id) : [];
   const handleSave = () => {
@@ -260,7 +265,7 @@ const AddEditProductPage = ({ getResponseBack }) => {
     let payload = Object.assign({}, data);
     payload = {
       ...payload,
-      chemicalFamily: payload?.chemicalFamily?._id,
+      chemicalFamily: payload?.chemicalFamily._id,
       product_family: transformArray(payload.product_family),
       industry: transformArray(payload.industry),
       grade: transformArray(payload.grade),
@@ -271,8 +276,8 @@ const AddEditProductPage = ({ getResponseBack }) => {
       physicalForm: payload?.physicalForm?._id,
     };
 
-    console.log("Final Payload:", payload);
-    const apiCall = mode === "add" ? createProductApi : updateProductApi;
+    let apiCall;
+    apiCall = id ? updateProductApi : createProductApi;
 
     apiCall(payload)
       .then((response) => {
@@ -301,9 +306,27 @@ const AddEditProductPage = ({ getResponseBack }) => {
       });
   };
 
-  const handleImageUpload = (file) => {
-    setData({ ...data, productImages: file });
+  const handleImageUpload = (files) => {
+    debugger
+    setData((prev) => ({
+      ...prev,
+      productImages: [...(prev.productImages || []), ...files],
+    }));
   };
+
+  const handleFileUpload1 = (file) => {
+    setData({ ...data, safety_data_sheet: file[0] });
+  };
+
+  const handleFileUpload2 = (file) => {
+    setData({ ...data, technical_data_sheet: file[0] });
+  };
+
+  const handleFileUpload3 = (file) => {
+    debugger
+    setData({ ...data, certificate_of_analysis: file[0] });
+  };
+
 
   const handleImageClear = () => {
     deleteImage(cloudinaryImage1);
@@ -315,7 +338,7 @@ const AddEditProductPage = ({ getResponseBack }) => {
   };
 
   return (
-    <div className="container mx-auto p-6 h-[calc(100dvh-140px)] overflow-y-auto">
+    <div className=" p-5 h-[calc(100dvh-120px)] overflow-y-auto bg-white">
       <h1 className="py-4 text-xl">General Product Information</h1>
       <div className="grid grid-cols-3 gap-4">
         <TextField
@@ -363,66 +386,29 @@ const AddEditProductPage = ({ getResponseBack }) => {
           InputLabelProps={{ shrink: true }}
         />
       </div>
-      <Box
-        display="flex"
-        flexWrap="wrap"
-        gap={2}
-        alignItems="center"
-        sx={{ my: 4 }}
-      >
-        {data.additionalInfo.map((info, index) => (
-          <Box key={index} display="flex" alignItems="center" gap={1}>
-            <TextField
-              label={`Title ${index + 1}`}
-              value={info.title}
-              onChange={(e) =>
-                handleChangeAdditionalInfo(index, "title", e.target.value)
-              }
-            />
-            <TextField
-              label={`Description ${index + 1}`}
-              value={info.description}
-              onChange={(e) =>
-                handleChangeAdditionalInfo(index, "description", e.target.value)
-              }
-            />
-            <IconButton
-              onClick={() => handleRemoveAdditionalInfo(index)}
-              color="error"
-              disabled={productDetail.additionalInfo.length === 1}
-            >
-              <RemoveIcon />
-            </IconButton>
-          </Box>
-        ))}
 
-        <IconButton onClick={handleAddAdditionalInfo} color="primary">
-          <AddIcon />
-        </IconButton>
-      </Box>
 
       <h1 className="py-4 text-xl">Product Details</h1>
 
       <div className="grid grid-cols-3 gap-4">
         <Autocomplete
           options={chemicalFamily}
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.name || ""}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Chemical Family"
               variant="outlined"
               InputLabelProps={{ shrink: true }}
+              error={!!errors.chemicalFamily}
+              helperText={<div>{errors.chemicalFamily}</div>}
             />
           )}
-          onChange={(_, value) => onFieldChange("chemicalFamily", value?._id)}
+          onChange={(_, value) => onFieldChange("chemicalFamily", value)}
           value={
-            chemicalFamily.find(
-              (item) => item._id === data?.chemicalFamily?._id
-            ) || null
+            chemicalFamily.find((item) => item._id === data?.chemicalFamily?._id) ||
+            null
           }
-          error={!!errors.chemicalFamily}
-          helperText={<div>{errors.chemicalFamily}</div>}
         />
 
         <Autocomplete
@@ -489,22 +475,22 @@ const AddEditProductPage = ({ getResponseBack }) => {
         />
         <Autocomplete
           options={physicalForm}
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.name || ""}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Physical Form"
               variant="outlined"
               InputLabelProps={{ shrink: true }}
+              error={!!errors.physicalForm}
+              helperText={<div>{errors.physicalForm}</div>}
             />
           )}
-          onChange={(_, value) => onFieldChange("physicalForm", value?._id)}
+          onChange={(_, value) => onFieldChange("physicalForm", value)}
           value={
             physicalForm.find((item) => item._id === data?.physicalForm?._id) ||
             null
           }
-          error={!!errors.physicalForm}
-          helperText={<div>{errors.physicalForm}</div>}
         />
 
         <Autocomplete
@@ -518,10 +504,14 @@ const AddEditProductPage = ({ getResponseBack }) => {
             />
           )}
           onChange={(event, newValue) => {
-            console.log("Selected country:", newValue);
+            const selectedCountry = countries.find((country) => country.name === newValue);
             onFieldChange("countryOfOrigin", newValue);
+
+            if (selectedCountry?.name === "San Marino") {
+              // console.log("Chemical Family of San Marino:", selectedCountry.chemicalFamily);
+            }
           }}
-          value={data.countryOfOrigin || ""}
+          value={countries.find((item) => item.name === data.countryOfOrigin)?.name || ""}
         />
 
         <TextField
@@ -532,6 +522,14 @@ const AddEditProductPage = ({ getResponseBack }) => {
           onChange={(e) => onFieldChange("color", e.target.value)}
           required
           InputLabelProps={{ shrink: true }}
+        />
+      </div>
+
+      <div className="py-4">
+        <h1 className="text-xl ">Product Images</h1>
+        <UploadImage
+          onFilesUpload={handleImageUpload}
+          previews={data.productImages?.map(img => img.fileUrl) || []}
         />
       </div>
 
@@ -716,17 +714,22 @@ const AddEditProductPage = ({ getResponseBack }) => {
         </LocalizationProvider>
         <Autocomplete
           options={paymentTerms}
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.name || ""}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Payment terms"
               variant="outlined"
               InputLabelProps={{ shrink: true }}
+              error={!!errors.paymentTerms}
+              helperText={<div>{errors.paymentTerms}</div>}
             />
           )}
-          onChange={(_, value) => onFieldChange("paymentTerms", value?._id)}
-          value={data?.paymentTerms || ""}
+          onChange={(_, value) => onFieldChange("paymentTerms", value)}
+          value={
+            paymentTerms.find((item) => item._id === data?.paymentTerms?._id) ||
+            null
+          }
         />
       </div>
 
@@ -777,62 +780,137 @@ const AddEditProductPage = ({ getResponseBack }) => {
         />
       </div>
 
-      <h1 className="py-4 text-xl">Environmental</h1>
+      <div className="mt-4">
+        <h1 className="text-xl ">Environmental</h1>
+        <div className="grid grid-cols-3 gap-4">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={data.recyclable || false}
+                onChange={(e) => onFieldChange("recyclable", e.target.checked)}
+              />
+            }
+            label="Recyclable"
+          />
 
-      <div className="grid grid-cols-3 gap-4">
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={data.recyclable || false}
-              onChange={(e) => onFieldChange("recyclable", e.target.checked)}
-            />
-          }
-          label="Recyclable"
-        />
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={data.bioDegradable || false}
-              onChange={(e) => onFieldChange("bioDegradable", e.target.checked)}
-            />
-          }
-          label="Bio Degradable"
-        />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={data.bioDegradable || false}
+                onChange={(e) => onFieldChange("bioDegradable", e.target.checked)}
+              />
+            }
+            label="Bio Degradable"
+          />
+        </div>
       </div>
-      <h1 className="py-4 text-xl">Certifications</h1>
-
-      <div className="grid grid-cols-3 gap-4">
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={data.fdaApproved || false}
-              onChange={(e) => onFieldChange("fdaApproved", e.target.checked)}
-            />
-          }
-          label="FDA Approved"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={data.medicalGrade || false}
-              onChange={(e) => onFieldChange("medicalGrade", e.target.checked)}
-            />
-          }
-          label="Medical Grade"
-        />
+      <div className="mt-4">
+        <h1 className="text-xl">Certifications</h1>
+        <div className="grid grid-cols-3 gap-4">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={data.fdaApproved || false}
+                onChange={(e) => onFieldChange("fdaApproved", e.target.checked)}
+              />
+            }
+            label="FDA Approved"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={data.medicalGrade || false}
+                onChange={(e) => onFieldChange("medicalGrade", e.target.checked)}
+              />
+            }
+            label="Medical Grade"
+          />
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="mt-2"></div>
 
-        <h1 className="col-span-3 py-4 text-xl">Product Images</h1>
-
+      <div className="flex flex-col w-full gap-2 mt-4">
+        <h1 className="text-xl">Upload Safety Data</h1>
         <MultipleFileUpload
-          onFileUpload={handleImageUpload}
+          onFileUpload={handleFileUpload1}
+          multiple="false"
+          key="safety_data_sheet"
           existingFiles={
-            productDetail.productImages ? [data.productImages] : []
+            data.safety_data_sheet ? [data.safety_data_sheet] : []
           }
         />
+      </div>
+      <div className="flex flex-col w-full gap-2 mt-4">
+        <h1 className="text-xl">Upload Technical Data sheet</h1>
+        <MultipleFileUpload
+          onFileUpload={handleFileUpload2}
+          key="technical_data_sheet"
+          multiple="false"
+          existingFiles={
+            data.technical_data_sheet ? [data.technical_data_sheet] : []
+          }
+        />
+      </div>
+      <div className="flex flex-col w-full gap-2 mt-4">
+        <h1 className="text-xl">Upload Certificate of Analysis</h1>
+        <MultipleFileUpload
+          key="certificate_of_analysis"
+          onFileUpload={handleFileUpload3}
+          multiple="false"
+          existingFiles={
+            data.certificate_of_analysis ? [data.certificate_of_analysis] : []
+          }
+        />
+      </div>
+
+      <div className="flex flex-col my-2">
+        <div className="flex items-center gap-5">
+          <h1 className="text-xl">Addition Information</h1>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddAdditionalInfo}
+            startIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+        </div>
+        {data?.additionalInfo?.map((info, index) => (
+          <div key={index} className="grid grid-cols-9">
+            <div className="col-span-8">
+              <TextField
+                fullWidth
+                label={`Title ${index + 1}`}
+                value={info.title}
+                className="col-span-3"
+                onChange={(e) =>
+                  handleChangeAdditionalInfo(index, "title", e.target.value)
+                }
+                margin="normal"
+              />
+              <TextField
+                fullWidth
+                multiline
+                minRows={3}
+                label={`Description ${index + 1}`}
+                value={info.description}
+                onChange={(e) =>
+                  handleChangeAdditionalInfo(index, "description", e.target.value)
+                }
+                margin="normal"
+              />
+            </div>
+            <div className="flex items-center justify-center ">
+              <Button
+                onClick={() => handleRemoveAdditionalInfo(index)}
+                variant="contained"
+                color="primary"
+                startIcon={<RemoveIcon />}
+              >
+                <h4 style={{ margin: 0 }}>Remove</h4>
+              </Button>
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className="flex justify-end gap-4 mt-6">
@@ -848,12 +926,12 @@ const AddEditProductPage = ({ getResponseBack }) => {
         <Button
           variant="contained"
           onClick={handleSave}
-          // disabled={productLoader}
+        // disabled={productLoader}
         >
           {productLoader ? <CircularProgress size={20} /> : "Save"}
         </Button>
       </div>
-    </div>
+    </div >
   );
 };
 

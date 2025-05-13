@@ -1,36 +1,30 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography, CircularProgress, Modal, IconButton } from "@mui/material";
 import { useDropzone } from "react-dropzone";
-// import videoIcon from "../assets/files/video.png";
-import { CloudUpload, Close } from "@mui/icons-material";
-// import defaultFileIcon from "../assets/files/default.png";
+import { CloudUpload, Close, PictureAsPdf } from "@mui/icons-material";
 import { postFileUpload } from "./api";
 
-const iconMap = {
-    pdf: CloudUpload,
-    png: CloudUpload,
-    jpeg: CloudUpload,
-    jpg: CloudUpload,
-    mp4: CloudUpload,
-    mp3: CloudUpload,
-    default: CloudUpload,
-};
-
 const MultipleFileUpload = ({ onFileUpload, existingFiles = [], multiple = true, setCloudinaryImage }) => {
+
+    console.log(existingFiles);
+
     const [files, setFiles] = useState(existingFiles);
+
+    useEffect(() => {
+        setFiles(existingFiles);
+    }, [existingFiles]);
+
     const [loading, setLoading] = useState(false);
     const [previewFile, setPreviewFile] = useState(null);
+
 
     const onDrop = useCallback(
         async (acceptedFiles) => {
             setLoading(true);
-            const filteredFiles = acceptedFiles.filter(
-                (file) => file.type !== "application/pdf"
-            );
             const newFiles = [];
 
-            for (const file of filteredFiles) {
+            for (const file of acceptedFiles) {
                 const formData = new FormData();
                 formData.append("file", file);
                 try {
@@ -57,30 +51,53 @@ const MultipleFileUpload = ({ onFileUpload, existingFiles = [], multiple = true,
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        accept: ".png,.jpg,.jpeg,.mp4,.mp3",
+        accept: ".png,.jpg,.jpeg,.mp4,.mp3,.pdf",
         multiple,
     });
 
     const handleRemoveFile = (fileId) => {
         setFiles((prevFiles) => prevFiles.filter((file) => file.id !== fileId));
-        apiService.fileDelete(fileId);
-        setCloudinaryImage("")
+        if (typeof apiService !== 'undefined' && apiService.fileDelete) {
+            apiService.fileDelete(fileId);
+        }
+        if (setCloudinaryImage) {
+            setCloudinaryImage("");
+        }
     };
 
     const handlePreviewFile = (file) => {
-        if (file.type === "mp4") {
-            setPreviewFile(file);
-        } else {
-            setPreviewFile(file);
+        setPreviewFile(file);
+    };
+
+    const getFileType = (file) => {
+        if (typeof file === 'string') {
+            const url = file.toLowerCase();
+            if (url.endsWith('.pdf')) return 'pdf';
+            if (url.endsWith('.mp4') || url.endsWith('.mov') || url.endsWith('.avi') || url.endsWith('.mkv') || url.endsWith('.webm')) return 'mp4';
+            if (url.endsWith('.mp3')) return 'mp3';
+            return 'image';
+        } else if (file && file.type) {
+            const type = file.type.toLowerCase();
+            if (type === 'application/pdf' || type.includes('pdf')) return 'pdf';
+            if (type.includes('video')) return 'mp4';
+            if (type.includes('audio')) return 'mp3';
+            return 'image';
+        } else if (file && file.fileUrl) {
+            return getFileType(file.fileUrl);
         }
+        return 'image';
+    };
+
+    const getFileUrl = (file) => {
+        if (typeof file === 'string') return file;
+        return file?.fileUrl || '';
     };
 
     return (
         <div className="flex gap-5">
             <div className="relative" {...getRootProps()}>
                 <div
-                    className={`flex p-2.5 w-40 rounded-lg ${isDragActive ? "bg-blue-100" : "bg-gray-300"
-                        }`}
+                    className={`flex p-2.5 w-40 rounded-lg ${isDragActive ? "bg-blue-100" : "bg-gray-300"}`}
                     aria-label="Upload files"
                 >
                     <div className="flex gap-2.5">
@@ -97,21 +114,14 @@ const MultipleFileUpload = ({ onFileUpload, existingFiles = [], multiple = true,
 
             <Box display="flex" flexWrap="wrap" gap={2}>
                 {files?.map((file, index) => {
-                    const fileUrl = typeof file === "string" ? file : file?.fileUrl;
+                    const fileUrl = getFileUrl(file);
 
-                    if (!fileUrl || typeof fileUrl !== "string") {
+                    const fileType = getFileType(file);
+
+                    if (!fileUrl) {
                         console.error(`Invalid fileUrl at index ${index}:`, file);
                         return null;
                     }
-
-                    const videoExtensions = [".mp3", ".mp4", ".mov", ".avi", ".mkv", ".webm"];
-                    // const isVideo =
-                    //     videoExtensions.some((ext) => fileUrl.toLowerCase().endsWith(ext)) || fileUrl.includes("/video/");
-
-                    const isMedia =
-                        videoExtensions.some((ext) => fileUrl.toLowerCase().endsWith(ext)) ||
-                        fileUrl.includes("/video/") || fileUrl.includes("/audio/");
-
 
                     return (
                         <Box
@@ -126,52 +136,45 @@ const MultipleFileUpload = ({ onFileUpload, existingFiles = [], multiple = true,
                                 width: "120px",
                                 textAlign: "center",
                                 position: "relative",
+                                cursor: "pointer"
                             }}
+                            onClick={() => handlePreviewFile({ ...file, fileUrl, type: fileType })}
                         >
-                            {/* {isVideo ? (
+                            {fileType === 'pdf' ? (
+                                <PictureAsPdf
+                                    style={{ width: "50px", height: "50px", marginBottom: "8px" }}
+                                />
+                            ) : fileType === 'mp3' ? (
+                                <audio
+                                    src={fileUrl}
+                                    style={{ width: "50px", height: "50px", marginBottom: "8px" }}
+                                    controls
+                                />
+                            ) : fileType === 'mp4' ? (
                                 <video
                                     src={fileUrl}
                                     style={{ width: "50px", height: "50px", marginBottom: "8px" }}
-                                    onClick={() => handlePreviewFile(fileUrl)}
                                     controls
                                 />
                             ) : (
                                 <img
                                     src={fileUrl}
                                     alt={file?.name || "file-preview"}
-                                    style={{ width: "50px", height: "50px", marginBottom: "8px" }}
-                                    onClick={() => handlePreviewFile(fileUrl)}
-                                />
-                            )} */}
-                            {isMedia ? (
-                                fileUrl.endsWith(".mp3") ? (
-                                    <audio
-                                        src={fileUrl}
-                                        style={{ width: "50px", height: "50px", marginBottom: "8px" }}
-                                        onClick={() => handlePreviewFile(fileUrl)}
-                                        controls
-                                    />
-                                ) : (
-                                    <video
-                                        src={fileUrl}
-                                        style={{ width: "50px", height: "50px", marginBottom: "8px" }}
-                                        onClick={() => handlePreviewFile(fileUrl)}
-                                        controls
-                                    />
-                                )
-                            ) : (
-                                <img
-                                    src={fileUrl}
-                                    alt={file?.name || "file-preview"}
-                                    style={{ width: "50px", height: "50px", marginBottom: "8px" }}
-                                    onClick={() => handlePreviewFile(fileUrl)}
+                                    style={{ width: "50px", height: "50px", marginBottom: "8px", objectFit: "cover" }}
                                 />
                             )}
+
+                            <Typography variant="caption" noWrap sx={{ width: "100%" }}>
+                                {file?.name || `File ${index + 1}`}
+                            </Typography>
 
                             <IconButton
                                 size="small"
                                 sx={{ position: "absolute", top: 0, right: 0 }}
-                                onClick={() => handleRemoveFile(file?.id)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleRemoveFile(file?.id);
+                                }}
                             >
                                 <Close fontSize="small" />
                             </IconButton>
@@ -205,31 +208,50 @@ const MultipleFileUpload = ({ onFileUpload, existingFiles = [], multiple = true,
                         >
                             <Close fontSize="small" />
                         </IconButton>
-                        {/* {previewFile.type === "pdf" ? (
-                            <iframe
-                                src={previewFile}
-                                title="PDF Viewer"
-                                style={{ width: "100%", height: "100%" }}
-                            />
-                        ) : previewFile.type === "mp4" ? (
-                            <video src={previewFile} controls style={{ width: "100%", height: "100%" }} />
-                        ) : (
-                            <img src={previewFile} alt="Preview" style={{ maxWidth: "100%", maxHeight: "100%" }} />
-                        )} */}
-                        {previewFile.type === "pdf" ? (
-                            <iframe
-                                src={previewFile}
-                                title="PDF Viewer"
-                                style={{ width: "100%", height: "100%" }}
-                            />
-                        ) : previewFile.type === "mp4" ? (
-                            <video src={previewFile} controls style={{ width: "100%", height: "100%" }} />
-                        ) : previewFile.type === "mp3" ? (
-                            <audio src={previewFile} controls style={{ width: "100%" }} />
-                        ) : (
-                            <img src={previewFile} alt="Preview" style={{ maxWidth: "100%", maxHeight: "100%" }} />
-                        )}
 
+                        {(() => {
+                            const fileType = getFileType(previewFile);
+                            const fileUrl = getFileUrl(previewFile);
+
+                            if (fileType === 'pdf') {
+
+
+
+
+                                return (
+                                    <iframe
+                                        src={fileUrl}
+                                        title="PDF Viewer"
+                                        style={{ width: "100%", height: "100%", border: "none" }}
+                                    />
+                                );
+
+                            } else if (fileType === 'mp4') {
+                                return (
+                                    <video
+                                        src={fileUrl}
+                                        controls
+                                        style={{ maxWidth: "100%", maxHeight: "100%" }}
+                                    />
+                                );
+                            } else if (fileType === 'mp3') {
+                                return (
+                                    <audio
+                                        src={fileUrl}
+                                        controls
+                                        style={{ width: "100%" }}
+                                    />
+                                );
+                            } else {
+                                return (
+                                    <img
+                                        src={fileUrl}
+                                        alt="Preview"
+                                        style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+                                    />
+                                );
+                            }
+                        })()}
                     </Box>
                 </Modal>
             )}
@@ -240,7 +262,8 @@ const MultipleFileUpload = ({ onFileUpload, existingFiles = [], multiple = true,
 MultipleFileUpload.propTypes = {
     onFileUpload: PropTypes.func.isRequired,
     existingFiles: PropTypes.array,
-    multiple: PropTypes.bool,
+    multiple: PropTypes.string,
+    setCloudinaryImage: PropTypes.func
 };
 
 export default MultipleFileUpload;

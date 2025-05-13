@@ -12,7 +12,6 @@ import { setDeleteModal } from "../slices/sharedSlice";
 const DeleteModal = ({ handleDelete }) => {
   const dispatch = useDispatch();
   const { deleteModal } = useSelector((state) => state.sharedState);
-  console.log("deleteModal", deleteModal);
   const closeModal = () => {
     dispatch(setDeleteModal(false));
   };

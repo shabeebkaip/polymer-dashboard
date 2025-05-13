@@ -10,7 +10,6 @@ const ProductFilter = ({ module, route, onFilterChange }) => {
   const [formData, setFormData] = useState({});
   const [filters, setFilters] = useState([]);
   const [loading, setLoading] = useState(true);
- console.log(formData,"llll");
  
   const handleDataChange = (key, value) => {
     setFormData((prevData) => ({
@@ -43,7 +42,6 @@ const ProductFilter = ({ module, route, onFilterChange }) => {
     try {
       const response = await FilterService.getFilter(route);
       setFilters(response.data.filter);
-      console.log(response.data.filter);
       
     } catch (error) {
       console.error("Error fetching filter:", error);
@@ -55,7 +53,7 @@ const ProductFilter = ({ module, route, onFilterChange }) => {
   return (
     <div className="flex flex-col justify-between h-full">
       {loading ? (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex items-center justify-center h-full">
           <CircularProgress />
         </div>
       ) : (
@@ -66,7 +64,7 @@ const ProductFilter = ({ module, route, onFilterChange }) => {
             ))}
           </div>
 
-          <div className="absolute bottom-0 flex justify-center px-20 bg-white z-10">
+          <div className="absolute bottom-0 z-10 flex justify-center px-20 bg-white">
             <Box sx={{ padding: "8px 16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
               {filters.length > 0 && (
                 <>

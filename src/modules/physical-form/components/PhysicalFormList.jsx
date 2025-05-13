@@ -4,7 +4,6 @@ import PhysicalFormRow from "./PhysicalFormRow";
 
 const PhysicalFormList = () => {
   const { physicalForm } = useSelector((state) => state.sharedState);
-  console.log("physicalForm", physicalForm);
   return (
     <div>
       <TableUI

@@ -26,7 +26,7 @@ const Navbar = () => {
   const showBackButton = location.pathname !== "/" && location.pathname !== "/products";
 
   return (
-    <nav className="w-full bg-white shadow-custom  h-[80px]">
+    <nav className="w-full bg-white shadow-custom h-[80px]">
       <div className="flex items-center justify-between px-5 py-3.5">
         <div className="flex items-center gap-3">
         {showBackButton && (
