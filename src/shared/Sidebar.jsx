@@ -56,6 +56,11 @@ const menuItems = [
         displayName: "Quote Requests",
         route: "/enquiries/quote",
       },
+      {
+        name: "finance Requests",
+        displayName: "Finance Requests",
+        route: "/enquiries/finance",
+      },
     ],
     icon: <ForumIcon />,
   },

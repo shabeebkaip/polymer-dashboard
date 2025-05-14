@@ -7,9 +7,17 @@ const requestSlice = createSlice({
     quote: {},
     samples: [],
     sample: {},
+    finances: [],
+    finance: {},
     modal: false,
   },
   reducers: {
+    setFinances: (state, action) => {
+      state.finances = action.payload;
+    },
+    setFinance: (state, action) => {
+      state.finance = action.payload;
+    },
     setQuotes: (state, action) => {
       state.quotes = action.payload;
     },
@@ -27,6 +35,6 @@ const requestSlice = createSlice({
     },
   },
 });
-export const { setQuotes, setSamples, setModal, setQuote, setSample } =
+export const { setQuotes, setSamples, setModal, setQuote, setSample, setFinance, setFinances } =
   requestSlice.actions;
 export const requestReducer = requestSlice.reducer;

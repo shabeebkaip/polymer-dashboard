@@ -14,6 +14,7 @@ import ChemicalFamily from "./modules/chemical-family/containers/ChemicalFamily"
 import Incoterm from "./modules/incoterms/containers/Incoterm";
 import Grade from "./modules/grade/containers/Grade";
 import Sellers from "./modules/users/containers/Sellers";
+import Finance from "./modules/requests/containers/Finance";
 
 const AppRoutes = () => {
   return (
@@ -25,8 +26,13 @@ const AppRoutes = () => {
         <Route path="/" exact element={<Products />} />
         <Route path="/industries" exact element={<Industries />} />
         <Route path="/product-families" exact element={<ProductFamilies />} />
-        <Route path="/enquiries/quote" exact element={<Quote />} />
+
+
         <Route path="/enquiries/sample" exact element={<Sample />} />
+        <Route path="/enquiries/quote" exact element={<Quote />} />
+        <Route path="/enquiries/finance" exact element={<Finance />} />
+
+
         <Route path="/polymer-type" exact element={<PolymerType />} />
         <Route path="/payment-terms" exact element={<PaymentTerms />} />
         <Route path="/packaging-type" exact element={<PackagingType />} />
