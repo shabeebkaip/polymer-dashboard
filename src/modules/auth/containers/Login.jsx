@@ -43,11 +43,13 @@ const Login = () => {
             }
           })
           .catch((error) => {
-            console.log(error, "56");
-            enqueueSnackbar("Invalid Email or Password", {
-              anchorOrigin: { vertical: "top", horizontal: "right" },
-              variant: "error",
-            });
+            const message =
+        error?.response?.data?.message || "Invalid Email or Password";
+
+      enqueueSnackbar(message, {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        variant: "error",
+      });
             setLoading(false);
           });
       } catch (error) {

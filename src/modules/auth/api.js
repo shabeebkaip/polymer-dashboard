@@ -6,6 +6,7 @@ export const loginApi = async (data) => {
     return response.data;
   } catch (err) {
     console.log(err);
+    throw err; 
   }
 };
 

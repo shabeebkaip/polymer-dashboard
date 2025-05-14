@@ -208,19 +208,14 @@ const Products = () => {
         }
       />
 
-      {productLoader ? (
-        <PageLoader />
-      ) : (
-        <div className="mt-4">
-          {products && products.length > 0 ? (
-            <ProductsList products={products} />
-          ) : (
-            <div className="text-center text-gray-500 text-lg py-10">
-              No data found
-            </div>
-          )}
-        </div>
-      )}
+{productLoader ? (
+  <PageLoader />
+) : (
+  <div className="mt-4">
+    <ProductsList products={products} />
+  </div>
+)}
+
       <AddEditProduct getResponseBack={fetchProducts} />
       <DeleteModal handleDelete={handleDelete} />
       <Filters />
