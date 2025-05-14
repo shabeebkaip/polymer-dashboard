@@ -39,7 +39,6 @@ import { getProductFamiliesApi } from "../../productFamilies/api";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import FileUpload from "../../../shared/sharedComponents/file-uploads/FileUpload";
 import { setPageTitle } from "../../../slices/sharedSlice";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -307,10 +306,16 @@ const AddEditProductPage = ({ getResponseBack }) => {
   };
 
   const handleImageUpload = (files) => {
-    debugger
     setData((prev) => ({
       ...prev,
       productImages: [...(prev.productImages || []), ...files],
+    }));
+  };
+
+  const handleRemoveImage = (index) => {
+    setData((prev) => ({
+      ...prev,
+      productImages: prev.productImages.filter((_, i) => i !== index),
     }));
   };
 
@@ -323,7 +328,6 @@ const AddEditProductPage = ({ getResponseBack }) => {
   };
 
   const handleFileUpload3 = (file) => {
-    debugger
     setData({ ...data, certificate_of_analysis: file[0] });
   };
 
@@ -530,6 +534,7 @@ const AddEditProductPage = ({ getResponseBack }) => {
         <UploadImage
           onFilesUpload={handleImageUpload}
           previews={data.productImages?.map(img => img.fileUrl) || []}
+          setPreviews={handleRemoveImage}
         />
       </div>
 
