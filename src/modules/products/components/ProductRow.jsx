@@ -24,7 +24,7 @@ const ProductRow = ({ index, isLastRow, product }) => {
       <td className="p-4 ">{product.productName}</td>
       <td>{product?.chemicalName || "--"}</td>
       <td className="max-w-xs">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 w-24">
           {product?.industry?.map((item, index) => (
             <Chip label={item?.name} key={index} />
           )) || "--"}
@@ -32,7 +32,11 @@ const ProductRow = ({ index, isLastRow, product }) => {
       </td>
             <td className="p-4 ">{product.price}</td>
 
-      
+            {product?.createdBy?.company_logo && (
+  <div className="px-10 py-1">
+    <img src={product?.createdBy?.company_logo} className="w-16 h-16 rounded-md" />
+  </div>
+)}
       <td>
         <div className="flex items-center gap-2">
           <EditAction
