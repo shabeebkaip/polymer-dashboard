@@ -76,7 +76,7 @@ const FinanceRow = ({ isLastRow, finance, index, getResponseBack }) => {
   return (
     <TableRow isLastRow={isLastRow} index={index}>
       <td className="p-4">{finance?.userId?.name}</td>
-      <td className="p-4">{finance?.productId?.productName}</td>
+      <td className="p-4 w-24 truncate whitespace-nowrap overflow-hidden">{finance?.productId?.productName}</td>
       <td>{finance?.emiMonths}</td>
       <td>{finance.quantity}</td>
       <td>{finance?.estimatedPrice}</td>
@@ -99,7 +99,7 @@ const FinanceRow = ({ isLastRow, finance, index, getResponseBack }) => {
         />
       </td>
 
-      <td className="px-4">
+      <td className="px-8">
         <FormControlLabel
           control={
             <IOSSwitch

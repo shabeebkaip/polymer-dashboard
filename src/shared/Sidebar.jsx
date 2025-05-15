@@ -66,7 +66,7 @@ const menuItems = [
   },
   {
     name: "dropdown",
-    displayName: "Dropdown",
+    displayName: "Master Data",
     route: "/dropdown",
     icon:  <ArrowDropDownIcon/>,
     items: [
