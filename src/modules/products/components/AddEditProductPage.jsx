@@ -227,32 +227,43 @@ const AddEditProductPage = ({ getResponseBack }) => {
       ...prev,
       [key]: value,
     }));
+  
+    const isValid = typeof value === "string" ? value.trim() !== "" : value !== "" && value !== null;
+  
+    if (errors[key] && isValid) {
+      setErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[key];
+        return updatedErrors;
+      });
+    }
   };
+  console.log(errors, "errors");
+  
 
   const validate = () => {
     const newErrors = {};
     if (!data.productName) newErrors.productName = "Product Name is required";
-    if (!data.chemicalName)
-      newErrors.chemicalName = "Chemical  Name is required";
-    if (!data.chemicalFamily)
-      newErrors.chemicalFamily = "chemical Family is required";
-    if (!data.polymerType) newErrors.polymerType = "polymer Type is required";
-    if (!data.industry) newErrors.industry = "industry is required";
-    if (!data.physicalForm)
-      newErrors.physicalForm = "physical Form is required";
-    if (!data.minimum_order_quantity)
-      newErrors.minimum_order_quantity = "minimum order quantityis required";
-    if (!data.stock) newErrors.stock = "stock is required";
-    if (!data.uom) newErrors.uom = "uom is required";
-    if (!data.price) newErrors.price = "price is required";
-    if (!data.incoterms) newErrors.incoterms = "incoterms is required";
-    if (!data.price) newErrors.price = "price is required";
-
+    if (!data.chemicalName) newErrors.chemicalName = "Chemical Name is required";
+    if (!data.chemicalFamily) newErrors.chemicalFamily = "Chemical Family is required";
+    if (!data.polymerType) newErrors.polymerType = "Polymer Type is required";
+    if (!data.industry) newErrors.industry = "Industry is required";
+    if (!data.physicalForm) newErrors.physicalForm = "Physical Form is required";
+    if (!data.minimum_order_quantity) newErrors.minimum_order_quantity = "Minimum Order Quantity is required";
+    if (!data.stock) newErrors.stock = "Stock is required";
+    if (!data.uom) newErrors.uom = "UOM is required";
+    if (!data.price) newErrors.price = "Price is required";
+    if (!data.incoterms) newErrors.incoterms = "Incoterms is required";
+  
     setErrors(newErrors);
-    setTimeout(() => {
-      setErrors({});
-    }, 2000);
-    return Object.keys(newErrors).length === 0;
+    const isValid = Object.keys(newErrors).length === 0;
+    if (!isValid) {
+      enqueueSnackbar("Please fill all required fields", {
+        variant: "warning",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+    }
+    return isValid;
   };
 
   // console.log(countries, "data?.chemicalFamily");
@@ -656,10 +667,13 @@ const AddEditProductPage = ({ getResponseBack }) => {
               label="Unit of Measurement"
               variant="outlined"
               InputLabelProps={{ shrink: true }}
+              error={!!errors.uom}
+              helperText={errors.uom}
             />
           )}
           onChange={(_, value) => onFieldChange("uom", value)}
           value={uomDropdown.find((item) => item === data.uom) || null}
+        
         />
         <TextField
           label="Price"

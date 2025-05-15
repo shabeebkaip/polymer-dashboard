@@ -75,7 +75,7 @@ const UserList = ({ users, getResponseBack }) => {
     // "User Type",
     ...(users.some(user => user?.company_logo) ? ["Company Logo"] : []),
     "Status",
-    "Action"
+    "Verification "
   ];
   
   
@@ -117,7 +117,7 @@ const UserList = ({ users, getResponseBack }) => {
 )}
                <td className="p-4 border-b">{localStatus[row._id]}</td>
                   <td className="p-4 border-b">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 px-8">
                       <Tooltip title="Toggle status" arrow>
                         <FormControlLabel
                           control={

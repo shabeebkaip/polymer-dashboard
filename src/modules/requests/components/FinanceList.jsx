@@ -18,7 +18,7 @@ const FinanceList = ({finances, getResponseBack}) => {
           "Requested On",
           "Status",
           "View",
-          "Action",
+          "Verification",
           
         ]}
         noRecord={finances?.length === 0}

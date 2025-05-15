@@ -38,7 +38,11 @@ const QuoteModal = () => {
           <LabelValue label="Destination" value={quote?.destination} />
           <LabelValue label="Packaging Size" value={quote?.packaging_size} />
           <LabelValue label="Expected Annual Volume " value={quote?.expected_annual_volume} />
-          <LabelValue label="Delivery Date " value={quote?.delivery_date} />
+          <LabelValue label="Delivery Date " value={new Date(quote?.delivery_date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  })} />
           <LabelValue label="Pricing" value={quote?.pricing} />
           <LabelValue label="Application" value={quote?.application} />
           <LabelValue label="Requested Document" value={quote?.request_document} />
