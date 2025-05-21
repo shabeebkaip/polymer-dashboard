@@ -107,8 +107,8 @@ const AddEditPolymerType = ({ getResponseBack }) => {
       </DialogTitle>
       <DialogContent dividers>
         <div className="grid grid-cols-2 gap-4">
-          <TextField
-            label="Name"
+        <TextField
+            label="Name(EN)"
             variant="outlined"
             fullWidth
             value={data.name || ""}
@@ -123,7 +123,7 @@ const AddEditPolymerType = ({ getResponseBack }) => {
             }}
           />
           <TextField
-            label="Description"
+            label="Description(EN)"
             variant="outlined"
             fullWidth
             value={data.description || ""}
@@ -137,6 +137,99 @@ const AddEditPolymerType = ({ getResponseBack }) => {
               },
             }}
           />
+
+          <TextField
+            label="Name(AR)"
+            variant="outlined"
+            fullWidth
+            value={data.ar_name || ""}
+            onChange={(e) => setData({ ...data, ar_name: e.target.value })}
+            error={!!errors.ar_name}
+            helperText={errors.ar_name}
+            required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+          />
+          <TextField
+            label="Description(AR)"
+            variant="outlined"
+            fullWidth
+            value={data.ar_description || ""}
+            onChange={(e) => setData({ ...data, ar_description: e.target.value })}
+            error={!!errors.ar_description}
+            helperText={errors.ar_description}
+            required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+          />
+
+          <TextField
+            label="Name(GER)"
+            variant="outlined"
+            fullWidth
+            value={data.ger_name || ""}
+            onChange={(e) => setData({ ...data, ger_name: e.target.value })}
+            error={!!errors.ger_name}
+            helperText={errors.ger_name}
+            required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+          />
+          <TextField
+            label="Description(GER)"
+            variant="outlined"
+            fullWidth
+            value={data.ger_description || ""}
+            onChange={(e) => setData({ ...data, ger_description: e.target.value })}
+            error={!!errors.ger_description}
+            helperText={errors.ger_description}
+            required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+          />
+          <TextField
+            label="Name(CN)"
+            variant="outlined"
+            fullWidth
+            value={data.cn_name || ""}
+            onChange={(e) => setData({ ...data, cn_name: e.target.value })}
+            error={!!errors.cn_name}
+            helperText={errors.cn_name}
+            required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+          />
+          <TextField
+            label="Description(CN)"
+            variant="outlined"
+            fullWidth
+            value={data.cn_description || ""}
+            onChange={(e) => setData({ ...data, cn_description: e.target.value })}
+            error={!!errors.cn_description}
+            helperText={errors.cn_description}
+            required
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+          />
+          
         
         </div>
       </DialogContent>

@@ -18,6 +18,8 @@ import Finance from "./modules/requests/containers/Finance";
 import Experts from "./modules/users/containers/Experts";
 import PrivacyPolicy from "./modules/cms/PrivacyPolicy";
 import TermsCondition from "./modules/cms/Terms&Condition";
+import SocialMedia from "./modules/cms/SocialMedia";
+
 
 const AppRoutes = () => {
   return (
@@ -37,6 +39,7 @@ const AppRoutes = () => {
 
         <Route path="/cms/termsAndConditions" exact element={<TermsCondition />} />
         <Route path="/cms/privacyPolicy" exact element={<PrivacyPolicy />} />
+        <Route path="/cms/socialMedia" exact element={<SocialMedia />} />
         {/* <Route path="/cms/faq" exact element={< />} /> */}
 
 

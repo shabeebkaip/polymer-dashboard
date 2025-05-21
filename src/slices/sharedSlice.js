@@ -81,6 +81,16 @@ const sharedSlice = createSlice({
     setIndustryCrud: (state, action) => {
       state.industryCrud = action.payload;
     },
+    // socila media
+    setSocialMedia: (state, action) => {
+      state.productFamilies = action.payload;
+    },
+    setSocialMediaModal: (state, action) => {
+      state.productFamilyModal = action.payload;
+    },
+    setSocialMediaCrud: (state, action) => {
+      state.productFamilyCrud = action.payload;
+    },
     // product families
     setProductFamilies: (state, action) => {
       state.productFamilies = action.payload;
@@ -212,6 +222,10 @@ export const {
   setIndustries,
   setIndustryModal,
   setIndustryCrud,
+  //social media
+  setSocialMedia,
+  setSocialMediaModal,
+  setSocialMediaCrud,
   // product families
   setProductFamilies,
   setProductFamilyModal,
