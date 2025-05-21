@@ -38,6 +38,11 @@ const menuItems = [
         displayName: "Sellers",
         route: "/sellers-list",
       },
+            {
+        name: "experts",
+        displayName: "Experts",
+        route: "/experts-list",
+      }, 
     ],
   },
   {
@@ -64,6 +69,31 @@ const menuItems = [
     ],
     icon: <ForumIcon />,
   },
+
+    {
+    name: "cms",
+    displayName: "Cms",
+    route: "/cms",
+    items: [
+      {
+        name: "Privacy & policy",
+        displayName: "Privacy & policy",
+        route: "/cms/privacyPolicy",
+        
+      },
+      {
+        name: "Terms & Conditions",
+        displayName: "Terms & Conditions",
+        route: "/cms/termsAndConditions",
+      },
+      {
+        name: "social Media",
+        displayName: "Social Media",
+        route: "/cms/socialMedia",
+      },
+    ],
+  },
+
   {
     name: "dropdown",
     displayName: "Master Data",

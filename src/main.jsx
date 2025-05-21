@@ -6,6 +6,8 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
 import store from "./store.js";
+import { LanguageProvider } from "./shared/hooks/LanguageContext.jsx";
+
 
 const theme = createTheme({
   typography: {
@@ -14,7 +16,8 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#2952FF",
-    },
+
+          },
     secondary: {
       main: "#474747",
     },
@@ -29,7 +32,9 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <SnackbarProvider autoHideDuration={2000} preventDuplicate dense>
         <ThemeProvider theme={theme}>
+        <LanguageProvider>         
           <App />
+        </LanguageProvider>  
         </ThemeProvider>
       </SnackbarProvider>
     </Provider>

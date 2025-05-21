@@ -15,6 +15,9 @@ import Incoterm from "./modules/incoterms/containers/Incoterm";
 import Grade from "./modules/grade/containers/Grade";
 import Sellers from "./modules/users/containers/Sellers";
 import Finance from "./modules/requests/containers/Finance";
+import Experts from "./modules/users/containers/Experts";
+import PrivacyPolicy from "./modules/cms/PrivacyPolicy";
+import TermsCondition from "./modules/cms/Terms&Condition";
 
 const AppRoutes = () => {
   return (
@@ -32,6 +35,11 @@ const AppRoutes = () => {
         <Route path="/enquiries/quote" exact element={<Quote />} />
         <Route path="/enquiries/finance" exact element={<Finance />} />
 
+        <Route path="/cms/termsAndConditions" exact element={<TermsCondition />} />
+        <Route path="/cms/privacyPolicy" exact element={<PrivacyPolicy />} />
+        {/* <Route path="/cms/faq" exact element={< />} /> */}
+
+
 
         <Route path="/polymer-type" exact element={<PolymerType />} />
         <Route path="/payment-terms" exact element={<PaymentTerms />} />
@@ -43,6 +51,7 @@ const AppRoutes = () => {
 
         <Route path={"/sellers-list"} element={<Sellers />} />
         <Route path={"/buyers-list"} element={<Users />} />
+        <Route path={"/experts-list"} element={<Experts />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </div>
