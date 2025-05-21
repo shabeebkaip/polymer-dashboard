@@ -20,6 +20,7 @@ const Navbar = () => {
     }, 1000);
   };
 
+  
   const handleBack = () => {
     navigate(-1);
   };
