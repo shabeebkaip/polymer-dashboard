@@ -24,10 +24,10 @@ const Users = () => {
       setLoading(false);
       if (response.success) {
         setUsers(response.data);
-  
+
         const paginationData = {
           total: response.total,
-          currentPage: response.page, 
+          currentPage: response.page,
           totalPages: response.totalPages,
         };
         setPagination(paginationData);
@@ -36,22 +36,28 @@ const Users = () => {
       }
     });
   };
-  
+
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      {loading && <PageLoader />}
       {/* <Title
         title="Users"
         description={
           "A comprehensive list of all registered users within the system."
         }
       /> */}
-      <UserList users={users} getResponseBack={() => fetchUsers()} />
-      <PaginationContainer
-        totalPages={pagination?.totalPages}
-        currentPage={pagination?.currentPage}
-        handlePageChange={(page) => fetchUsers({ page })}
-      />
+
+      {loading ? (
+        <PageLoader />
+      ) : (
+        <>
+          <UserList users={users} getResponseBack={() => fetchUsers()} />
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchUsers({ page })}
+          />
+        </>
+      )}
     </div>
   );
 };

@@ -13,7 +13,7 @@ const Finance = () => {
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  
+
 
   const fetchFinances = (query = {}) => {
     setLoading(true);
@@ -36,7 +36,7 @@ const Finance = () => {
         setLoading(false);
       });
   };
-  
+
   useEffect(() => {
     dispatch(setPageTitle("Finance Enquiries"));
   }, [dispatch]);
@@ -51,14 +51,18 @@ const Finance = () => {
         title="Finance Enquiries"
         description="Display all the Finance Requests"
       />
-      <div className="mt-4">
-        {loading ? <PageLoader /> : <FinanceList finances={finances} getResponseBack={() => fetchFinances()} />}
-      </div>
-      <PaginationContainer
-        totalPages={pagination?.totalPages}
-        currentPage={pagination?.currentPage}
-        handlePageChange={(page) => fetchSamples({ page })}
-      />
+      {loading ? <PageLoader /> :
+        <>
+          <div className="mt-4">
+            <FinanceList finances={finances} getResponseBack={() => fetchFinances()} />
+          </div>
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchSamples({ page })}
+          />
+        </>
+      }
       <FinanceModal />
     </div>
   );

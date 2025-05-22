@@ -9,14 +9,14 @@ import PageLoader from "../../../shared/PageLoader";
 import PaginationContainer from "../../../shared/PaginationContainer";
 
 const Quote = () => {
-  const [quotes, setQuotes] = useState([]); 
+  const [quotes, setQuotes] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   const fetchQuotes = (query = {}) => {
     setLoading(true);
-    dispatch(getQuoteRequestApi(query)) 
+    dispatch(getQuoteRequestApi(query))
       .then((response) => {
         if (response?.success) {
           const paginationData = {
@@ -25,14 +25,14 @@ const Quote = () => {
             totalPages: response.totalPages,
           };
           setPagination(paginationData);
-          setQuotes(response.data); 
+          setQuotes(response.data);
         }
       })
       .catch((error) => {
-        console.error("Error fetching quotes:", error); 
+        console.error("Error fetching quotes:", error);
       })
       .finally(() => {
-        setLoading(false); 
+        setLoading(false);
       });
   };
 
@@ -41,20 +41,26 @@ const Quote = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchQuotes({ page: 1 }); 
-  }, []); 
+    fetchQuotes({ page: 1 });
+  }, []);
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title title="Quote Enquiries" description="Display all the Quote Requests" />
-      <div className="mt-4">
-        {loading ? <PageLoader /> : <QuoteList data={quotes} />} {/* Use quotes instead of samples */}
-      </div>
-      <PaginationContainer
-        totalPages={pagination?.totalPages}
-        currentPage={pagination?.currentPage}
-        handlePageChange={(page) => fetchQuotes({ page })}
-      />
+      {loading ? <PageLoader />
+        :
+        <>
+          <div className="mt-4">
+            <QuoteList data={quotes} />
+          </div>
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchQuotes({ page })}
+          />
+        </>
+      }
+
       <QuoteModal />
     </div>
   );

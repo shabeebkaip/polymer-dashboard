@@ -35,7 +35,7 @@ const Sample = () => {
         setLoading(false);
       });
   };
-  
+
   useEffect(() => {
     dispatch(setPageTitle("Sample Enquiries"));
   }, [dispatch]);
@@ -50,14 +50,18 @@ const Sample = () => {
         title="Sample Enquiries"
         description="Display all the Sample Requests"
       />
-      <div className="mt-4">
-        {loading ? <PageLoader /> : <SampleList data={samples} />}
-      </div>
-      <PaginationContainer
-        totalPages={pagination?.totalPages}
-        currentPage={pagination?.currentPage}
-        handlePageChange={(page) => fetchSamples({ page })}
-      />
+      {loading ? <PageLoader /> :
+        <>
+          <div className="mt-4">
+            <SampleList data={samples} />
+          </div>
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchSamples({ page })}
+          />
+        </>
+      }
       <SampleModal />
     </div>
   );

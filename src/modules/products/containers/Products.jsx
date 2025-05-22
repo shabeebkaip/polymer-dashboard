@@ -208,22 +208,24 @@ const Products = () => {
         }
       />
 
-{productLoader ? (
-  <PageLoader />
-) : (
-  <div className="mt-4">
-    <ProductsList products={products} />
-  </div>
-)}
+      {productLoader ? (
+        <PageLoader />
+      ) : (
+        <>
+          <div className="mt-4">
+            <ProductsList products={products} />
+          </div>
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchProducts({ page })}
+          />
+        </>
+      )}
 
       <AddEditProduct getResponseBack={fetchProducts} />
       <DeleteModal handleDelete={handleDelete} />
       <Filters />
-      <PaginationContainer
-        totalPages={pagination?.totalPages}
-        currentPage={pagination?.currentPage}
-        handlePageChange={(page) => fetchProducts({ page })}
-      />
     </div>
   );
 };

@@ -54,7 +54,7 @@ const UserList = ({ users, getResponseBack }) => {
   }, [users]);
 
   const handleStatusUpdate = (userId, newStatus) => {
-    setLocalStatus((prev) => ({ ...prev, [userId]: newStatus })); 
+    setLocalStatus((prev) => ({ ...prev, [userId]: newStatus }));
 
     const payload = { verification: newStatus };
     PatchUserApi(userId, payload).then((response) => {
@@ -77,13 +77,13 @@ const UserList = ({ users, getResponseBack }) => {
     "Status",
     "Verification "
   ];
-  
-  
+
+
   return (
     <div className="mt-4">
       <table className="w-full border-collapse">
         <thead>
-          <tr className="bg-white sticky top-0 z-20">
+          <tr className="sticky top-0 z-20 bg-white">
             {tableHeader.map((head, index) => (
               <th
                 key={index}
@@ -102,20 +102,19 @@ const UserList = ({ users, getResponseBack }) => {
               return (
                 <tr
                   key={row._id}
-                  className={`${index % 2 === 1 ? "glass-card" : "dark-glass"} ${
-                    isLastRow ? "border-b-[3px]" : ""
-                  }`}
+                  className={`${index % 2 === 1 ? "glass-card" : "dark-glass"} ${isLastRow ? "border-b-[3px]" : ""
+                    }`}
                 >
                   <td className="p-4 border-b">{index + 1}</td>
                   <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
                   {/* <td className="p-4 border-b">{row.user_type}</td> */}
                   {row?.company_logo && (
-  <div className="px-10 py-1">
-    <img src={row.company_logo} className="w-16 h-16 rounded-md" />
-  </div>
-)}
-               <td className="p-4 border-b">{localStatus[row._id]}</td>
+                    <div className="px-10 py-1">
+                      <img src={row.company_logo} className="w-16 h-16 rounded-md" />
+                    </div>
+                  )}
+                  <td className="p-4 border-b">{localStatus[row._id]}</td>
                   <td className="p-4 border-b">
                     <div className="flex items-center gap-4 px-8">
                       <Tooltip title="Toggle status" arrow>
