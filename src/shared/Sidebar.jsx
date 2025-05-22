@@ -11,6 +11,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ForumIcon from '@mui/icons-material/Forum';
 import GroupIcon from '@mui/icons-material/Group';
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 
 
@@ -91,7 +92,18 @@ const menuItems = [
         displayName: "Social Media",
         route: "/cms/socialMedia",
       },
+      {
+        name: "Benefits For Buyer",
+        displayName: "Benefits For Buyer",
+        route: "/cms/BenefitsForBuyer",
+      },
+      {
+        name: "Benefits For Suplier",
+        displayName: "Benefits For Suplier",
+        route: "/cms/BenefitsForSuplier",
+      },
     ],
+    icon: < InsertDriveFileIcon/>,
   },
 
   {

@@ -172,6 +172,9 @@ const AddEditProductPage = ({ getResponseBack }) => {
         chemicalName: productDetail.chemicalName,
         tradeName: productDetail.tradeName,
         description: productDetail.description,
+        ar_description: productDetail.ar_description,
+        ger_description: productDetail.ger_description,
+        cn_description: productDetail.cn_description,
         chemicalFamily: productDetail.chemicalFamily,
         product_family: productDetail.product_family,
         polymerType: productDetail.polymerType,
@@ -390,12 +393,45 @@ const AddEditProductPage = ({ getResponseBack }) => {
         />
 
         <TextField
-          label="Description"
+          label="Description(EN)"
           variant="outlined"
           fullWidth
           className="col-span-3"
           value={data.description || ""}
           onChange={(e) => onFieldChange("description", e.target.value)}
+          multiline
+          rows={4}
+          InputLabelProps={{ shrink: true }}
+        />
+         <TextField
+          label="Description(AR)"
+          variant="outlined"
+          fullWidth
+          className="col-span-3"
+          value={data.ar_description || ""}
+          onChange={(e) => onFieldChange("ar_description", e.target.value)}
+          multiline
+          rows={4}
+          InputLabelProps={{ shrink: true }}
+        />
+         <TextField
+          label="Description(GER)"
+          variant="outlined"
+          fullWidth
+          className="col-span-3"
+          value={data.ger_description || ""}
+          onChange={(e) => onFieldChange("ger_description", e.target.value)}
+          multiline
+          rows={4}
+          InputLabelProps={{ shrink: true }}
+        />
+         <TextField
+          label="Description(CN)"
+          variant="outlined"
+          fullWidth
+          className="col-span-3"
+          value={data.cn_description || ""}
+          onChange={(e) => onFieldChange("cn_description", e.target.value)}
           multiline
           rows={4}
           InputLabelProps={{ shrink: true }}
