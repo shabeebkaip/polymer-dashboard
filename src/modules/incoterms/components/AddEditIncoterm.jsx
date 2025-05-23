@@ -138,30 +138,14 @@ import {
               },
             }}
           />
-
-          <TextField
-            label="Name(AR)"
-            variant="outlined"
-            fullWidth
-            value={data.ar_name || ""}
-            onChange={(e) => setData({ ...data, ar_name: e.target.value })}
-            error={!!errors.ar_name}
-            helperText={errors.ar_name}
-            required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-          />
           <TextField
             label="Full Form(AR)"
             variant="outlined"
             fullWidth
-            value={data.ar_description || ""}
-            onChange={(e) => setData({ ...data, ar_description: e.target.value })}
-            error={!!errors.ar_description}
-            helperText={errors.ar_description}
+            value={data.ar_fullForm || ""}
+            onChange={(e) => setData({ ...data, ar_fullForm: e.target.value })}
+            error={!!errors.ar_fullForm}
+            helperText={errors.ar_fullForm}
             required
             slotProps={{
               inputLabel: {
@@ -171,43 +155,13 @@ import {
           />
 
           <TextField
-            label="Name(GER)"
-            variant="outlined"
-            fullWidth
-            value={data.ger_name || ""}
-            onChange={(e) => setData({ ...data, ger_name: e.target.value })}
-            error={!!errors.ger_name}
-            helperText={errors.ger_name}
-            required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-          />
-          <TextField
             label="Full Form(GER)"
             variant="outlined"
             fullWidth
-            value={data.ger_description || ""}
-            onChange={(e) => setData({ ...data, ger_description: e.target.value })}
-            error={!!errors.ger_description}
-            helperText={errors.ger_description}
-            required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-          />
-          <TextField
-            label="Name(CN)"
-            variant="outlined"
-            fullWidth
-            value={data.cn_name || ""}
-            onChange={(e) => setData({ ...data, cn_name: e.target.value })}
-            error={!!errors.cn_name}
-            helperText={errors.cn_name}
+            value={data.ger_fullForm || ""}
+            onChange={(e) => setData({ ...data, ger_fullForm: e.target.value })}
+            error={!!errors.ger_fullForm}
+            helperText={errors.ger_fullForm}
             required
             slotProps={{
               inputLabel: {
@@ -219,10 +173,10 @@ import {
             label="Full Form(CN)"
             variant="outlined"
             fullWidth
-            value={data.cn_description || ""}
-            onChange={(e) => setData({ ...data, cn_description: e.target.value })}
-            error={!!errors.cn_description}
-            helperText={errors.cn_description}
+            value={data.cn_fullForm || ""}
+            onChange={(e) => setData({ ...data, cn_fullForm: e.target.value })}
+            error={!!errors.cn_fullForm}
+            helperText={errors.cn_fullForm}
             required
             slotProps={{
               inputLabel: {

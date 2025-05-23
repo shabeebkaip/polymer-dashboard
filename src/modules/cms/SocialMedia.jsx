@@ -15,7 +15,7 @@ const SocialMedia = () => {
   const [mode, setMode] = useState('add');
   const [editingItem, setEditingItem] = useState(null);
   const [refreshFlag, setRefreshFlag] = useState(false);
-  const [deleteId, setDeleteId] = useState(null); // ✅ Added
+  const [deleteId, setDeleteId] = useState(null); 
 
   const pageTitle = language === 'ar' ? 'وسائل التواصل الاجتماعي' : 'Social Media';
 
