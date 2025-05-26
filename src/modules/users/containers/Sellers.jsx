@@ -8,14 +8,15 @@ import { setPageTitle } from "../../../slices/sharedSlice";
 import { useDispatch } from "react-redux";
 
 const Sellers = () => {
-
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
   useEffect(() => {
     fetchUsers();
   }, []);
+
   const fetchUsers = (query) => {
     setLoading(true);
     dispatch(setPageTitle("Sellers List"));
@@ -23,7 +24,14 @@ const Sellers = () => {
     getUsersApi(updatedQuery).then((response) => {
       setLoading(false);
       if (response.success) {
-        setUsers(response.data);
+        const processedUsers = response.data.map(seller => ({
+          ...seller,
+          company: seller.company,
+          company_logo: seller.company_logo,
+          products: seller.products || []
+        }));
+        
+        setUsers(processedUsers);
 
         const paginationData = {
           total: response.total,
@@ -39,13 +47,6 @@ const Sellers = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-
-      {/* <Title
-        title="Users"
-        description={
-          "A comprehensive list of all registered users within the system."
-        }
-      /> */}
       {loading ? (
         <PageLoader />
       ) : (
