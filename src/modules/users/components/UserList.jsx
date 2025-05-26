@@ -1,4 +1,4 @@
-import { Tooltip, Switch, FormControlLabel, Chip } from "@mui/material";
+import { Tooltip, Switch, FormControlLabel } from "@mui/material";
 import PropTypes from "prop-types";
 import { enqueueSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
@@ -68,16 +68,14 @@ const UserList = ({ users, getResponseBack }) => {
     });
   };
 
-  const hasCompanyInfo = users.some(user => user?.company || user?.company_logo);
-  
   const tableHeader = [
     "SL No",
     "Name",
     "Email",
-    ...(hasCompanyInfo ? ["Company", "Logo"] : []),
-    "Products",
+    "Company",
+    ...(users.some((user) => user?.company_logo) ? ["Company Logo"] : []),
     "Status",
-    "Verification"
+    "Verification",
   ];
 
   return (
@@ -100,8 +98,6 @@ const UserList = ({ users, getResponseBack }) => {
           <tbody>
             {users.map((row, index) => {
               const isLastRow = index === users.length - 1;
-              const userName = row.name || `${row.firstName || ''} ${row.lastName || ''}`.trim();
-              
               return (
                 <tr
                   key={row._id}
@@ -110,57 +106,18 @@ const UserList = ({ users, getResponseBack }) => {
                   }`}
                 >
                   <td className="p-4 border-b">{index + 1}</td>
-                  <td className="p-4 capitalize border-b">
-                    {userName || 'N/A'}
-                  </td>
+                  <td className="p-4 capitalize border-b">{row.name}</td>
                   <td className="p-4 border-b">{row.email}</td>
-                  
-                  {hasCompanyInfo && (
-                    <>
-                      <td className="p-4 border-b">
-                        <span className="">
-                          {row.company || 'N/A'}
-                        </span>
-                      </td>
-                      <td className="p-4 border-b">
-                        {row.company_logo ? (
-                          <img 
-                            src={row.company_logo} 
-                            alt={`${row.company || 'Company'} logo`}
-                            className="object-contain w-12 h-12 rounded-md"
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <span className="text-sm text-gray-400">No logo</span>
-                        )}
-                      </td>
-                    </>
+                  <td className="p-4 border-b">{row.company || "—"}</td>
+                  {row?.company_logo && (
+                    <td className="p-4 border-b">
+                      <img src={row.company_logo} className="w-16 h-16 rounded-md" />
+                    </td>
                   )}
-
-                  <td className="p-4 border-b">
-                    <Chip 
-                      label={`${row.products?.length || 0} products`}
-                      size="small"
-                      color={row.products?.length > 0 ? "primary" : "default"}
-                      variant="outlined"
-                    />
-                  </td>
-
-                  <td className="p-4 border-b">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      localStatus[row._id] === 'approved' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {localStatus[row._id]}
-                    </span>
-                  </td>
-                  
+                  <td className="p-4 border-b">{localStatus[row._id]}</td>
                   <td className="p-4 border-b">
                     <div className="flex items-center gap-4 px-8">
-                      <Tooltip title="Toggle verification status" arrow>
+                      <Tooltip title="Toggle status" arrow>
                         <FormControlLabel
                           control={
                             <IOSSwitch
@@ -185,9 +142,9 @@ const UserList = ({ users, getResponseBack }) => {
         ) : (
           <tfoot>
             <tr>
-              <td colSpan={tableHeader.length}>
+              <td colSpan={7}>
                 <div className="flex justify-center w-full p-4 text-center text-gray-500">
-                  No sellers available
+                  No data available
                 </div>
               </td>
             </tr>

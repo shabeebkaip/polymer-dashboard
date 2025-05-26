@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Title from "../../../shared/Title";
 import UserList from "../components/UserList";
 import { getUsersApi } from "../api";
 import PaginationContainer from "../../../shared/PaginationContainer";
@@ -20,19 +19,11 @@ const Sellers = () => {
   const fetchUsers = (query) => {
     setLoading(true);
     dispatch(setPageTitle("Sellers List"));
-    const updatedQuery = { ...query, type: 'seller' };
+    const updatedQuery = { ...query, type: "seller" };
     getUsersApi(updatedQuery).then((response) => {
       setLoading(false);
       if (response.success) {
-        const processedUsers = response.data.map(seller => ({
-          ...seller,
-          company: seller.company,
-          company_logo: seller.company_logo,
-          products: seller.products || []
-        }));
-        
-        setUsers(processedUsers);
-
+        setUsers(response.data);
         const paginationData = {
           total: response.total,
           currentPage: response.page,
