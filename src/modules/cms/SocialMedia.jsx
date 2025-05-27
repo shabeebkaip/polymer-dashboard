@@ -121,7 +121,7 @@ const SocialMedia = () => {
               key={item.id}
               className="relative w-[200px] border border-gray-300 rounded-lg overflow-hidden shadow-md"
             >
-              <div className="absolute top-2 right-2 flex gap-2 z-10">
+              <div className="absolute z-10 flex gap-2 top-2 right-2">
                 <button
                   onClick={() => handleEdit(item)}
                   className="relative cursor-pointer"
@@ -129,9 +129,9 @@ const SocialMedia = () => {
                 >
                   <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
                   <img
-                    src="/src/assets/tools/edit.svg"
+                    src="/src/assets/actions/edit.svg"
                     alt="Edit"
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                   />
                 </button>
                 <button
@@ -141,9 +141,9 @@ const SocialMedia = () => {
                 >
                   <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
                   <img
-                    src="/src/assets/tools/delete.svg"
+                    src="/src/assets/actions/delete.svg"
                     alt="Delete"
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                   />
                 </button>
               </div>
@@ -163,7 +163,7 @@ const SocialMedia = () => {
                   alt="Social media preview"
                   className="w-full h-[180px] object-cover"
                 />
-                <div className="text-slate-800 text-base font-medium whitespace-nowrap overflow-hidden text-ellipsis px-2 py-1">
+                <div className="px-2 py-1 overflow-hidden text-base font-medium text-slate-800 whitespace-nowrap text-ellipsis">
                   {item.link?.startsWith('http')
                     ? new URL(item.link).hostname.replace('www.', '')
                     : item.link}
