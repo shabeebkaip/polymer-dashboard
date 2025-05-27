@@ -1,4 +1,4 @@
-import editIcon from "../../../assets/actions/edit.svg";
+import editIcon from "../../../assets/tools/edit.svg";
 import deleteIcon from "../../../assets/actions/delete.svg";
 import viewIcon from "../../../assets/actions/view.svg";
 import moment from "moment";
