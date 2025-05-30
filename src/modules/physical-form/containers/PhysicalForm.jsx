@@ -18,6 +18,8 @@ import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import createIcon from '../../../assets/create.svg'
+
 
 const PhysicalForm = () => {
   const [physicalForms, setPhysicalForm] = useState([]);
@@ -94,7 +96,7 @@ const PhysicalForm = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/src/assets/create.svg"}
+              icon={ createIcon }
             />
           </div>
         }

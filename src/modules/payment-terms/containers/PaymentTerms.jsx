@@ -17,6 +17,7 @@ import AddEditPaymentTerms from "../components/AddEditPaymentTerms";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import createIcon from '../../../assets/create.svg'
 
 const PaymentTerms = () => {
   const [paymentTerms, setPaymentTerms] = useState([]);
@@ -94,7 +95,7 @@ const PaymentTerms = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/src/assets/create.svg"}
+              icon={ createIcon }
             />
           </div>
         }

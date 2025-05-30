@@ -18,6 +18,7 @@ import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import createIcon from '../../../assets/create.svg'
 
 const Grade = () => {
   const [grades, setGrades] = useState([]);
@@ -94,7 +95,7 @@ const Grade = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/src/assets/create.svg"}
+              icon={ createIcon }
             />
           </div>
         }

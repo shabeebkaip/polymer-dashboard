@@ -29,6 +29,7 @@ import eventBus from "../../../utils/eventBus";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import createIcon from '../../../assets/create.svg'
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -202,7 +203,7 @@ const Products = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/src/assets/create.svg"}
+              icon={createIcon}
             />
           </div>
         }

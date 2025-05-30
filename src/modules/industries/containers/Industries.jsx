@@ -17,6 +17,7 @@ import AddEditIndustries from "../components/AddEditIndustries";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import createIcon from '../../../assets/create.svg'
 
 const Industries = () => {
   const [industries, setIndustries] = useState([]);
@@ -103,7 +104,7 @@ const Industries = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/src/assets/create.svg"}
+              icon={ createIcon }
             />
           </div>
         }

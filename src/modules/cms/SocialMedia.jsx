@@ -7,6 +7,11 @@ import { socialCrud } from './Cms-Service';
 import AddEditSocialMedia from './components/AddEditSocialMedia';
 import DeleteModal from '../../shared/DeleteModal';
 import PageLoader from '../../shared/PageLoader'; 
+import createIcon from '../../../src/assets/create.svg'
+import editIcon from '../../../src/assets/edit.svg'
+import deleteIcon from '../../../src/assets/delete.svg'
+
+
 
 const SocialMedia = () => {
   const [socialData, setSocialData] = useState([]);
@@ -110,7 +115,7 @@ const SocialMedia = () => {
             onClick={handleOpen}
             className="flex items-center gap-2 text-white bg-[#2952FF] px-4 py-2 rounded-full border border-gray-300 min-w-[110px] cursor-pointer hover:bg-[#1c40ff]"
           >
-            <img src="/src/assets/create.svg" alt="Add Social Media" className="w-5 h-5" />
+            <img src={ createIcon } alt="Add Social Media" className="w-5 h-5" />
             <div className="text-sm font-normal">Add Social Media</div>
           </button>
         </div>
@@ -136,7 +141,7 @@ const SocialMedia = () => {
                   >
                     <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
                     <img
-                      src="/src/assets/edit.svg"
+                      src= { editIcon }
                       alt="Edit"
                       className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                     />
@@ -148,7 +153,7 @@ const SocialMedia = () => {
                   >
                     <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
                     <img
-                      src="/src/assets/delete.svg"
+                      src={deleteIcon}
                       alt="Delete"
                       className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                     />

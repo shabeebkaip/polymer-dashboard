@@ -20,6 +20,8 @@ import AddEditProductFamily from "../components/AddEditProductFamily";
 import DeleteModal from "../../../shared/DeleteModal";
 import { enqueueSnackbar } from "notistack";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import createIcon from '../../../assets/create.svg'
+
 
 const ProductFamilies = () => {
   const [products, setProducts] = useState([]);
@@ -95,7 +97,7 @@ const ProductFamilies = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon="/src/assets/create.svg"
+              icon= { createIcon }
             />
           </div>
         }

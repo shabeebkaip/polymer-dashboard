@@ -1,5 +1,4 @@
 import editIcon from "../../../assets/edit.svg";
-import deleteIcon from "../../../assets/actions/delete.svg";
 import viewIcon from "../../../assets/view.svg";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -8,6 +7,8 @@ import { useState } from "react";
 import { deleteEmployeeApi } from "../api";
 import AddEditEmployee from "./AddEditEmployee";
 import { Tooltip } from "@mui/material";
+import deleteIcon from '../../../../src/assets/delete.svg'
+
 
 const EmployeesList = ({ employees, getResponseBack }) => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -123,7 +124,7 @@ const EmployeesList = ({ employees, getResponseBack }) => {
                             setDeleteId(row.id);
                           }}
                         >
-                          <img src={deleteIcon} alt="Delete" />
+                          <img src={ deleteIcon } alt="Delete" />
                         </button>
                       </Tooltip>
                     </div>
