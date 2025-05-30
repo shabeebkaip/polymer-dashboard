@@ -1,5 +1,5 @@
 import ActionButton from "../../../shared/ActionButton";
-import addIcon from "../../../assets/tools/create.svg";
+import addIcon from "../../../assets/create.svg";
 import PropTypes from "prop-types";
 
 const Actions = ({ handleAddEmployee }) => {

@@ -5,7 +5,7 @@ const EditAction = ({ handleClick }) => {
   return (
     <Tooltip title="Edit" arrow>
       <button className="btn" onClick={handleClick}>
-        <img src={"/src/assets/actions/edit.svg"} />
+        <img src={"/src/assets/edit.svg"} />
       </button>
     </Tooltip>
   );

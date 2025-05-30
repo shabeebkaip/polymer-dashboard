@@ -1,235 +1,225 @@
 import {
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    TextField,
-  } from "@mui/material";
-  import { useSelector } from "react-redux";
-  import { useDispatch } from "react-redux";
-  import { setLoader, setIncotermsModal } from "../../../slices/sharedSlice";
-  import PropTypes from "prop-types";
-  import { useState } from "react";
-  import { createIncotermsApi, updateIncotermsApi } from "../api";
-  import { useEffect } from "react";
-  import { enqueueSnackbar } from "notistack";
-  
-  const AddEditIncoterm = ({ getResponseBack }) => {
-    const dispatch = useDispatch();
-    const {
-      incotermsModal: open,
-      incotermsCrud,
-      mode,
-    } = useSelector((state) => state.sharedState);
-    const [data, setData] = useState(incotermsCrud);
-    const [errors, setErrors] = useState({});
-    const { loader } = useSelector((state) => state.sharedState);
-    const closeModal = () => {
-      dispatch(setIncotermsModal(false));
-    };
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoader, setIncotermsModal } from "../../../slices/sharedSlice";
+import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
+import { createIncotermsApi, updateIncotermsApi } from "../api";
+import { enqueueSnackbar } from "notistack";
 
-    const validateFields = () => {
-      const newErrors = {};
-      if (!data.name?.trim()) newErrors.name = "Name is required";
-      if (!data.fullForm?.trim()) newErrors.fullForm = "Full form is required";
-    
-      setErrors(newErrors);
-    
-      if (Object.keys(newErrors).length > 0) {
-        setTimeout(() => {
-          setErrors({});
-        }, 1000);
-        return false;
-      }
-      return true;
-    };
-    
-    const handleSave = () => {
-      if (!validateFields()) return;
-      dispatch(setLoader(true));
-      if (mode === "add") {
-        createIncotermsApi(data)
-          .then((response) => {
-            if (response.success) {
-              closeModal();
-              setData({});
-              enqueueSnackbar(response?.message, {
-                variant: "success",
-                anchorOrigin: { vertical: "top", horizontal: "right" },
-              });
-            }
-          })
-          .catch((error) => {
-            console.error("Error creating incoterms:", error);
-            enqueueSnackbar("Error creating incoterms", {
-              variant: "error",
-              anchorOrigin: { vertical: "top", horizontal: "right" },
-            });
-          })
-          .finally(() => {
-            dispatch(setLoader(false));
-            getResponseBack();
+const AddEditIncoterm = ({ getResponseBack }) => {
+  const dispatch = useDispatch();
+  const { incotermsModal: open, incotermsCrud, mode, loader } = useSelector((state) => state.sharedState);
+
+  const [data, setData] = useState(incotermsCrud);
+  const [errors, setErrors] = useState({});
+
+  const closeModal = () => {
+    dispatch(setIncotermsModal(false));
+  };
+
+  const validateFields = () => {
+    const newErrors = {};
+    if (!data.name?.trim()) newErrors.name = "Name is required";
+    if (!data.fullForm?.trim()) newErrors.fullForm = "Full form is required";
+    if (!data.ar_name?.trim()) newErrors.ar_name = "Name(AR) is required";
+    if (!data.ar_fullForm?.trim()) newErrors.ar_fullForm = "Full form(AR) is required";
+    if (!data.ger_name?.trim()) newErrors.ger_name = "Name(GER) is required";
+    if (!data.ger_fullForm?.trim()) newErrors.ger_fullForm = "Full form(GER) is required";
+    if (!data.cn_name?.trim()) newErrors.cn_name = "Name(CN) is required";
+    if (!data.cn_fullForm?.trim()) newErrors.cn_fullForm = "Full form(CN) is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleFieldFocus = (field) => {
+    setErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const handleSave = () => {
+    if (!validateFields()) return;
+    dispatch(setLoader(true));
+
+    const apiCall = mode === "add" ? createIncotermsApi : updateIncotermsApi;
+
+    apiCall(data)
+      .then((response) => {
+        if (response.success) {
+          closeModal();
+          setData({});
+          enqueueSnackbar(response.message, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
           });
-      } else {
-        updateIncotermsApi(data)
-          .then((response) => {
-            if (response.success) {
-              setData({});
-              closeModal();
-              enqueueSnackbar(response?.message, {
-                variant: "success",
-                anchorOrigin: { vertical: "top", horizontal: "right" },
-              });
-            }
-          })
-          .catch((error) => {
-            console.error("Error updating incoterms:", error);
-            enqueueSnackbar("Error updating incoterms", {
-              variant: "error",
-              anchorOrigin: { vertical: "top", horizontal: "right" },
-            });
-          })
-          .finally(() => {
-            dispatch(setLoader(false));
-            getResponseBack();
-          });
-      }
-    };
-  
-    useEffect(() => {
-      setData(incotermsCrud);
-    }, [incotermsCrud]);
-    return (
-      <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
-        <DialogTitle>
-          <h4 className="capitalize">{mode} Incoterm</h4>
-        </DialogTitle>
-        <DialogContent dividers>
-          <div className="grid grid-cols-2 gap-4">
+        }
+      })
+      .catch((error) => {
+        console.error(`Error ${mode === "add" ? "creating" : "updating"} incoterm:`, error);
+        enqueueSnackbar(`Error ${mode === "add" ? "creating" : "updating"} incoterm`, {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+      })
+      .finally(() => {
+        dispatch(setLoader(false));
+        getResponseBack();
+      });
+  };
+
+  useEffect(() => {
+    setData(incotermsCrud);
+  }, [incotermsCrud]);
+
+  return (
+    <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
+      <DialogTitle>
+        <h4 className="capitalize">{mode} Incoterm</h4>
+      </DialogTitle>
+      <DialogContent dividers>
+        <div className="grid grid-cols-12 gap-4">
           <TextField
             label="Name(EN)"
             variant="outlined"
             fullWidth
+            className="col-span-6"
             value={data.name || ""}
             onChange={(e) => setData({ ...data, name: e.target.value })}
+            onFocus={() => handleFieldFocus("name")}
             error={!!errors.name}
             helperText={errors.name}
             required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
           />
-          <TextField
-            label="Full Form(EN)"
-            variant="outlined"
-            fullWidth
-            value={data.fullForm || ""}
-            onChange={(e) => setData({ ...data, fullForm: e.target.value })}
-            error={!!errors.fullForm}
-            helperText={errors.fullForm}
-            required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-          />
-          <TextField
-            label="Full Form(AR)"
-            variant="outlined"
-            fullWidth
-            value={data.ar_fullForm || ""}
-            onChange={(e) => setData({ ...data, ar_fullForm: e.target.value })}
-            error={!!errors.ar_fullForm}
-            helperText={errors.ar_fullForm}
-            required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-          />
-
-          <TextField
-            label="Full Form(GER)"
-            variant="outlined"
-            fullWidth
-            value={data.ger_fullForm || ""}
-            onChange={(e) => setData({ ...data, ger_fullForm: e.target.value })}
-            error={!!errors.ger_fullForm}
-            helperText={errors.ger_fullForm}
-            required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-          />
-          <TextField
-            label="Full Form(CN)"
-            variant="outlined"
-            fullWidth
-            value={data.cn_fullForm || ""}
-            onChange={(e) => setData({ ...data, cn_fullForm: e.target.value })}
-            error={!!errors.cn_fullForm}
-            helperText={errors.cn_fullForm}
-            required
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-          />
-
-          </div>
-        </DialogContent>
-        <DialogActions>
-          {mode === "view" ? (
-            <Button
-              onClick={() => closeModal()}
-              color="primary"
+          <div className="col-span-12">
+            <TextField
+              label="Full form(EN)"
               variant="outlined"
-            >
-              Close
+              fullWidth
+              multiline
+              rows={4}
+              value={data.fullForm || ""}
+              onChange={(e) => setData({ ...data, fullForm: e.target.value })}
+              onFocus={() => handleFieldFocus("fullForm")}
+              error={!!errors.fullForm}
+              helperText={errors.fullForm}
+              required
+            />
+          </div>
+
+          <TextField
+            label="Name(AR)"
+            variant="outlined"
+            fullWidth
+            className="col-span-6"
+            value={data.ar_name || ""}
+            onChange={(e) => setData({ ...data, ar_name: e.target.value })}
+            onFocus={() => handleFieldFocus("ar_name")}
+            error={!!errors.ar_name}
+            helperText={errors.ar_name}
+            required
+          />
+          <div className="col-span-12">
+            <TextField
+              label="Full form(AR)"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              value={data.ar_fullForm || ""}
+              onChange={(e) => setData({ ...data, ar_fullForm: e.target.value })}
+              onFocus={() => handleFieldFocus("ar_fullForm")}
+              error={!!errors.ar_fullForm}
+              helperText={errors.ar_fullForm}
+              required
+            />
+          </div>
+
+          <TextField
+            label="Name(GER)"
+            variant="outlined"
+            fullWidth
+            className="col-span-6"
+            value={data.ger_name || ""}
+            onChange={(e) => setData({ ...data, ger_name: e.target.value })}
+            onFocus={() => handleFieldFocus("ger_name")}
+            error={!!errors.ger_name}
+            helperText={errors.ger_name}
+            required
+          />
+          <div className="col-span-12">
+            <TextField
+              label="Full form(GER)"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              value={data.ger_fullForm || ""}
+              onChange={(e) => setData({ ...data, ger_fullForm: e.target.value })}
+              onFocus={() => handleFieldFocus("ger_fullForm")}
+              error={!!errors.ger_fullForm}
+              helperText={errors.ger_fullForm}
+              required
+            />
+          </div>
+
+          <TextField
+            label="Name(CN)"
+            variant="outlined"
+            fullWidth
+            className="col-span-6"
+            value={data.cn_name || ""}
+            onChange={(e) => setData({ ...data, cn_name: e.target.value })}
+            onFocus={() => handleFieldFocus("cn_name")}
+            error={!!errors.cn_name}
+            helperText={errors.cn_name}
+            required
+          />
+          <div className="col-span-12">
+            <TextField
+              label="Full form(CN)"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              value={data.cn_fullForm || ""}
+              onChange={(e) => setData({ ...data, cn_fullForm: e.target.value })}
+              onFocus={() => handleFieldFocus("cn_fullForm")}
+              error={!!errors.cn_fullForm}
+              helperText={errors.cn_fullForm}
+              required
+            />
+          </div>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        {mode === "view" ? (
+          <Button onClick={closeModal} color="primary" variant="outlined">
+            Close
+          </Button>
+        ) : (
+          <>
+            <Button onClick={handleSave} color="primary" variant="contained" disabled={loader}>
+              {loader ? <CircularProgress size="30px" style={{ color: "#fff" }} /> : "Save"}
             </Button>
-          ) : (
-            <>
-              <Button
-                onClick={() => {
-                  handleSave();
-                }}
-                color="primary"
-                variant="contained"
-              >
-                {loader ? (
-                  <CircularProgress size="30px" style={{ color: "#ffffff" }} />
-                ) : (
-                  "Save"
-                )}
-              </Button>
-              <Button
-                onClick={() => closeModal()}
-                color="error"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            </>
-          )}
-        </DialogActions>
-      </Dialog>
-    );
-  };
-  
-  AddEditIncoterm.propTypes = {
-    open: PropTypes.bool.isRequired,
-    mode: PropTypes.string.isRequired,
-    getResponseBack: PropTypes.func.isRequired,
-  };
-  
-  export default AddEditIncoterm;
-  
+            <Button onClick={closeModal} color="error" variant="contained">
+              Cancel
+            </Button>
+          </>
+        )}
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+AddEditIncoterm.propTypes = {
+  getResponseBack: PropTypes.func.isRequired,
+};
+
+export default AddEditIncoterm;

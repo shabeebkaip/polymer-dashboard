@@ -44,12 +44,12 @@ const Login = () => {
           })
           .catch((error) => {
             const message =
-        error?.response?.data?.message || "Invalid Email or Password";
+              error?.response?.data?.message || "Invalid Email or Password";
 
-      enqueueSnackbar(message, {
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-        variant: "error",
-      });
+            enqueueSnackbar(message, {
+              anchorOrigin: { vertical: "top", horizontal: "right" },
+              variant: "error",
+            });
             setLoading(false);
           });
       } catch (error) {
@@ -130,23 +130,21 @@ const Login = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    slotProps={{
-                      input: {
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => setShowPassword(!showPassword)}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <MdOutlineVisibilityOff size={20} />
-                              ) : (
-                                <MdOutlineVisibility size={20} />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      },
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            {showPassword ? (
+                              <MdOutlineVisibilityOff size={20} />
+                            ) : (
+                              <MdOutlineVisibility size={20} />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
                     }}
                   />
                 </div>

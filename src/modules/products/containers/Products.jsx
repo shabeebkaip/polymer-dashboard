@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { deleteProductApi, getProductsApi } from "../api";
-import filterIcon from "./../../../assets/tools/filters.svg";
-import clearFilterIcon from "./../../../assets/tools/clears.svg";
+import filterIcon from "./../../../assets/filters.svg";
+import clearFilterIcon from "./../../../assets/clears.svg";
 import {
   setProductCrud,
   setProductLoader,
@@ -202,7 +202,7 @@ const Products = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/tools/create.svg"}
+              icon={"/src/assets/create.svg"}
             />
           </div>
         }

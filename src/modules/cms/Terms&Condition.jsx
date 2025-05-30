@@ -9,7 +9,7 @@ import { termsCrud } from './Cms-Service';
 import { useLanguage } from '../../shared/hooks/LanguageContext';
 import { setPageTitle } from '../../slices/sharedSlice';
 import ConfirmDialog from '../../shared/confirmationModal/confirmDiolog';
-
+import PageLoader from '../../shared/PageLoader';
 
 const TermsCondition = () => {
   const [data, setData] = useState();
@@ -18,14 +18,19 @@ const TermsCondition = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true); // ✅ Loader state
 
   const pageTitle = language === 'ar' ? 'الشروط والأحكام' : 'Terms and Condition';
 
   const fetchData = async () => {
+    setLoading(true); // ✅ Start loading
     try {
       const response = await termsCrud.fetch();
       setData(response.data);
     } catch (error) {
+      // Handle error if needed
+    } finally {
+      setLoading(false); // ✅ Stop loading
     }
   };
 
@@ -104,6 +109,7 @@ const TermsCondition = () => {
         await fetchData();
       }
     } catch (error) {
+      // Handle error if needed
     }
     fetchData();
     setOpenConfirmDialog(false);
@@ -114,6 +120,11 @@ const TermsCondition = () => {
     border: '1px solid #d32f2f',
     borderRadius: '4px',
   };
+
+  // ✅ Show page loader if loading
+  if (loading) {
+    return <PageLoader />;
+  }
 
   return (
     <div>
@@ -161,6 +172,7 @@ const TermsCondition = () => {
           </div>
         </div>
       </div>
+
       <div className="flex items-center justify-center pt-5 py-14">
         <Stack direction="row" spacing={2}>
           <Button
@@ -186,3 +198,4 @@ const TermsCondition = () => {
 };
 
 export default TermsCondition;
+

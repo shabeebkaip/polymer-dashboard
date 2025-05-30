@@ -94,7 +94,7 @@ const PaymentTerms = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon={"/tools/create.svg"}
+              icon={"/src/assets/create.svg"}
             />
           </div>
         }

@@ -10,7 +10,7 @@ import { privacyCrud } from './Cms-Service';
 import ConfirmDialog from '../../shared/confirmationModal/confirmDiolog';
 import { setPageTitle } from '../../slices/sharedSlice';
 import { useLanguage } from '../../shared/hooks/LanguageContext';
-
+import Loader from '../../shared/Loader';
 const PrivacyPolicy = () => {
   const [data, setData] = useState();
   const { language } = useLanguage();
@@ -18,6 +18,7 @@ const PrivacyPolicy = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true); 
 
   const pageTitle = language === 'ar' ? 'الخصوصية والسياسة' : 'Privacy and policy';
 
@@ -30,10 +31,13 @@ const PrivacyPolicy = () => {
         variant: "error",
         anchorOrigin: { vertical: "top", horizontal: "right" },
       });
+    } finally {
+      setLoading(false); 
     }
   };
 
   useEffect(() => {
+    setLoading(true); 
     fetchData();
     dispatch(setPageTitle(pageTitle));
   }, [language]);
@@ -60,7 +64,6 @@ const PrivacyPolicy = () => {
       }
     }));
 
-    
     if (errors[fieldName]) {
       setErrors(prev => ({
         ...prev,
@@ -126,78 +129,79 @@ const PrivacyPolicy = () => {
   };
 
   return (
-    <div>
-      <div className="w-full p-8">
-        <h2 className="pt-2 pb-2 text-xl">Privacy Policy</h2>
-        <div style={{
-          height: '66dvh',
-          position: 'relative',
-        }}>
-          <div className="grid grid-cols-2 gap-5 ">
-            <div className="">
-              <h3 className="p-2 font-medium">English</h3>
-              <div className='h-[64vh]' style={errors.description ? quillErrorStyle : {}}>
-                <ReactQuill
-                  className="bg-white custom-quill"
-                  theme="snow"
-                  value={data?.data?.content?.description || ''}
-                  onChange={(value) => onFieldChange(value, 'description')}
-                  modules={{ toolbar: toolbarOptions }}
-                  style={{ height: '100%' }}
-                />
-              </div>
-
-              {errors.description && (
-                <div style={{ color: 'red', marginTop: '8px', fontSize: '12px' }}>
-                  {errors.description}
+    <>
+      {loading ? (
+        <Loader /> 
+      ) : (
+        <div>
+          <div className="w-full p-8">
+            <h2 className="pt-2 pb-2 text-xl">Privacy Policy</h2>
+            <div style={{ height: '66dvh', position: 'relative' }}>
+              <div className="grid grid-cols-2 gap-5 ">
+                <div className="">
+                  <h3 className="p-2 font-medium">English</h3>
+                  <div className='h-[64vh]' style={errors.description ? quillErrorStyle : {}}>
+                    <ReactQuill
+                      className="bg-white custom-quill"
+                      theme="snow"
+                      value={data?.data?.content?.description || ''}
+                      onChange={(value) => onFieldChange(value, 'description')}
+                      modules={{ toolbar: toolbarOptions }}
+                      style={{ height: '100%' }}
+                    />
+                  </div>
+                  {errors.description && (
+                    <div style={{ color: 'red', marginTop: '8px', fontSize: '12px' }}>
+                      {errors.description}
+                    </div>
+                  )}
                 </div>
-              )}
 
-            </div>
-
-            <div className="">
-              <h3 className="p-2 font-medium">Arabic</h3>
-              <div className='h-[64vh]' style={errors.ar_description ? quillErrorStyle : {}}>
-                <ReactQuill
-                  className="bg-white custom-quill"
-                  theme="snow"
-                  value={data?.data?.content?.ar_description || ''}
-                  onChange={(value) => onFieldChange(value, 'ar_description')}
-                  modules={{ toolbar: toolbarOptions }}
-                  style={{ height: '100%' }}
-                />
-              </div>
-              {errors.ar_description && (
-                <div style={{ color: 'red', marginTop: '8px', fontSize: '12px' }}>
-                  {errors.ar_description}
+                <div className="">
+                  <h3 className="p-2 font-medium">Arabic</h3>
+                  <div className='h-[64vh]' style={errors.ar_description ? quillErrorStyle : {}}>
+                    <ReactQuill
+                      className="bg-white custom-quill"
+                      theme="snow"
+                      value={data?.data?.content?.ar_description || ''}
+                      onChange={(value) => onFieldChange(value, 'ar_description')}
+                      modules={{ toolbar: toolbarOptions }}
+                      style={{ height: '100%' }}
+                    />
+                  </div>
+                  {errors.ar_description && (
+                    <div style={{ color: 'red', marginTop: '8px', fontSize: '12px' }}>
+                      {errors.ar_description}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </div>
+
+          <div className="flex items-center justify-center pt-5 py-14">
+            <Stack direction="row" spacing={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSave}
+                disabled={isSubmitting}
+                sx={{ borderRadius: '20px', px: 4 }}
+              >
+                {isSubmitting ? 'Saving...' : 'Save details'}
+              </Button>
+            </Stack>
+          </div>
+
+          <ConfirmDialog
+            open={openConfirmDialog}
+            onClose={() => setOpenConfirmDialog(false)}
+            onConfirm={handleConfirmSave}
+            isSubmitting={isSubmitting}
+          />
         </div>
-      </div>
-
-      <div className="flex items-center justify-center pt-5 py-14">
-        <Stack direction="row" spacing={2}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSave}
-            disabled={isSubmitting}
-            sx={{ borderRadius: '20px', px: 4 }}
-          >
-            {isSubmitting ? 'Saving...' : 'Save details'}
-          </Button>
-        </Stack>
-      </div>
-
-      <ConfirmDialog
-        open={openConfirmDialog}
-        onClose={() => setOpenConfirmDialog(false)}
-        onConfirm={handleConfirmSave}
-        isSubmitting={isSubmitting}
-      />
-    </div>
+      )}
+    </>
   );
 };
 

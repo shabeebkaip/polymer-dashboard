@@ -75,7 +75,7 @@ const ProductFamilies = () => {
       })
       .finally(() => {
         dispatch(setLoader(false));
-        fetchProducts(); // refresh list after deletion
+        fetchProducts(); 
       });
   };
 
@@ -95,7 +95,7 @@ const ProductFamilies = () => {
               }}
               textColor="#ffffff"
               bgColor="rgb(41, 82, 255)"
-              icon="/tools/create.svg"
+              icon="/src/assets/create.svg"
             />
           </div>
         }

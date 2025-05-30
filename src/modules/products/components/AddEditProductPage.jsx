@@ -44,6 +44,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import MultipleFileUpload from "../../../shared/MultipleFileUpload";
 import UploadImage from "../../../shared/UploadImage";
+import PageLoader from "../../../shared/PageLoader";
 
 const AddEditProductPage = ({ getResponseBack }) => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const AddEditProductPage = ({ getResponseBack }) => {
   const { id } = useParams();
   const [cloudinaryImage1, setCloudinaryImage1] = useState({});
   const [errors, setErrors] = useState({});
+  const [isLoadingProductDetail, setIsLoadingProductDetail] = useState(false);
 
   const [productDetail, setProductDetail] = useState({
     additionalInfo: [{ title: "", description: "" }],
@@ -103,7 +105,6 @@ const AddEditProductPage = ({ getResponseBack }) => {
   });
 
   const handleAddAdditionalInfo = () => {
-
     setData((prev) => ({
       ...prev,
       additionalInfo: [...prev.additionalInfo, { title: "", description: "" }],
@@ -121,7 +122,7 @@ const AddEditProductPage = ({ getResponseBack }) => {
     updated[index] = { ...updated[index], [field]: value };
     setData((prev) => ({ ...prev, additionalInfo: updated }));
   };
-
+  
   const fetchDropdowns = useCallback(() => {
     dispatch(getBrandsApi());
     dispatch(getIndustriesApi());
@@ -145,10 +146,25 @@ const AddEditProductPage = ({ getResponseBack }) => {
   useEffect(() => {
     if (!id) return;
 
-    getProductsDetailApi(id).then((detail) => {
-      setProductDetail(detail.data);
-    });
-  }, [id]);
+    // Set loading state when fetching product details
+    setIsLoadingProductDetail(true);
+    dispatch(setProductLoader(true));
+
+    getProductsDetailApi(id)
+      .then((detail) => {
+        setProductDetail(detail.data);
+      })
+      .catch((error) => {
+        enqueueSnackbar("Failed to load product details", {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+      })
+      .finally(() => {
+        setIsLoadingProductDetail(false);
+        dispatch(setProductLoader(false));
+      });
+  }, [id, dispatch]);
 
   const {
     mode,
@@ -241,8 +257,6 @@ const AddEditProductPage = ({ getResponseBack }) => {
       });
     }
   };
-  console.log(errors, "errors");
-  
 
   const validate = () => {
     const newErrors = {};
@@ -269,9 +283,9 @@ const AddEditProductPage = ({ getResponseBack }) => {
     return isValid;
   };
 
-  // console.log(countries, "data?.chemicalFamily");
   const transformArray = (items) =>
     items ? items.map((item) => item._id) : [];
+
   const handleSave = () => {
     if (!validate()) return;
     dispatch(setProductLoader(true));
@@ -345,7 +359,6 @@ const AddEditProductPage = ({ getResponseBack }) => {
     setData({ ...data, certificate_of_analysis: file[0] });
   };
 
-
   const handleImageClear = () => {
     deleteImage(cloudinaryImage1);
     setProductDetail((prevData) => ({
@@ -354,6 +367,10 @@ const AddEditProductPage = ({ getResponseBack }) => {
     }));
     setCloudinaryImage1({});
   };
+
+  if (productLoader || isLoadingProductDetail) {
+    return <PageLoader />;
+  }
 
   return (
     <div className=" p-5 h-[calc(100dvh-120px)] overflow-y-auto bg-white">

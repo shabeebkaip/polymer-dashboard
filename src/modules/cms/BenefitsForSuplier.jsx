@@ -110,7 +110,7 @@ const BenefitsForSuplier = () => {
 
   const handleSave = async () => {
     if (!validateFields()) {
-      enqueueSnackbar('Please fill all required fields', { variant: 'error' });
+      enqueueSnackbar('Please fill all required fields', { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'right' } });
       return;
     }
 
@@ -127,7 +127,7 @@ const BenefitsForSuplier = () => {
 
       const response = await suplierCrud.updateSection(payload);
       if (response?.data?.status) {
-        enqueueSnackbar(response.data.message, { variant: 'success' });
+        enqueueSnackbar(response.data.message, { variant: 'success', anchorOrigin: { vertical: 'top', horizontal: 'right' }});
         fetchData();
         setOpen(false);
       }
