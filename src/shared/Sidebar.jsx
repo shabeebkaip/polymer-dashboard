@@ -102,6 +102,24 @@ const menuItems = [
         displayName: "Benefits For Suplier",
         route: "/cms/BenefitsForSuplier",
       },
+      {
+        name: "Hero Section",
+        displayName: "Hero Section",
+        route: "/cms/HeroSection",
+      },
+      {
+        name: "Footer Contact Info",
+        displayName: "Footer Contact Info",
+        route: "/cms/FooterMailNumber",
+      },
+      {
+        name: "Polymer Advantages",
+        displayName: "Polymer Advantages",
+        route: "/cms/PolymerAdvantages",
+      },
+
+
+
     ],
     icon: < InsertDriveFileIcon/>,
   },

@@ -58,6 +58,9 @@ export const privacyCrud = createCrudOperations('privacyPolicy');
 export const socialCrud = createCrudOperations('socialMedia');
 export const suplierCrud = createCrudOperations('BenefitsForSuplier');
 export const buyerCrud = createCrudOperations('BenefitsForBuyer');
+export const heroCrud = createCrudOperations('HeroSection');
+export const footerCrud = createCrudOperations('FooterMailNumber');
+export const polymerAdvantagesCrud = createCrudOperations('PolymerAdvantages');
 
 
 

@@ -21,6 +21,9 @@ import TermsCondition from "./modules/cms/Terms&Condition";
 import SocialMedia from "./modules/cms/SocialMedia";
 import BenefitsForSuplier from "./modules/cms/BenefitsForSuplier";
 import BenefitsForBuyer from "./modules/cms/BenefitsForBuyer";
+import HeroSection from "./modules/cms/components/HeroSection";
+import FooterMailNumber from "./modules/cms/components/FooterMailNumber";
+import PolymerAdvantages from "./modules/cms/components/PolymerAdvantages";
 
 
 const AppRoutes = () => {
@@ -44,9 +47,13 @@ const AppRoutes = () => {
         <Route path="/cms/socialMedia" exact element={<SocialMedia />} />
         <Route path="/cms/BenefitsForSuplier" exact element={<BenefitsForSuplier />} />
         <Route path="/cms/BenefitsForBuyer" exact element={<BenefitsForBuyer />} />
+        <Route path="/cms/HeroSection" exact element={<HeroSection />} />
+        <Route path="/cms/FooterMailNumber" exact element={<FooterMailNumber />} />
+        <Route path="/cms/PolymerAdvantages" exact element={<PolymerAdvantages />} />
 
 
         {/* <Route path="/cms/faq" exact element={< />} /> */}
+        
 
 
 

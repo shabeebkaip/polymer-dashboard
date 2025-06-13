@@ -37,8 +37,9 @@ const AddEditSocialMedia = ({ mode, getResponseBack, open, onClose, editingItem 
 
   const validateFields = () => {
     const newErrors = {};
-    if (!data.image?.trim()) newErrors.image = "Image is required";
+    if (!data.name?.trim()) newErrors.name = "Name is required";
     if (!data.link?.trim()) newErrors.link = "Link is required";
+    if (!data.image?.trim()) newErrors.image = "Image is required";
 
     setErrors(newErrors);
 
@@ -58,19 +59,16 @@ const AddEditSocialMedia = ({ mode, getResponseBack, open, onClose, editingItem 
 
     const payload =
       mode === "add"
-        ? { content: [{ image: data.image, link: data.link }] } // wrapped for create
-        : { image: data.image, link: data.link }; // flat for update
+        ? { content: [{ name: data.name, image: data.image, link: data.link }] }
+        : { name: data.name, image: data.image, link: data.link };
 
     const apiCall =
       mode === "add"
         ? socialCrud.create(payload)
-        : socialCrud.update(payload, data.id); // `data.id` is content._id
+        : socialCrud.update(payload, data.id);
 
     apiCall
       .then((response) => {
-        console.log("API Response:", response);
-        debugger;
-
         if (response.data.success) {
           enqueueSnackbar(response.data.message || "Saved successfully", {
             variant: "success",
@@ -86,10 +84,7 @@ const AddEditSocialMedia = ({ mode, getResponseBack, open, onClose, editingItem 
         }
       })
       .catch((error) => {
-        console.error(
-          `${mode === "add" ? "Creating" : "Updating"} social media error:`,
-          error
-        );
+        console.error(`${mode === "add" ? "Creating" : "Updating"} social media error:`, error);
         enqueueSnackbar(`Error ${mode === "add" ? "creating" : "updating"} social media`, {
           variant: "error",
           anchorOrigin: { vertical: "top", horizontal: "right" },
@@ -101,7 +96,6 @@ const AddEditSocialMedia = ({ mode, getResponseBack, open, onClose, editingItem 
       });
   };
 
-
   return (
     <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
       <DialogTitle>
@@ -110,26 +104,31 @@ const AddEditSocialMedia = ({ mode, getResponseBack, open, onClose, editingItem 
       <DialogContent dividers>
         <div className="grid grid-cols-1 gap-4">
           <TextField
+            label="Name"
+            variant="outlined"
+            fullWidth
+            value={data.name || ""}
+            onChange={(e) => setData((prev) => ({ ...prev, name: e.target.value }))}
+            error={!!errors.name}
+            helperText={errors.name}
+            required
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
             label="Link"
             variant="outlined"
             fullWidth
             value={data.link || ""}
-            onChange={(e) =>
-              setData((prev) => ({ ...prev, link: e.target.value }))
-            }
+            onChange={(e) => setData((prev) => ({ ...prev, link: e.target.value }))}
             error={!!errors.link}
             helperText={errors.link}
             required
             InputLabelProps={{ shrink: true }}
           />
           <ImageUpload
-            onFileUpload={(imageUrl) =>
-              setData((prev) => ({ ...prev, image: imageUrl }))
-            }
+            onFileUpload={(imageUrl) => setData((prev) => ({ ...prev, image: imageUrl }))}
             preview={data.image}
-            onImageClick={() =>
-              setData((prev) => ({ ...prev, image: null }))
-            }
+            onImageClick={() => setData((prev) => ({ ...prev, image: null }))}
             width="100%"
             height="150px"
           />
@@ -148,11 +147,7 @@ const AddEditSocialMedia = ({ mode, getResponseBack, open, onClose, editingItem 
               variant="contained"
               disabled={loader}
             >
-              {loader ? (
-                <CircularProgress size={30} style={{ color: "#fff" }} />
-              ) : (
-                "Save"
-              )}
+              {loader ? <CircularProgress size={30} style={{ color: "#fff" }} /> : "Save"}
             </Button>
             <Button onClick={closeModal} color="error" variant="contained">
               Cancel

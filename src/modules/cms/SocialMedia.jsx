@@ -103,7 +103,7 @@ const SocialMedia = () => {
     setEditingItem(null);
   };
 
-  return (
+return (
     <div>
       <div className="flex items-center justify-between w-full mb-4">
         <div className="flex flex-col gap-1">
@@ -115,7 +115,7 @@ const SocialMedia = () => {
             onClick={handleOpen}
             className="flex items-center gap-2 text-white bg-[#2952FF] px-4 py-2 rounded-full border border-gray-300 min-w-[110px] cursor-pointer hover:bg-[#1c40ff]"
           >
-            <img src={ createIcon } alt="Add Social Media" className="w-5 h-5" />
+            <img src={createIcon} alt="Add Social Media" className="w-5 h-5" />
             <div className="text-sm font-normal">Add Social Media</div>
           </button>
         </div>
@@ -134,29 +134,13 @@ const SocialMedia = () => {
                 className="relative w-[200px] border border-gray-300 rounded-lg overflow-hidden shadow-md"
               >
                 <div className="absolute z-10 flex gap-2 top-2 right-2">
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="relative cursor-pointer"
-                    aria-label="Edit social media"
-                  >
+                  <button onClick={() => handleEdit(item)} className="relative cursor-pointer">
                     <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
-                    <img
-                      src= { editIcon }
-                      alt="Edit"
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    />
+                    <img src={editIcon} alt="Edit" className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
                   </button>
-                  <button
-                    onClick={() => handleDeleteClick(item.id)}
-                    className="relative cursor-pointer"
-                    aria-label="Delete social media"
-                  >
+                  <button onClick={() => handleDeleteClick(item.id)} className="relative cursor-pointer">
                     <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
-                    <img
-                      src={deleteIcon}
-                      alt="Delete"
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    />
+                    <img src={deleteIcon} alt="Delete" className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
                   </button>
                 </div>
 
@@ -175,10 +159,9 @@ const SocialMedia = () => {
                     alt="Social media preview"
                     className="w-full h-[180px] object-cover"
                   />
-                  <div className="px-2 py-1 overflow-hidden text-base font-medium text-slate-800 whitespace-nowrap text-ellipsis">
-                    {item.link?.startsWith('http')
-                      ? new URL(item.link).hostname.replace('www.', '')
-                      : item.link}
+                  <div className="px-2 py-1 font-semibold truncate text-slate-900">{item.name || "Unnamed"}</div>
+                  <div className="px-2 pb-2 text-sm font-medium truncate text-slate-800">
+                    {item.link?.startsWith('http') ? new URL(item.link).hostname.replace('www.', '') : item.link}
                   </div>
                 </a>
               </div>
