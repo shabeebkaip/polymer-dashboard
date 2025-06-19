@@ -24,6 +24,8 @@ import BenefitsForBuyer from "./modules/cms/BenefitsForBuyer";
 import HeroSection from "./modules/cms/components/HeroSection";
 import FooterMailNumber from "./modules/cms/components/FooterMailNumber";
 import PolymerAdvantages from "./modules/cms/components/PolymerAdvantages";
+import BulkOrder from "./modules/requests/containers/bulkOrder"
+import BestDeal from "./modules/requests/containers/betsDeal"
 
 
 const AppRoutes = () => {
@@ -41,6 +43,10 @@ const AppRoutes = () => {
         <Route path="/enquiries/sample" exact element={<Sample />} />
         <Route path="/enquiries/quote" exact element={<Quote />} />
         <Route path="/enquiries/finance" exact element={<Finance />} />
+        <Route path="/enquiries/BulkOrder" exact element={<BulkOrder />} />
+        <Route path="/enquiries/BestDeal" exact element={<BestDeal />} />
+
+
 
         <Route path="/cms/termsAndConditions" exact element={<TermsCondition />} />
         <Route path="/cms/privacyPolicy" exact element={<PrivacyPolicy />} />

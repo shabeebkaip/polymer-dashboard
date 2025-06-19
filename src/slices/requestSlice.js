@@ -9,6 +9,10 @@ const requestSlice = createSlice({
     sample: {},
     finances: [],
     finance: {},
+    bulkOrders: [],
+    bulkOrder: {},
+    bestDeals: [],
+    bestDeal:{},
     modal: false,
   },
   reducers: {
@@ -33,8 +37,20 @@ const requestSlice = createSlice({
     setSample: (state, action) => {
       state.sample = action.payload;
     },
-  },
+    setBulkOrder: (state, action) => {
+      state.bulkOrder = action.payload;
+    },
+    setBulkOrders: (state, action) => {
+      state.bulkOrders = action.payload;
+    },
+    setBestDeals: (state, action) => {
+      state.bestDeals = action.payload;
+    },
+    setBestDeal: (state, action) => {
+      state.bestDeal = action.payload;
+    },
+    },
 });
-export const { setQuotes, setSamples, setModal, setQuote, setSample, setFinance, setFinances } =
+export const { setQuotes, setSamples, setModal, setQuote, setSample, setFinance, setFinances, setBulkOrder, setBulkOrders, setBestDeals, setBestDeal } =
   requestSlice.actions;
 export const requestReducer = requestSlice.reducer;

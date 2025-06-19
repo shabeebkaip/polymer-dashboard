@@ -67,6 +67,18 @@ const menuItems = [
         displayName: "Finance Requests",
         route: "/enquiries/finance",
       },
+      {
+        name: "Bulk Order Requests",
+        displayName: "Bulk Order Requests",
+        route: "/enquiries/BulkOrder",
+      },
+      {
+        name: "Best Deal Requests",
+        displayName: "Best Deal Requests",
+        route: "/enquiries/BestDeal",
+      },
+
+
     ],
     icon: <ForumIcon />,
   },

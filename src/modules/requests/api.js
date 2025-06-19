@@ -1,4 +1,4 @@
-import { setFinances, setQuotes, setSamples } from "../../slices/requestSlice";
+import { setFinances, setQuotes, setSamples, setBulkOrders, setBestDeals } from "../../slices/requestSlice";
 import { setLoader } from "../../slices/sharedSlice";
 import { globalGetService, globalPatchService } from "../../utils/globalApiServices";
 
@@ -52,6 +52,39 @@ export const getFinanceRequestApi = (query) => async (dispatch) => {
   }
 };
 
+
+export const getBulkOrderApi = (query) => async (dispatch) => {
+  dispatch(setLoader(true));
+  try {
+    const response = await globalGetService("/bulk-order/admin-list", query);
+    if (response.data.success) {
+      dispatch(setBulkOrders(response.data.data)); 
+    }
+    return response.data;
+  } catch (error) {
+    console.log("Error in getBulkOrderApi", error);
+    return { success: false, error: error.message };
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+export const getBestDealApi = (query) => async (dispatch) => {
+  dispatch(setLoader(true));
+  try {
+    const response = await globalGetService("/best-deal/admin-list", query); // use your correct endpoint
+    if (response.data.success) {
+      dispatch(setBestDeals(response.data.data));
+    }
+    return response.data;
+  } catch (error) {
+    console.log("Error in getBestDealApi", error);
+    return { success: false, error: error.message };
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
 export const PatchFinanceApi = async (id, payload) => {
   try {
     const response = await globalPatchService(`/finance/status/${id}`, payload);
@@ -60,3 +93,22 @@ export const PatchFinanceApi = async (id, payload) => {
     console.log(err);
   }
 };
+
+export const PatchBestDealApi = async (id, payload) => {
+  try {
+    const response = await globalPatchService(`/best-deal/admin-status/${id}`, payload);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const PatchBulkOrderApi = async (id, payload) => {
+  try {
+    const response = await globalPatchService(`/bulk-order/verify-status/${id}`, payload); 
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
