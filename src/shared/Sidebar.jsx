@@ -77,6 +77,18 @@ const menuItems = [
         displayName: "Best Deal Requests",
         route: "/enquiries/BestDeal",
       },
+      {
+        name: "Best Deal Quote Requests",
+        displayName: "Best Deal Quote Requests",
+        route: "/enquiries/DealQuote",
+      },
+      {
+        name: "Supplier Offer Requests",
+        displayName: "Supplier Offer Requests",
+        route: "/enquiries/SupplierOffer",
+      },
+
+
 
 
     ],

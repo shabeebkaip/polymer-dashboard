@@ -26,6 +26,8 @@ import FooterMailNumber from "./modules/cms/components/FooterMailNumber";
 import PolymerAdvantages from "./modules/cms/components/PolymerAdvantages";
 import BulkOrder from "./modules/requests/containers/bulkOrder"
 import BestDeal from "./modules/requests/containers/betsDeal"
+import DealQuote from "./modules/requests/containers/dealQuote"
+import SupplierOffer from "./modules/requests/containers/supplierOffer"
 
 
 const AppRoutes = () => {
@@ -45,6 +47,10 @@ const AppRoutes = () => {
         <Route path="/enquiries/finance" exact element={<Finance />} />
         <Route path="/enquiries/BulkOrder" exact element={<BulkOrder />} />
         <Route path="/enquiries/BestDeal" exact element={<BestDeal />} />
+        <Route path="/enquiries/DealQuote" exact element={<DealQuote />} />
+        <Route path="/enquiries/SupplierOffer" exact element={<SupplierOffer />} />
+
+
 
 
 

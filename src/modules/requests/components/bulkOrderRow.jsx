@@ -1,13 +1,15 @@
 import PropTypes from "prop-types";
 import TableRow from "../../../shared/TableRow";
 import ViewAction from "../../../shared/ViewAction";
+import EditAction from "../../../shared/EditAction";
 import { useDispatch } from "react-redux";
 import { setModal, setBulkOrder } from "../../../slices/requestSlice";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Switch, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { enqueueSnackbar } from "notistack";
 import { PatchBulkOrderApi } from "../api";
+import { setBulkOrderCrud, setBulkOrderModal, setMode } from "../../../slices/sharedSlice";
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -53,8 +55,17 @@ const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
   const [localStatus, setLocalStatus] = useState(
     order?.status?.toLowerCase() === "approved"
   );
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  // Update local state when order status changes
+  useEffect(() => {
+    setLocalStatus(order?.status?.toLowerCase() === "approved");
+  }, [order?.status]);
 
   const handleStatusUpdate = async (orderId, isApproved) => {
+    if (isUpdating) return;
+    
+    setIsUpdating(true);
     const payload = { status: isApproved ? "approved" : "rejected" };
 
     try {
@@ -68,16 +79,19 @@ const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
             anchorOrigin: { horizontal: "right", vertical: "top" },
           }
         );
-
         setLocalStatus(isApproved);
-        getResponseBack();
+        
+        // Refresh data after successful update
+        if (getResponseBack) {
+          setTimeout(() => {
+            getResponseBack();
+          }, 500);
+        }
       } else {
-        enqueueSnackbar(res.message || "Failed to update bulk order.", {
+        enqueueSnackbar(res?.message || "Failed to update bulk order.", {
           variant: "error",
           anchorOrigin: { horizontal: "right", vertical: "top" },
         });
-
-        setLocalStatus(!isApproved); 
       }
     } catch (error) {
       console.error("Patch error:", error);
@@ -85,7 +99,8 @@ const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
         variant: "error",
         anchorOrigin: { horizontal: "right", vertical: "top" },
       });
-      setLocalStatus(!isApproved); 
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -100,21 +115,35 @@ const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
       <td>{order.country || "—"}</td>
       <td>{order.status || "—"}</td>
       <td>
-        <ViewAction
-          handleClick={() => {
-            dispatch(setModal(true));
-            dispatch(setBulkOrder(order));
-          }}
-        />
+        <div className="flex items-center gap-2">
+          <ViewAction
+            handleClick={() => {
+              dispatch(setModal(true));
+              dispatch(setBulkOrder(order));
+            }}
+          />
+          <EditAction
+            handleClick={() => {
+              dispatch(setBulkOrderModal(true));
+              dispatch(setMode("edit"));
+              dispatch(setBulkOrderCrud(order));
+            }}
+          />
+        </div>
       </td>
       <td className="px-8">
         <FormControlLabel
           control={
             <IOSSwitch
               checked={localStatus}
-              onChange={(e) => handleStatusUpdate(order._id, e.target.checked)}
+              disabled={isUpdating}
+              onChange={(e) =>
+                handleStatusUpdate(order._id, e.target.checked)
+              }
             />
           }
+          label=""
+          sx={{ margin: 0 }}
         />
       </td>
     </TableRow>

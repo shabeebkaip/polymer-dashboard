@@ -1,5 +1,3 @@
-// BulkOrderList.js (UPDATED)
-
 import { useSelector } from "react-redux";
 import TableUI from "../../../shared/TableUI";
 import BulkOrderRow from "./bulkOrderRow";
@@ -21,7 +19,7 @@ const BulkOrderList = ({ getResponseBack }) => {
           "Country",
           "Status",
           "Action",
-          "Verification", // ✅ New Column
+          "Verification",
         ]}
         noRecord={bulkOrders?.length === 0}
       >
@@ -33,7 +31,7 @@ const BulkOrderList = ({ getResponseBack }) => {
               order={order}
               index={index}
               isLastRow={isLastRow}
-              getResponseBack={getResponseBack} // ✅ Pass to child
+              getResponseBack={getResponseBack}
             />
           );
         })}

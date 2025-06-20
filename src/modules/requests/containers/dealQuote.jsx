@@ -1,0 +1,64 @@
+// pages/admin/dealQuote.jsx
+
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPageTitle } from "../../../slices/sharedSlice";
+import Title from "../../../shared/Title";
+import { getDealQuoteListApi } from "../api"; // 👈 You'll implement this API call
+import DealQuoteList from "../components/dealQuoteList";
+import PageLoader from "../../../shared/PageLoader";
+import PaginationContainer from "../../../shared/PaginationContainer";
+
+const DealQuote = () => {
+  const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { dealQuotes } = useSelector((state) => state.requestState);
+
+  const fetchDealQuotes = (query = {}) => {
+    setLoading(true);
+    dispatch(getDealQuoteListApi(query))
+      .then((response) => {
+        if (response?.success) {
+          setPagination({
+            total: response.total,
+            currentPage: response.page,
+            totalPages: response.totalPages,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching deal quotes:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    dispatch(setPageTitle("Deal Quote Requests"));
+    fetchDealQuotes({ page: 1 });
+  }, [dispatch]);
+
+  return (
+    <div className="h-[calc(100vh-120px)] overflow-auto">
+      <Title title="Deal Quote Requests" description="Display all the quote submissions for best deals" />
+      {loading ? (
+        <PageLoader />
+      ) : (
+        <>
+          <div className="mt-4">
+            <DealQuoteList getResponseBack={() => fetchDealQuotes()} />
+          </div>
+          <PaginationContainer
+            totalPages={pagination?.totalPages}
+            currentPage={pagination?.currentPage}
+            handlePageChange={(page) => fetchDealQuotes({ page })}
+          />
+        </>
+      )}
+    </div>
+  );
+};
+
+export default DealQuote;

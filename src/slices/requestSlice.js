@@ -13,6 +13,10 @@ const requestSlice = createSlice({
     bulkOrder: {},
     bestDeals: [],
     bestDeal:{},
+    dealQuotes:[],
+    dealQuote:{},
+    supplierOffers: [],
+    supplierOffer: {},
     modal: false,
   },
   reducers: {
@@ -49,8 +53,20 @@ const requestSlice = createSlice({
     setBestDeal: (state, action) => {
       state.bestDeal = action.payload;
     },
+setDealQuotes: (state, action) => {
+  state.dealQuotes = action.payload;
+},
+setDealQuote: (state, action) => {
+  state.dealQuote = action.payload;
+},
+setSupplierOffers: (state, action) => {
+  state.supplierOffers = action.payload;
+},
+setSupplierOffer: (state, action) => {
+  state.supplierOffer = action.payload;
+}
     },
 });
-export const { setQuotes, setSamples, setModal, setQuote, setSample, setFinance, setFinances, setBulkOrder, setBulkOrders, setBestDeals, setBestDeal } =
+export const { setQuotes, setSamples, setModal, setQuote, setSample, setFinance, setFinances, setBulkOrder, setBulkOrders, setBestDeals, setBestDeal, setDealQuotes, setDealQuote,setSupplierOffers, setSupplierOffer } =
   requestSlice.actions;
 export const requestReducer = requestSlice.reducer;

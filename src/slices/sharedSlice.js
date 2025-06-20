@@ -51,6 +51,9 @@ const sharedSlice = createSlice({
     chemicalFamily: [],
     chemicalFamilyModal: false,
     chemicalFamilyCrud: {},
+    //bulk Order
+    bulkOrderModal: false,
+    bulkOrderCrud: {},
   },
   reducers: {
     setOpenFilter: (state, action) => {
@@ -208,6 +211,12 @@ const sharedSlice = createSlice({
     setIncotermsCrud: (state, action) => {
       state.incotermsCrud = action.payload;
     },
+    setBulkOrderModal: (state, action) => {
+      state.bulkOrderModal = action.payload;
+    },
+    setBulkOrderCrud: (state, action) => {
+      state.bulkOrderCrud = action.payload;
+    },
   },
 });
 
@@ -266,6 +275,9 @@ export const {
   setIncoterms,
   setIncotermsModal,
   setIncotermsCrud,
+  //bulk Orders
+  setBulkOrderModal,
+  setBulkOrderCrud
 
 
 } = sharedSlice.actions;

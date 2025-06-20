@@ -1,6 +1,6 @@
-import { setFinances, setQuotes, setSamples, setBulkOrders, setBestDeals } from "../../slices/requestSlice";
+import { setFinances, setQuotes, setSamples, setBulkOrders, setBestDeals, setDealQuotes, setSupplierOffers } from "../../slices/requestSlice";
 import { setLoader } from "../../slices/sharedSlice";
-import { globalGetService, globalPatchService } from "../../utils/globalApiServices";
+import { globalGetService, globalPatchService, globalPostService, globalPutService } from "../../utils/globalApiServices";
 
 export const getQuoteRequestApi = (query) => async (dispatch) => {
   dispatch(setLoader(true));
@@ -16,7 +16,6 @@ export const getQuoteRequestApi = (query) => async (dispatch) => {
     dispatch(setLoader(false));
   }
 };
-
 
 export const getSampleRequestApi = (query) => async (dispatch) => {
   dispatch(setLoader(true));
@@ -34,10 +33,8 @@ export const getSampleRequestApi = (query) => async (dispatch) => {
   }
 };
 
-
 export const getFinanceRequestApi = (query) => async (dispatch) => {
   dispatch(setLoader(true));
-  // debugger
   try {
     const response = await globalGetService("/finance/list", query);
     if (response.data.success) {
@@ -51,7 +48,6 @@ export const getFinanceRequestApi = (query) => async (dispatch) => {
     dispatch(setLoader(false));
   }
 };
-
 
 export const getBulkOrderApi = (query) => async (dispatch) => {
   dispatch(setLoader(true));
@@ -72,7 +68,7 @@ export const getBulkOrderApi = (query) => async (dispatch) => {
 export const getBestDealApi = (query) => async (dispatch) => {
   dispatch(setLoader(true));
   try {
-    const response = await globalGetService("/best-deal/admin-list", query); // use your correct endpoint
+    const response = await globalGetService("/best-deal/admin-list", query);
     if (response.data.success) {
       dispatch(setBestDeals(response.data.data));
     }
@@ -85,12 +81,56 @@ export const getBestDealApi = (query) => async (dispatch) => {
   }
 };
 
+export const getDealQuoteListApi = (query) => async (dispatch) => {
+  dispatch(setLoader(true));
+  try {
+    const response = await globalGetService("/best-deal/buyer-deal-admin/list", query);
+    if (response.data.success) {
+      dispatch(setDealQuotes(response.data.data));
+    }
+    return response.data;
+  } catch (error) {
+    console.log("Error in getDealQuoteListApi", error);
+    return { success: false, error: error.message };
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+export const getSupplierOffersApi = (query) => async (dispatch) => {
+  dispatch(setLoader(true));
+  try {
+    const response = await globalGetService("/bulk-order/supplier-offer/list", query);
+    if (response.data.success) {
+      dispatch(setSupplierOffers(response.data.data));
+    }
+    return response.data;
+  } catch (error) {
+    console.log("Error in getSupplierOffersApi", error);
+    return { success: false, error: error.message };
+  } finally {
+    dispatch(setLoader(false));
+  }
+};
+
+// NEW: Get Admin Products List API
+export const getAdminProductsApi = async () => {
+  try {
+    const response = await globalGetService("/bulk-order/admin-product/list");
+    return response.data;
+  } catch (error) {
+    console.log("Error in getAdminProductsApi", error);
+    return { success: false, error: error.message };
+  }
+};
+
 export const PatchFinanceApi = async (id, payload) => {
   try {
     const response = await globalPatchService(`/finance/status/${id}`, payload);
     return response.data;
   } catch (err) {
     console.log(err);
+    return { success: false, error: err.message };
   }
 };
 
@@ -100,15 +140,56 @@ export const PatchBestDealApi = async (id, payload) => {
     return response.data;
   } catch (err) {
     console.log(err);
+    return { success: false, error: err.message };
   }
 };
 
 export const PatchBulkOrderApi = async (id, payload) => {
   try {
-    const response = await globalPatchService(`/bulk-order/verify-status/${id}`, payload); 
+    const response = await globalPatchService(`/bulk-order/verify-status/${id}`, payload);
     return response.data;
   } catch (err) {
     console.log(err);
+    return { success: false, error: err.message };
   }
 };
 
+export const patchDealQuoteRequestApi = async (id, payload) => {
+  try {
+    const response = await globalPatchService(`/best-deal/buyer-deal-verify/${id}`, payload);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: err.message };
+  }
+};
+
+export const patchSupplierOfferApi = async (id, payload) => {
+  try {
+    const response = await globalPatchService(`/bulk-order/supplier-offer/verify/${id}`, payload);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: err.message };
+  }
+};
+
+export const createBulkOrderApi = async (payload) => {
+  try {
+    const response = await globalPostService("/bulk-order/admin-create", payload);
+    return { success: true, data: response.data, message: "Bulk order created successfully." };
+  } catch (error) {
+    console.error("Error in createBulkOrderApi:", error);
+    return { success: false, message: error.response?.data?.message || error.message };
+  }
+};
+
+export const updateBulkOrderApi = async (payload) => {
+  try {
+    const response = await globalPutService(`/bulk-order/admin-edit/${payload._id}`, payload);
+    return { success: true, data: response.data, message: "Bulk order updated successfully." };
+  } catch (error) {
+    console.error("Error in updateBulkOrderApi:", error);
+    return { success: false, message: error.response?.data?.message || error.message };
+  }
+};
