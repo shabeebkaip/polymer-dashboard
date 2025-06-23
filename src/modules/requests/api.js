@@ -113,7 +113,6 @@ export const getSupplierOffersApi = (query) => async (dispatch) => {
   }
 };
 
-// NEW: Get Admin Products List API
 export const getAdminProductsApi = async () => {
   try {
     const response = await globalGetService("/bulk-order/admin-product/list");
@@ -123,6 +122,17 @@ export const getAdminProductsApi = async () => {
     return { success: false, error: error.message };
   }
 };
+
+export const getAdminUsersApi = async () => {
+  try {
+    const response = await globalGetService("/best-deal/admin-users");
+    return response.data;
+  } catch (error) {
+    console.log("Error in getAdminUserApi", error);
+    return { success: false, error: error.message };
+  }
+};
+
 
 export const PatchFinanceApi = async (id, payload) => {
   try {
@@ -174,6 +184,8 @@ export const patchSupplierOfferApi = async (id, payload) => {
   }
 };
 
+
+
 export const createBulkOrderApi = async (payload) => {
   try {
     const response = await globalPostService("/bulk-order/admin-create", payload);
@@ -184,12 +196,33 @@ export const createBulkOrderApi = async (payload) => {
   }
 };
 
+export const createBestDealApi = async (payload) => {
+  try {
+    const response = await globalPostService("/best-deal/admin-create", payload);
+    return { success: true, data: response.data, message: "Best deal created successfully." };
+  } catch (error) {
+    console.error("Error in createBestDealApi:", error);
+    return { success: false, message: error.response?.data?.message || error.message };
+  }
+};
+
+
 export const updateBulkOrderApi = async (payload) => {
   try {
     const response = await globalPutService(`/bulk-order/admin-edit/${payload._id}`, payload);
     return { success: true, data: response.data, message: "Bulk order updated successfully." };
   } catch (error) {
     console.error("Error in updateBulkOrderApi:", error);
+    return { success: false, message: error.response?.data?.message || error.message };
+  }
+};
+
+export const updateBestDealApi = async (payload) => {
+  try {
+    const response = await globalPutService(`/best-deal/admin-edit/${payload._id}`, payload);
+    return { success: true, data: response.data, message: "Best deal updated successfully." };
+  } catch (error) {
+    console.error("Error in updateBestDealApi:", error);
     return { success: false, message: error.response?.data?.message || error.message };
   }
 };

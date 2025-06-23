@@ -1,33 +1,50 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setPageTitle } from "../../../slices/sharedSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setPageTitle, setBestDealModal, setMode, setBestDealCrud } from "../../../slices/sharedSlice";
 import { getBestDealApi } from "../api";
-import BestDealList from "../components/BestDealList";
+import BestDealList from "../components/bestDealList";
+import AddEditBestDeal from "../components/addEditBestDeal";
 import Title from "../../../shared/Title";
 import PageLoader from "../../../shared/PageLoader";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import ActionButton from "../../../shared/ActionButton";
+import createIcon from "../../../assets/create.svg";
 
 const BestDeal = () => {
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
-  const [bestDeals, setBestDeals] = useState([]);
+  const [currentQuery, setCurrentQuery] = useState({ page: 1 });
   const dispatch = useDispatch();
+  const { bestDeals } = useSelector((state) => state.requestState);
 
-  const fetchDeals = (query = {}) => {
+  const fetchDeals = async (query = {}) => {
     setLoading(true);
-    dispatch(getBestDealApi(query))
-      .then((response) => {
-        if (response?.success) {
-          setPagination({
-            total: response.total,
-            currentPage: response.page,
-            totalPages: response.totalPages,
-          });
-          setBestDeals(response.data);
-        }
-      })
-      .catch((err) => console.error("Error fetching best deals:", err))
-      .finally(() => setLoading(false));
+    setCurrentQuery(query);
+    
+    try {
+      const response = await dispatch(getBestDealApi(query));
+      if (response?.success) {
+        setPagination({
+          total: response.total,
+          currentPage: response.page,
+          totalPages: response.totalPages,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching best deals:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const refreshCurrentPage = () => {
+    return fetchDeals(currentQuery);
+  };
+
+  const handleCreateDeal = () => {
+    dispatch(setBestDealModal(true));
+    dispatch(setMode("add"));
+    dispatch(setBestDealCrud({}));
   };
 
   useEffect(() => {
@@ -37,13 +54,27 @@ const BestDeal = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <Title title="Best Deal Requests" description="Display all the Best Deal Submissions" />
+      <Title
+        title="Best Deal Requests"
+        description="Display all the Best Deal Submissions"
+        actions={
+          <div className="flex items-center justify-between">
+            <ActionButton
+              buttonText="Add Best Deal"
+              handleOnClick={handleCreateDeal}
+              textColor="#ffffff"
+              bgColor="rgb(41, 82, 255)"
+              icon={createIcon}
+            />
+          </div>
+        }
+      />
       {loading ? (
         <PageLoader />
       ) : (
         <>
           <div className="mt-4">
-            <BestDealList bestDeals={bestDeals} getResponseBack={() => fetchDeals()} />
+            <BestDealList bestDeals={bestDeals} getResponseBack={refreshCurrentPage} />
           </div>
           <PaginationContainer
             totalPages={pagination?.totalPages}
@@ -52,6 +83,7 @@ const BestDeal = () => {
           />
         </>
       )}
+      <AddEditBestDeal getResponseBack={refreshCurrentPage} />
     </div>
   );
 };

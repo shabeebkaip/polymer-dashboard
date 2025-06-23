@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import TableRow from "../../../shared/TableRow";
 import ViewAction from "../../../shared/ViewAction";
+import EditAction from "../../../shared/EditAction";
 import { useDispatch } from "react-redux";
 import { setModal, setBestDeal } from "../../../slices/requestSlice";
+import { setBestDealCrud, setBestDealModal, setMode } from "../../../slices/sharedSlice";
 import { FormControlLabel, Switch } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { enqueueSnackbar } from "notistack";
 import { PatchBestDealApi } from "../api";
 
@@ -53,65 +55,96 @@ const BestDealRow = ({ deal, index, isLastRow, getResponseBack }) => {
   const [localStatus, setLocalStatus] = useState(
     deal?.status?.toLowerCase() === "approved"
   );
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  useEffect(() => {
+    setLocalStatus(deal?.status?.toLowerCase() === "approved");
+  }, [deal?.status]);
 
   const handleStatusUpdate = async (dealId, isApproved) => {
+    if (isUpdating) return;
+    
+    setIsUpdating(true);
     const payload = { status: isApproved ? "approved" : "rejected" };
 
     try {
       const res = await PatchBestDealApi(dealId, payload);
-      if (res?.message) {
-        enqueueSnackbar(res.message || `Best deal ${payload.status}`, {
-          variant: "success",
-          anchorOrigin: { horizontal: "right", vertical: "top" },
-        });
+
+      if (res?.success) {
+        enqueueSnackbar(
+          res.message || `Best deal ${payload.status} successfully.`,
+          {
+            variant: "success",
+            anchorOrigin: { horizontal: "right", vertical: "top" },
+          }
+        );
         setLocalStatus(isApproved);
-        getResponseBack();
+        
+        if (getResponseBack) {
+          setTimeout(() => {
+            getResponseBack();
+          }, 500);
+        }
       } else {
-        enqueueSnackbar(res.message || "Update failed", {
+        enqueueSnackbar(res?.message || "Failed to update best deal.", {
           variant: "error",
           anchorOrigin: { horizontal: "right", vertical: "top" },
         });
-        setLocalStatus(!isApproved);
       }
     } catch (error) {
-      enqueueSnackbar("Error updating status", {
+      console.error("Patch error:", error);
+      enqueueSnackbar("Something went wrong.", {
         variant: "error",
         anchorOrigin: { horizontal: "right", vertical: "top" },
       });
-      setLocalStatus(!isApproved);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   const getSellerName = (seller) => {
     if (!seller) return "N/A";
-    return `${seller.firstName || ""} ${seller.lastName || ""}`.trim() || "N/A";
+    const fullName = `${seller.firstName || ""} ${seller.lastName || ""}`.trim();
+    return fullName || seller.name || "N/A";
   };
 
   return (
     <TableRow index={index} isLastRow={isLastRow}>
-      <td className="p-4">{deal?.productId?.productName || "N/A"}</td>
-      <td className="p-4">{deal?.offerPrice || "N/A"}</td>
+      <td className="p-4">{deal?.productId?.productName || "—"}</td>
+      <td className="p-4">${deal?.offerPrice || "—"}</td>
       <td className="p-4">{getSellerName(deal?.sellerId)}</td>
-      <td className="p-4">{deal?.sellerId?.email || "N/A"}</td>
-      <td className="p-4">{deal?.status || "N/A"}</td>
+      <td className="p-4">{deal?.sellerId?.email || "—"}</td>
+      <td className="p-4">{deal?.status || "—"}</td>
       <td className="p-4">
-        <ViewAction
-          handleClick={() => {
-            dispatch(setModal(true));
-            dispatch(setBestDeal(deal));
-          }}
-        />
+        <div className="flex items-center gap-2">
+          <ViewAction
+            handleClick={() => {
+              dispatch(setModal(true));
+              dispatch(setBestDeal(deal));
+            }}
+          />
+          <EditAction
+            handleClick={() => {
+              dispatch(setBestDealModal(true));
+              dispatch(setMode("edit"));
+              dispatch(setBestDealCrud(deal));
+            }}
+          />
+        </div>
       </td>
       <td className="p-4 px-8">
         <FormControlLabel
           control={
             <IOSSwitch
               checked={localStatus}
+              disabled={isUpdating}
               onChange={(e) =>
                 handleStatusUpdate(deal?._id, e.target.checked)
               }
             />
           }
+          label=""
+          sx={{ margin: 0 }}
         />
       </td>
     </TableRow>
