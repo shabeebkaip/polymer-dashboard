@@ -61,6 +61,7 @@ export const buyerCrud = createCrudOperations('BenefitsForBuyer');
 export const heroCrud = createCrudOperations('HeroSection');
 export const footerCrud = createCrudOperations('FooterMailNumber');
 export const polymerAdvantagesCrud = createCrudOperations('PolymerAdvantages');
+export const testimonialsCrud = createCrudOperations('Testimonials');
 
 
 

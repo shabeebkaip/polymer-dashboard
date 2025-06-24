@@ -141,8 +141,11 @@ const menuItems = [
         displayName: "Polymer Advantages",
         route: "/cms/PolymerAdvantages",
       },
-
-
+      {
+        name: "testimonials",
+        displayName: "Testimonials",
+        route: "/cms/Testimonials",
+      },
 
     ],
     icon: < InsertDriveFileIcon/>,

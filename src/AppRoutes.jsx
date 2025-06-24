@@ -28,6 +28,8 @@ import BulkOrder from "./modules/requests/containers/bulkOrder"
 import BestDeal from "./modules/requests/containers/betsDeal"
 import DealQuote from "./modules/requests/containers/dealQuote"
 import SupplierOffer from "./modules/requests/containers/supplierOffer"
+import Testimonials from "./modules/cms/components/TestimonialSection"
+
 
 
 const AppRoutes = () => {
@@ -62,10 +64,15 @@ const AppRoutes = () => {
         <Route path="/cms/HeroSection" exact element={<HeroSection />} />
         <Route path="/cms/FooterMailNumber" exact element={<FooterMailNumber />} />
         <Route path="/cms/PolymerAdvantages" exact element={<PolymerAdvantages />} />
+        <Route path="/cms/PolymerAdvantages" exact element={<PolymerAdvantages />} />
+        <Route path="/cms/Testimonials" exact element={<Testimonials />} />
+
+
 
 
         {/* <Route path="/cms/faq" exact element={< />} /> */}
         
+
 
 
 

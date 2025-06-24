@@ -57,6 +57,10 @@ const sharedSlice = createSlice({
     // best deal
     bestDealModal: false,
     bestDealCrud: {},
+    // testimonials
+    testimonials: [],
+    testimonialModal: false,
+    testimonialCrud: {},
   },
   reducers: {
     setOpenFilter: (state, action) => {
@@ -65,6 +69,7 @@ const sharedSlice = createSlice({
     setLoader: (state, action) => {
       state.loader = action.payload;
     },
+
     setMode: (state, action) => {
       state.mode = action.payload;
     },
@@ -211,12 +216,22 @@ const sharedSlice = createSlice({
       state.bulkOrderCrud = action.payload;
     },
 
-    // ✅ FIXED: best deal
     setBestDealModal: (state, action) => {
       state.bestDealModal = action.payload;
     },
     setBestDealCrud: (state, action) => {
       state.bestDealCrud = action.payload;
+    },
+
+    // testimonials
+    setTestimonials: (state, action) => {
+     state.testimonials = action.payload;
+    },
+    setTestimonialModal: (state, action) => {
+     state.testimonialModal = action.payload;
+    },
+    setTestimonialCrud: (state, action) => {
+    state.testimonialCrud = action.payload;
     },
   },
 });
@@ -265,6 +280,9 @@ export const {
   setBulkOrderCrud,
   setBestDealModal,
   setBestDealCrud,
+  setTestimonials,
+  setTestimonialModal,
+  setTestimonialCrud,
 } = sharedSlice.actions;
 
 export const sharedReducer = sharedSlice.reducer;
