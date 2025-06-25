@@ -12,10 +12,12 @@ const Sample = () => {
   const [samples, setSamples] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
+  const [currentQuery, setCurrentQuery] = useState({ page: 1 });
   const dispatch = useDispatch();
 
   const fetchSamples = (query = {}) => {
     setLoading(true);
+    setCurrentQuery(query);
     dispatch(getSampleRequestApi(query))
       .then((response) => {
         if (response?.success) {
@@ -36,6 +38,10 @@ const Sample = () => {
       });
   };
 
+  const refreshCurrentPage = () => {
+    fetchSamples(currentQuery);
+  };
+
   useEffect(() => {
     dispatch(setPageTitle("Sample Enquiries"));
   }, [dispatch]);
@@ -50,10 +56,12 @@ const Sample = () => {
         title="Sample Enquiries"
         description="Display all the Sample Requests"
       />
-      {loading ? <PageLoader /> :
+      {loading ? (
+        <PageLoader />
+      ) : (
         <>
           <div className="mt-4">
-            <SampleList data={samples} />
+            <SampleList getResponseBack={refreshCurrentPage} />
           </div>
           <PaginationContainer
             totalPages={pagination?.totalPages}
@@ -61,7 +69,7 @@ const Sample = () => {
             handlePageChange={(page) => fetchSamples({ page })}
           />
         </>
-      }
+      )}
       <SampleModal />
     </div>
   );

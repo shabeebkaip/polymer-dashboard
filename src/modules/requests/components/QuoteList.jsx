@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 import TableUI from "../../../shared/TableUI";
 import QuoteRow from "./QuoteRow";
+import PropTypes from "prop-types";
 
-const QuoteList = () => {
+const QuoteList = ({ getResponseBack }) => {
   const { quotes } = useSelector((state) => state.requestState);
-  console.log("Quotes", quotes);
+
   return (
     <div>
       <TableUI
@@ -16,6 +17,7 @@ const QuoteList = () => {
           "UOM",
           "Status",
           "Action",
+          "Verification", // Add header
         ]}
         noRecord={quotes?.length === 0}
       >
@@ -27,12 +29,17 @@ const QuoteList = () => {
               quote={quote}
               key={index}
               index={index}
+              getResponseBack={getResponseBack} // Pass handler
             />
           );
         })}
       </TableUI>
     </div>
   );
+};
+
+QuoteList.propTypes = {
+  getResponseBack: PropTypes.func.isRequired,
 };
 
 export default QuoteList;

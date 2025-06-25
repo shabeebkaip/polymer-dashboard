@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import TableUI from "../../../shared/TableUI";
 import SampleRow from "./SampleRow";
+import PropTypes from "prop-types";
 
-const SampleList = () => {
-  const { samples } = useSelector((state) => state.requestState); 
-  console.log("Samples", samples);
+const SampleList = ({ getResponseBack }) => {
+  const { samples } = useSelector((state) => state.requestState);
 
   return (
     <div>
@@ -17,6 +17,7 @@ const SampleList = () => {
           "UOM",
           "Status",
           "Action",
+          "Verification",
         ]}
         noRecord={samples?.length === 0}
       >
@@ -28,12 +29,17 @@ const SampleList = () => {
               sample={sample}
               key={index}
               index={index}
+              getResponseBack={getResponseBack}
             />
           );
         })}
       </TableUI>
     </div>
   );
+};
+
+SampleList.propTypes = {
+  getResponseBack: PropTypes.func.isRequired,
 };
 
 export default SampleList;

@@ -184,7 +184,25 @@ export const patchSupplierOfferApi = async (id, payload) => {
   }
 };
 
+export const patchQuoteRequestApi = async (id, payload) => {
+  try {
+    const response = await globalPatchService(`/quote-request/status/${id}`, payload);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: err.message };
+  }
+};
 
+export const patchSampleRequestApi = async (id, payload) => {
+  try {
+    const response = await globalPatchService(`/sample-request/status/${id}`, payload);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: err.message };
+  }
+};
 
 export const createBulkOrderApi = async (payload) => {
   try {
