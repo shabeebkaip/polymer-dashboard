@@ -5,7 +5,7 @@ const sharedSlice = createSlice({
   initialState: {
     pageTitle: "",
     loader: false,
-    openFilter: { name: '', module: null, isOpen: false },
+    openFilter: { name: "", module: null, isOpen: false },
     deleteModal: false,
     deleteId: null,
     mode: "add",
@@ -61,6 +61,10 @@ const sharedSlice = createSlice({
     testimonials: [],
     testimonialModal: false,
     testimonialCrud: {},
+    //Shipping method
+    shippingMethod: [],
+    shippingMethodCrud: {},
+    shippingMethodModal: false,
   },
   reducers: {
     setOpenFilter: (state, action) => {
@@ -225,13 +229,22 @@ const sharedSlice = createSlice({
 
     // testimonials
     setTestimonials: (state, action) => {
-     state.testimonials = action.payload;
+      state.testimonials = action.payload;
     },
     setTestimonialModal: (state, action) => {
-     state.testimonialModal = action.payload;
+      state.testimonialModal = action.payload;
     },
     setTestimonialCrud: (state, action) => {
-    state.testimonialCrud = action.payload;
+      state.testimonialCrud = action.payload;
+    },
+    setShippingMethod: (state, action) => {
+      state.shippingMethod = action.payload;
+    },
+    setShippingMethodCrud: (state, action) => {
+      state.shippingMethodCrud = action.payload;
+    },
+    setShippingMethodModal: (state, action) => {
+      state.shippingMethodModal = action.payload;
     },
   },
 });
@@ -283,6 +296,9 @@ export const {
   setTestimonials,
   setTestimonialModal,
   setTestimonialCrud,
+  setShippingMethod,
+  setShippingMethodCrud,
+  setShippingMethodModal,
 } = sharedSlice.actions;
 
 export const sharedReducer = sharedSlice.reducer;

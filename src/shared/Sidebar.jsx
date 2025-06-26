@@ -201,6 +201,12 @@ const menuItems = [
         displayName: "Chemical Family",
         route: "/chemical-family",
       },
+            {
+        name: "shipping-method",
+        displayName: "Shipping Method",
+        route: "/shipping-method",
+      },
+
     ],
   },
 ];

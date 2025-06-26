@@ -10,6 +10,7 @@ import PageLoader from '../../shared/PageLoader';
 import createIcon from '../../../src/assets/create.svg'
 import editIcon from '../../../src/assets/edit.svg'
 import deleteIcon from '../../../src/assets/delete.svg'
+import roundBg from '../../../src/assets/round.png'
 
 
 
@@ -135,11 +136,11 @@ return (
               >
                 <div className="absolute z-10 flex gap-2 top-2 right-2">
                   <button onClick={() => handleEdit(item)} className="relative cursor-pointer">
-                    <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
+                    <img src={roundBg} alt="" className="w-8 h-8" />
                     <img src={editIcon} alt="Edit" className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
                   </button>
                   <button onClick={() => handleDeleteClick(item.id)} className="relative cursor-pointer">
-                    <img src="/src/assets/round.png" alt="" className="w-8 h-8" />
+                    <img src={roundBg} alt="" className="w-8 h-8" />
                     <img src={deleteIcon} alt="Delete" className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
                   </button>
                 </div>

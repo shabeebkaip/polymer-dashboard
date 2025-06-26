@@ -29,6 +29,7 @@ import BestDeal from "./modules/requests/containers/betsDeal"
 import DealQuote from "./modules/requests/containers/dealQuote"
 import SupplierOffer from "./modules/requests/containers/supplierOffer"
 import Testimonials from "./modules/cms/components/TestimonialSection"
+import ShippingMethod from "./modules/shipping-method/containers/ShippingMethod";
 
 
 
@@ -83,6 +84,8 @@ const AppRoutes = () => {
         <Route path="/grade" exact element={<Grade />} />
         <Route path="/incoterm" exact element={<Incoterm />} />
         <Route path="/chemical-family" exact element={<ChemicalFamily />} />
+        <Route path="/shipping-method" exact element={<ShippingMethod />} />
+
 
         <Route path={"/sellers-list"} element={<Sellers />} />
         <Route path={"/buyers-list"} element={<Users />} />
