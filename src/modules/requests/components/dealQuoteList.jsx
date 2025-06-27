@@ -4,7 +4,7 @@ import DealQuoteRow from "./dealQuoteRow";
 import PropTypes from "prop-types";
 
 const DealQuoteList = ({ getResponseBack }) => {
-  const { dealQuotes } = useSelector((state) => state.requestState); // ✅ Same like bulkOrders
+  const { dealQuotes } = useSelector((state) => state.requestState);
 
   return (
     <div>
@@ -17,8 +17,8 @@ const DealQuoteList = ({ getResponseBack }) => {
           "Shipping Country",
           "Payment Terms",
           "Status",
-          "Action",
-          "Verification" // ✅ For admin toggle switch
+          "Action"
+          // ❌ Removed "Verification"
         ]}
         noRecord={dealQuotes?.length === 0}
       >
@@ -30,7 +30,7 @@ const DealQuoteList = ({ getResponseBack }) => {
               quote={quote}
               index={index}
               isLastRow={isLastRow}
-              getResponseBack={getResponseBack} // ✅ Pass refresh function
+              getResponseBack={getResponseBack}
             />
           );
         })}

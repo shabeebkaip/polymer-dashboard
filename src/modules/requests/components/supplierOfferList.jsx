@@ -16,8 +16,7 @@ const SupplierOfferList = ({ getResponseBack }) => {
           "Supplier Name",
           "Supplier Email",
           "Status",
-          "Action",
-          "Verification",
+          "Action"
         ]}
         noRecord={supplierOffers?.length === 0}
       >
