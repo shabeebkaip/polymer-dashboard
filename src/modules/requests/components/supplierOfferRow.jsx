@@ -7,13 +7,17 @@ import { setModal, setSupplierOffer } from "../../../slices/requestSlice";
 const SupplierOfferRow = ({ offer, index, isLastRow, getResponseBack }) => {
   const dispatch = useDispatch();
 
-  const supplierName = `${offer?.supplierId?.firstName || ""} ${offer?.supplierId?.lastName || ""}`.trim();
+  const supplierName = `${offer?.supplierId?.name || ""}`.trim();
+  const productName = offer?.bulkOrderId?.product?.productName || "—";
 
   return (
     <TableRow index={index} isLastRow={isLastRow}>
-      <td className="p-4">{offer?.bulkOrderId?.product || "—"}</td>
+      <td className="p-4">{productName}</td>
       <td className="p-4">{offer?.pricePerUnit || "—"}</td>
       <td className="p-4">{offer?.availableQuantity || "—"}</td>
+      <td className="p-4">{offer?.deliveryTimeInDays || "—"}</td>
+      <td className="p-4">{offer?.incotermAndPackaging || "—"}</td>
+      <td className="p-4">{offer?.message || "—"}</td>
       <td className="p-4">{supplierName || "—"}</td>
       <td className="p-4">{offer?.supplierId?.email || "—"}</td>
       <td className="p-4">{offer?.status || "—"}</td>
@@ -22,7 +26,7 @@ const SupplierOfferRow = ({ offer, index, isLastRow, getResponseBack }) => {
           handleClick={() => {
             dispatch(setModal(true));
             dispatch(setSupplierOffer(offer));
-          }} 
+          }}
         />
       </td>
     </TableRow>

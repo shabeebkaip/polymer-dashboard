@@ -6,6 +6,7 @@ import SupplierOfferList from "../components/supplierOfferList";
 import Title from "../../../shared/Title";
 import PageLoader from "../../../shared/PageLoader";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import SupplierOfferModal from "../components/SupplierOfferModal";
 
 const SupplierOffer = () => {
   const [pagination, setPagination] = useState({});
@@ -52,7 +53,9 @@ const SupplierOffer = () => {
             handlePageChange={(page) => fetchOffers({ page })}
           />
         </>
+        
       )}
+      <SupplierOfferModal/>
     </div>
   );
 };

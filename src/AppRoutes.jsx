@@ -25,7 +25,7 @@ import HeroSection from "./modules/cms/components/HeroSection";
 import FooterMailNumber from "./modules/cms/components/FooterMailNumber";
 import PolymerAdvantages from "./modules/cms/components/PolymerAdvantages";
 import BulkOrder from "./modules/requests/containers/bulkOrder"
-import BestDeal from "./modules/requests/containers/betsDeal"
+import BestDeal from "./modules/requests/containers/bestDeal";
 import DealQuote from "./modules/requests/containers/dealQuote"
 import SupplierOffer from "./modules/requests/containers/supplierOffer"
 import Testimonials from "./modules/cms/components/TestimonialSection"

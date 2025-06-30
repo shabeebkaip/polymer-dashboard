@@ -9,17 +9,18 @@ const DealQuoteList = ({ getResponseBack }) => {
   return (
     <div>
       <TableUI
-        tableHeader={[
-          "Product Name",
-          "Buyer Name",
-          "Email",
-          "Desired Qty",
-          "Shipping Country",
-          "Payment Terms",
-          "Status",
-          "Action"
-          // ❌ Removed "Verification"
-        ]}
+  tableHeader={[
+    "Product Name",
+    "Seller Name", 
+    "Buyer Name",
+    "Email",
+    "Desired Qty",
+    "Shipping Country",
+    "Payment Terms",
+    "Status",
+    "Action"
+  ]}
+
         noRecord={dealQuotes?.length === 0}
       >
         {dealQuotes?.map((quote, index) => {

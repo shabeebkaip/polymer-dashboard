@@ -7,13 +7,15 @@ import { setModal, setDealQuote } from "../../../slices/requestSlice";
 const DealQuoteRow = ({ quote, index, isLastRow, getResponseBack }) => {
   const dispatch = useDispatch();
 
-  const buyerName = `${quote?.buyerId?.firstName || ""} ${quote?.buyerId?.lastName || ""}`.trim();
+  const buyerName = quote?.buyerId?.name || "—";
+  const sellerName = quote?.bestDealId?.sellerId?.name || "—";
   const productName = quote?.bestDealId?.productId?.productName || "—";
 
   return (
     <TableRow index={index} isLastRow={isLastRow}>
       <td className="p-4">{productName}</td>
-      <td className="p-4">{buyerName || "—"}</td>
+      <td className="p-4">{sellerName}</td>
+      <td className="p-4">{buyerName}</td>
       <td className="p-4">{quote?.buyerId?.email || "—"}</td>
       <td className="p-4">{quote?.desiredQuantity ?? "—"}</td>
       <td className="p-4">{quote?.shippingCountry || "—"}</td>

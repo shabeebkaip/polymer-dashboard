@@ -1,13 +1,12 @@
-// pages/admin/dealQuote.jsx
-
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageTitle } from "../../../slices/sharedSlice";
 import Title from "../../../shared/Title";
-import { getDealQuoteListApi } from "../api"; // 👈 You'll implement this API call
+import { getDealQuoteListApi } from "../api"; 
 import DealQuoteList from "../components/dealQuoteList";
 import PageLoader from "../../../shared/PageLoader";
 import PaginationContainer from "../../../shared/PaginationContainer";
+import DealQuoteModal from "../components/DealQuoteModal";
 
 const DealQuote = () => {
   const [pagination, setPagination] = useState({});
@@ -57,6 +56,7 @@ const DealQuote = () => {
           />
         </>
       )}
+      <DealQuoteModal/>
     </div>
   );
 };
