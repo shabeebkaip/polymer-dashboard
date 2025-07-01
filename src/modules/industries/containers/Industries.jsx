@@ -91,7 +91,6 @@ const Industries = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Industries"
         description="Displaying all the categories under Industries"
         actions={
           <div className="flex items-center justify-between ">

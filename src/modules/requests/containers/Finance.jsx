@@ -47,10 +47,6 @@ const Finance = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <Title
-        title="Finance Enquiries"
-        description="Display all the Finance Requests"
-      />
       {loading ? <PageLoader /> :
         <>
           <div className="mt-4">

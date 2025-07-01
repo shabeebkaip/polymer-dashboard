@@ -83,7 +83,6 @@ const PolymerType = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Polymer Types"
         description="Displaying all the Polymer Types"
         actions={
           <div className="flex items-center justify-between ">

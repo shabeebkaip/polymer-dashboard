@@ -56,7 +56,6 @@ const BulkOrder = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Bulk Order Requests"
         description="Display all the Bulk Order submissions"
         actions={
           <div className="flex items-center justify-between">

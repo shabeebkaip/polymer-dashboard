@@ -129,7 +129,6 @@ const TermsCondition = () => {
   return (
     <div>
       <div className="w-full p-8">
-        <h2 className="pt-2 pb-2 text-xl">Terms and Condition</h2>
         <div style={{ height: '66dvh', position: 'relative' }}>
           <div className="grid grid-cols-2 gap-5">
             <div>

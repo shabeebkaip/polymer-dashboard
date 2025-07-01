@@ -82,7 +82,6 @@ const PaymentTerms = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Payment Terms"
         description="Displaying all the Payment Terms"
         actions={
           <div className="flex items-center justify-between ">

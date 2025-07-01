@@ -322,62 +322,61 @@ const Products = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <Title
-        title="Products"
-        description="Displaying all the Products"
-        actions={
-          <div className="flex gap-2">
-            <div className="relative">
-              <TextField
-                label="Search Products"
-                variant="outlined"
-                value={searchQuery}
-                onChange={handleSearch}
-                fullWidth
-                size="small"
-                className="search-input"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {searchQuery ? (
-                        <IconButton onClick={handleClear} size="small">
-                          <ClearIcon sx={{ fontSize: "20px" }} />
-                        </IconButton>
-                      ) : (
-                        <SearchIcon sx={{ color: "gray", fontSize: "24px" }} />
-                      )}
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
-            <ActionButton
-              buttonText={
-                filterActive 
-                  ? `Clear Filter${activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}` 
-                  : "Filter"
-              }
-              handleOnClick={
-                filterActive ? handleClearFilter : handleFilterToggle
-              }
-              textColor={filterActive ? "#fa1c1c" : "#ffffff"}
-              bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"}
-              icon={filterActive ? clearFilterIcon : filterIcon}
-            />
-            <ActionButton
-              buttonText="Add Product"
-              handleOnClick={() => {
-                dispatch(setProductCrud({}));
-                dispatch(setMode("add"));
-                navigate("/add-product");
-              }}
-              textColor="#ffffff"
-              bgColor="rgb(41, 82, 255)"
-              icon={createIcon}
-            />
-          </div>
-        }
-      />
+      <div className="flex flex-col gap-4 p-4 bg-white rounded-md shadow md:flex-row md:items-center md:justify-between">
+  {/* Search Field */}
+  <div className="w-full md:max-w-md">
+    <TextField
+      label="Search Products"
+      variant="outlined"
+      value={searchQuery}
+      onChange={handleSearch}
+      fullWidth
+      size="small"
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            {searchQuery ? (
+              <IconButton onClick={handleClear} size="small">
+                <ClearIcon sx={{ fontSize: "20px" }} />
+              </IconButton>
+            ) : (
+              <SearchIcon sx={{ color: "gray", fontSize: "24px" }} />
+            )}
+          </InputAdornment>
+        ),
+      }}
+    />
+  </div>
+
+  {/* Buttons */}
+  <div className="flex gap-2">
+    <ActionButton
+      buttonText={
+        filterActive 
+          ? `Clear Filter${activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}` 
+          : "Filter"
+      }
+      handleOnClick={
+        filterActive ? handleClearFilter : handleFilterToggle
+      }
+      textColor={filterActive ? "#fa1c1c" : "#ffffff"}
+      bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"}
+      icon={filterActive ? clearFilterIcon : filterIcon}
+    />
+    <ActionButton
+      buttonText="Add Product"
+      handleOnClick={() => {
+        dispatch(setProductCrud({}));
+        dispatch(setMode("add"));
+        navigate("/add-product");
+      }}
+      textColor="#ffffff"
+      bgColor="rgb(41, 82, 255)"
+      icon={createIcon}
+    />
+  </div>
+</div>
+
 
       {/* Active Filters Display */}
       {(filterActive || activeFilterCount > 0) && (

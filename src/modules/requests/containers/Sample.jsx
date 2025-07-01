@@ -125,10 +125,6 @@ const Sample = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <Title
-        title="Sample Enquiries"
-        description="Display all the Sample Requests"
-      />
       {loading ? <PageLoader /> :
         <>
           <div className="mt-4">

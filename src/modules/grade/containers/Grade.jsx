@@ -82,7 +82,6 @@ const Grade = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Grade"
         description="Displaying all the Grade"
         actions={
           <div className="flex items-center justify-between ">

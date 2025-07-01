@@ -84,7 +84,6 @@ const ProductFamilies = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Product Families"
         description="Displaying all the Product Families"
         actions={
           <div className="flex items-center justify-between">

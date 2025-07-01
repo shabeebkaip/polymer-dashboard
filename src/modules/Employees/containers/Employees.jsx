@@ -61,7 +61,6 @@ const Employees = () => {
     <div>
       {loading && <PageLoader />}
       <Title
-        title="Employees"
         description="Displaying all employees currently assigned to the BTC department, including their Employee ID, Name, and Email for quick reference."
       />
       <div className="flex items-center justify-between p-1 mt-4 bg-white rounded-full shadow ">

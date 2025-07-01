@@ -56,7 +56,6 @@ const BestDeal = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Best Deal Requests"
         description="Display all the Best Deal Submissions"
         actions={
           <div className="flex items-center justify-between">

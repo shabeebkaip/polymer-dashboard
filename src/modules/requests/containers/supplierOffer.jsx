@@ -36,10 +36,6 @@ const SupplierOffer = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <Title
-        title="Supplier Offer Requests"
-        description="Display all the offers submitted by suppliers"
-      />
       {loading ? (
         <PageLoader />
       ) : (

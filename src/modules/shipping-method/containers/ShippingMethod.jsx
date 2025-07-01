@@ -75,7 +75,6 @@ const ShippingMethod = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Shipping Method"
         description="Displaying all shipping methods"
         actions={
           <ActionButton

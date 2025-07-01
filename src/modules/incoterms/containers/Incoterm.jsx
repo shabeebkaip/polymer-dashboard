@@ -82,7 +82,6 @@ const Incoterm = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Incoterm"
         description="Displaying all the Incoterm"
         actions={
           <div className="flex items-center justify-between ">

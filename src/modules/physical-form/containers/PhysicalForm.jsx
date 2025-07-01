@@ -83,7 +83,6 @@ const PhysicalForm = () => {
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
       <Title
-        title="Physical Form"
         description="Displaying all the Physical Form"
         actions={
           <div className="flex items-center justify-between ">

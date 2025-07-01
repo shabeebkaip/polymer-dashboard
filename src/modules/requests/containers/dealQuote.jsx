@@ -41,7 +41,6 @@ const DealQuote = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <Title title="Deal Quote Requests" description="Display all the quote submissions for best deals" />
       {loading ? (
         <PageLoader />
       ) : (
