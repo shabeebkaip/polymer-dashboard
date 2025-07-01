@@ -79,14 +79,14 @@ const AddEditPaymentTerms = ({ getResponseBack }) => {
   };
 
   return (
-    <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
+     <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
       <DialogTitle>
         <h4 className="capitalize">{mode} Payment Terms</h4>
       </DialogTitle>
       <DialogContent dividers>
         <div className="grid grid-cols-12 gap-4">
           <TextField
-            label="Name"
+            label="Name(EN)"
             variant="outlined"
             fullWidth
             className="col-span-6"
@@ -97,10 +97,9 @@ const AddEditPaymentTerms = ({ getResponseBack }) => {
             helperText={errors.name}
             required
           />
-
           <div className="col-span-12">
             <TextField
-              label="Description"
+              label="Description(EN)"
               variant="outlined"
               fullWidth
               multiline
@@ -113,6 +112,90 @@ const AddEditPaymentTerms = ({ getResponseBack }) => {
               required
             />
           </div>
+
+          <TextField
+            label="Name(AR)"
+            variant="outlined"
+            fullWidth
+            className="col-span-6"
+            value={data.ar_name || ""}
+            onChange={(e) => setData({ ...data, ar_name: e.target.value })}
+            onFocus={() => handleFieldFocus("ar_name")}
+            error={!!errors.ar_name}
+            helperText={errors.ar_name}
+            required
+          />
+          <div className="col-span-12">
+            <TextField
+              label="Description(AR)"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              value={data.ar_description || ""}
+              onChange={(e) => setData({ ...data, ar_description: e.target.value })}
+              onFocus={() => handleFieldFocus("ar_description")}
+              error={!!errors.ar_description}
+              helperText={errors.ar_description}
+              required
+            />
+          </div>
+
+          <TextField
+            label="Name(GER)"
+            variant="outlined"
+            fullWidth
+            className="col-span-6"
+            value={data.ger_name || ""}
+            onChange={(e) => setData({ ...data, ger_name: e.target.value })}
+            onFocus={() => handleFieldFocus("ger_name")}
+            error={!!errors.ger_name}
+            helperText={errors.ger_name}
+            required
+          />
+          <div className="col-span-12">
+            <TextField
+              label="Description(GER)"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              value={data.ger_description || ""}
+              onChange={(e) => setData({ ...data, ger_description: e.target.value })}
+              onFocus={() => handleFieldFocus("ger_description")}
+              error={!!errors.ger_description}
+              helperText={errors.ger_description}
+              required
+            />
+          </div>
+
+          <TextField
+            label="Name(CN)"
+            variant="outlined"
+            fullWidth
+            className="col-span-6"
+            value={data.cn_name || ""}
+            onChange={(e) => setData({ ...data, cn_name: e.target.value })}
+            onFocus={() => handleFieldFocus("cn_name")}
+            error={!!errors.cn_name}
+            helperText={errors.cn_name}
+            required
+          />
+          <div className="col-span-12">
+            <TextField
+              label="Description(CN)"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              value={data.cn_description || ""}
+              onChange={(e) => setData({ ...data, cn_description: e.target.value })}
+              onFocus={() => handleFieldFocus("cn_description")}
+              error={!!errors.cn_description}
+              helperText={errors.cn_description}
+              required
+            />
+          </div>
         </div>
       </DialogContent>
       <DialogActions>
@@ -122,17 +205,8 @@ const AddEditPaymentTerms = ({ getResponseBack }) => {
           </Button>
         ) : (
           <>
-            <Button
-              onClick={handleSave}
-              color="primary"
-              variant="contained"
-              disabled={loader}
-            >
-              {loader ? (
-                <CircularProgress size="30px" style={{ color: "#fff" }} />
-              ) : (
-                "Save"
-              )}
+            <Button onClick={handleSave} color="primary" variant="contained" disabled={loader}>
+              {loader ? <CircularProgress size="30px" style={{ color: "#fff" }} /> : "Save"}
             </Button>
             <Button onClick={closeModal} color="error" variant="contained">
               Cancel

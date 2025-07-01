@@ -29,11 +29,8 @@ const AddEditIncoterm = ({ getResponseBack }) => {
     const newErrors = {};
     if (!data.name?.trim()) newErrors.name = "Name is required";
     if (!data.fullForm?.trim()) newErrors.fullForm = "Full form is required";
-    if (!data.ar_name?.trim()) newErrors.ar_name = "Name(AR) is required";
     if (!data.ar_fullForm?.trim()) newErrors.ar_fullForm = "Full form(AR) is required";
-    if (!data.ger_name?.trim()) newErrors.ger_name = "Name(GER) is required";
     if (!data.ger_fullForm?.trim()) newErrors.ger_fullForm = "Full form(GER) is required";
-    if (!data.cn_name?.trim()) newErrors.cn_name = "Name(CN) is required";
     if (!data.cn_fullForm?.trim()) newErrors.cn_fullForm = "Full form(CN) is required";
 
     setErrors(newErrors);
@@ -112,19 +109,6 @@ const AddEditIncoterm = ({ getResponseBack }) => {
               required
             />
           </div>
-
-          <TextField
-            label="Name(AR)"
-            variant="outlined"
-            fullWidth
-            className="col-span-6"
-            value={data.ar_name || ""}
-            onChange={(e) => setData({ ...data, ar_name: e.target.value })}
-            onFocus={() => handleFieldFocus("ar_name")}
-            error={!!errors.ar_name}
-            helperText={errors.ar_name}
-            required
-          />
           <div className="col-span-12">
             <TextField
               label="Full form(AR)"
@@ -140,19 +124,6 @@ const AddEditIncoterm = ({ getResponseBack }) => {
               required
             />
           </div>
-
-          <TextField
-            label="Name(GER)"
-            variant="outlined"
-            fullWidth
-            className="col-span-6"
-            value={data.ger_name || ""}
-            onChange={(e) => setData({ ...data, ger_name: e.target.value })}
-            onFocus={() => handleFieldFocus("ger_name")}
-            error={!!errors.ger_name}
-            helperText={errors.ger_name}
-            required
-          />
           <div className="col-span-12">
             <TextField
               label="Full form(GER)"
@@ -168,19 +139,6 @@ const AddEditIncoterm = ({ getResponseBack }) => {
               required
             />
           </div>
-
-          <TextField
-            label="Name(CN)"
-            variant="outlined"
-            fullWidth
-            className="col-span-6"
-            value={data.cn_name || ""}
-            onChange={(e) => setData({ ...data, cn_name: e.target.value })}
-            onFocus={() => handleFieldFocus("cn_name")}
-            error={!!errors.cn_name}
-            helperText={errors.cn_name}
-            required
-          />
           <div className="col-span-12">
             <TextField
               label="Full form(CN)"
