@@ -24,7 +24,7 @@ const ProductsList = ({ products }) => {
         })
       ) : (
         <tr>
-          <td colSpan={6} className="text-center py-6 text-gray-500">
+          <td colSpan={6} className="py-6 text-center text-gray-500">
             No products available.
           </td>
         </tr>

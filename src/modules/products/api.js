@@ -51,6 +51,16 @@ export const deleteProductApi = async (id) => {
   }
 };
 
+export const getProductFiltersApi = async (filters = {}) => {
+  try {
+    const response = await globalPostService('/product/filter', filters);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching product filters:', error);
+    throw error;
+  }
+};
+
 //Drop down api without pagination
 
 export const listChemicalFamily = () => async (dispatch) => {
