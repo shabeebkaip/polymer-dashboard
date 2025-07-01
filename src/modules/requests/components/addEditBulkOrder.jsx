@@ -89,10 +89,10 @@ const AddEditBulkOrder = ({ getResponseBack }) => {
     try {
       const payload = {
   ...data,
-  product: data.productId, // ✅ rename productId to product
+  product: data.productId, 
   quantity: Number(data.quantity),
 };
-delete payload.productId; // optional: clean up the key
+delete payload.productId; 
 
 
       const apiCall = mode === "add" ? createBulkOrderApi : updateBulkOrderApi;
@@ -122,25 +122,25 @@ delete payload.productId; // optional: clean up the key
     }
   };
 
-  // Load products when modal opens
   useEffect(() => {
     if (open) {
       fetchProducts();
     }
   }, [open]);
 
-  // Set data when bulkOrderCrud changes
-  useEffect(() => {
-    if (bulkOrderCrud && Object.keys(bulkOrderCrud).length > 0) {
-      setData({
-        ...bulkOrderCrud,
-        productId: bulkOrderCrud.product?._id || bulkOrderCrud.productId || "",
-        delivery_date: bulkOrderCrud.delivery_date || "",
-      });
-    } else {
-      setData({});
-    }
-  }, [bulkOrderCrud]);
+useEffect(() => {
+  if (open && mode === "edit" && bulkOrderCrud && Object.keys(bulkOrderCrud).length > 0) {
+    setData({
+      ...bulkOrderCrud,
+      productId: bulkOrderCrud.product?._id || bulkOrderCrud.productId || "",
+      delivery_date: bulkOrderCrud.delivery_date
+        ? new Date(bulkOrderCrud.delivery_date).toISOString().split("T")[0] // Format to yyyy-MM-dd
+        : "",
+    });
+  } else if (open && mode === "add") {
+    setData({});
+  }
+}, [open, mode, bulkOrderCrud]);
 
   return (
     <Dialog open={open} onClose={closeModal} fullWidth maxWidth="md">
@@ -192,17 +192,31 @@ delete payload.productId; // optional: clean up the key
             helperText={errors.quantity}
           />
           
-          <TextField
-            label="UOM (Unit of Measure)"
-            fullWidth
-            className="col-span-6"
-            value={data.uom || ""}
-            onChange={(e) => setData({ ...data, uom: e.target.value })}
-            onFocus={() => handleFieldFocus("uom")}
-            error={!!errors.uom}
-            helperText={errors.uom}
-            placeholder="e.g., kg, tons, pieces"
-          />
+          <FormControl
+  fullWidth
+  className="col-span-6"
+  error={!!errors.uom}
+>
+  <InputLabel>UOM (Unit of Measure)</InputLabel>
+  <Select
+    value={data.uom || ""}
+    label="UOM (Unit of Measure)"
+    onChange={(e) => setData({ ...data, uom: e.target.value })}
+    onFocus={() => handleFieldFocus("uom")}
+  >
+    {[
+      "Kilogram", "Gram", "Milligram", "Metric Ton", "Pound", "Ounce",
+      "Liter", "Milliliter", "Cubic Meter", "Cubic Centimeter",
+      "Gallon", "Quart", "Pint"
+    ].map((unit) => (
+      <MenuItem key={unit} value={unit}>
+        {unit}
+      </MenuItem>
+    ))}
+  </Select>
+  {errors.uom && <FormHelperText>{errors.uom}</FormHelperText>}
+</FormControl>
+
           
           <TextField
             label="City"
