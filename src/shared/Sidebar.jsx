@@ -12,10 +12,17 @@ import ForumIcon from '@mui/icons-material/Forum';
 import GroupIcon from '@mui/icons-material/Group';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { Dashboard } from "@mui/icons-material";
 
 
 
 const menuItems = [
+  {
+    name: "dashboard",
+    displayName: "Dashboard",
+    route: "/dashboard",
+    icon: <Dashboard />,
+  },
   {
     name: "products",
     displayName: "Products",

@@ -30,6 +30,7 @@ import DealQuote from "./modules/requests/containers/dealQuote"
 import SupplierOffer from "./modules/requests/containers/supplierOffer"
 import Testimonials from "./modules/cms/components/TestimonialSection"
 import ShippingMethod from "./modules/shipping-method/containers/ShippingMethod";
+import Dashboard from "./modules/dashboard/dashboard";
 
 
 
@@ -37,6 +38,8 @@ const AppRoutes = () => {
   return (
     <div className="p-5">
       <Routes>
+        <Route path="/dashboard" exact element={<Dashboard />} />
+
         <Route path="/products" exact element={<Products />} />
         <Route path="/add-product" exact element={<AddEditProductPage />} />
         <Route path="/edit-product/:id" exact element={<AddEditProductPage />} />
