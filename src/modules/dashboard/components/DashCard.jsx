@@ -38,11 +38,11 @@ const DashCard = ({ cardCounts }) => {
   return (
     <>
       {cardCounts && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           {cardData.map(({ title, countKey, icon: Icon, bgColor, textColor, link }) => (
             <div
               key={title}
-              className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition cursor-pointer"
+              className="bg-white p-5 rounded-[20px] shadow-lg hover:shadow-xl transition-transform transform hover:scale-[1.02] cursor-pointer"
               onClick={() => handleNavigate(link)}
             >
               <div className="flex items-center justify-between mb-2">
