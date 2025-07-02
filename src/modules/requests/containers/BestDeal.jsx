@@ -15,6 +15,7 @@ const BestDeal = () => {
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
   const [currentQuery, setCurrentQuery] = useState({ page: 1 });
+  const [refreshKey, setRefreshKey] = useState(0); 
   const dispatch = useDispatch();
   const { bestDeals } = useSelector((state) => state.requestState);
 
@@ -30,6 +31,7 @@ const BestDeal = () => {
           currentPage: response.page,
           totalPages: response.totalPages,
         });
+        setRefreshKey(prev => prev + 1);
       }
     } catch (error) {
       console.error("Error fetching best deals:", error);
@@ -74,7 +76,11 @@ const BestDeal = () => {
       ) : (
         <>
           <div className="mt-4">
-            <BestDealList bestDeals={bestDeals} getResponseBack={refreshCurrentPage} />
+            <BestDealList 
+              key={refreshKey} 
+              bestDeals={bestDeals} 
+              getResponseBack={refreshCurrentPage} 
+            />
           </div>
           <PaginationContainer
             totalPages={pagination?.totalPages}

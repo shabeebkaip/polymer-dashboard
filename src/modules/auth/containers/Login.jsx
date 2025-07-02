@@ -5,6 +5,7 @@ import {
   IconButton,
   InputAdornment,
   CircularProgress,
+  // Button,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
@@ -76,6 +77,7 @@ const Login = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
   return (
     <div className="flex w-full h-screen">
       <div className="flex-1">
@@ -148,6 +150,18 @@ const Login = () => {
                     }}
                   />
                 </div>
+
+                {/* Forgot Password Link */}
+                {/* <div className="mb-5 text-right">
+                  <Button
+                    onClick={() => navigate("/forgot-password")}
+                    variant="text"
+                    className="text-[#2952FF] text-sm"
+                    style={{ textTransform: "none" }}
+                  >
+                    Forgot Password?
+                  </Button>
+                </div> */}
 
                 <button
                   type="submit"

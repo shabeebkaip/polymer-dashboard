@@ -8,6 +8,7 @@ import gradientImage from "./assets/gradient.png";
 import AppRoutes from "./AppRoutes";
 import Login from "./modules/auth/containers/Login";
 import SignUp from "./modules/auth/containers/SignUp";
+// import { ForgotPassword, ResetPassword, VerifyOTP } from "./modules/auth/containers";
 
 const ProtectedRoute = () => {
   const isAuthenticated = localStorage.getItem("token");
@@ -28,6 +29,9 @@ function App() {
         <Route element={<IsLogged />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} /> */}
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route

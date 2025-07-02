@@ -4,7 +4,11 @@ import ViewAction from "../../../shared/ViewAction";
 import EditAction from "../../../shared/EditAction";
 import { useDispatch } from "react-redux";
 import { setModal, setBestDeal } from "../../../slices/requestSlice";
-import { setBestDealCrud, setBestDealModal, setMode } from "../../../slices/sharedSlice";
+import {
+  setBestDealCrud,
+  setBestDealModal,
+  setMode,
+} from "../../../slices/sharedSlice";
 import { FormControlLabel, Switch } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
@@ -61,46 +65,52 @@ const BestDealRow = ({ deal, index, isLastRow, getResponseBack }) => {
     setLocalStatus(deal?.status?.toLowerCase() === "approved");
   }, [deal?.status]);
 
-  const handleStatusUpdate = async (dealId, isApproved) => {
-    if (isUpdating) return;
-    
-    setIsUpdating(true);
-    const payload = { status: isApproved ? "approved" : "rejected" };
+const handleStatusUpdate = async (dealId, isApproved) => {
+  if (isUpdating) return;
 
-    try {
-      const res = await PatchBestDealApi(dealId, payload);
+  const payload = { status: isApproved ? "approved" : "rejected" };
 
-      if (res?.success) {
-        enqueueSnackbar(
-          res.message || `Best deal ${payload.status} successfully.`,
-          {
-            variant: "success",
-            anchorOrigin: { horizontal: "right", vertical: "top" },
-          }
-        );
-        setLocalStatus(isApproved);
-        
-        if (getResponseBack) {
-          setTimeout(() => {
-            getResponseBack();
-          }, 500);
-        }
-      } else {
-        enqueueSnackbar(res?.message || "Failed to update best deal.", {
-          variant: "error",
+  setLocalStatus(isApproved);
+  setIsUpdating(true);
+
+  try {
+    const res = await PatchBestDealApi(dealId, payload);
+
+    console.log("API PATCH Response:", res);
+
+    const wasSuccessful =
+      res?.success === true || res?.message?.toLowerCase()?.includes("success");
+
+    if (wasSuccessful) {
+      enqueueSnackbar(
+        res.message || `Best deal ${payload.status} successfully.`,
+        {
+          variant: "success",
           anchorOrigin: { horizontal: "right", vertical: "top" },
-        });
+        }
+      );
+
+      if (getResponseBack) {
+        getResponseBack();
       }
-    } catch (error) {
-      console.error("Patch error:", error);
-      enqueueSnackbar("Something went wrong.", {
+    } else {
+      setLocalStatus(!isApproved);
+      enqueueSnackbar(res?.message || "Failed to update best deal.", {
         variant: "error",
         anchorOrigin: { horizontal: "right", vertical: "top" },
       });
-    } finally {
-      setIsUpdating(false);
     }
-  };
+  } catch (error) {
+    console.error("Patch error:", error);
+    setLocalStatus(!isApproved);
+    enqueueSnackbar("Something went wrong while updating the status.", {
+      variant: "error",
+      anchorOrigin: { horizontal: "right", vertical: "top" },
+    });
+  } finally {
+    setIsUpdating(false);
+  }
+};
 
   const getSellerName = (seller) => {
     if (!seller) return "N/A";
@@ -114,7 +124,7 @@ const BestDealRow = ({ deal, index, isLastRow, getResponseBack }) => {
       <td className="p-4">${deal?.offerPrice || "—"}</td>
       <td className="p-4">{getSellerName(deal?.sellerId)}</td>
       <td className="p-4">{deal?.sellerId?.email || "—"}</td>
-      <td className="p-4">{deal?.status || "—"}</td>
+      <td className="p-4">{localStatus ? "approved" : "rejected"}</td>
       <td className="p-4">
         <div className="flex items-center gap-2">
           <ViewAction

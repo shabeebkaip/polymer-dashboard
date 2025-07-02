@@ -13,7 +13,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { enqueueSnackbar } from "notistack";
 import EditIcon from "../../assets/edit.svg";
-import CustomButton from "../sharedComponents/CustomButton";
+import ActionButton from "../../shared/ActionButton"; 
+import createIcon from "../../assets/create.svg"; 
 
 const processDisplayFields = (displayFields) => {
   if (!displayFields || !Array.isArray(displayFields)) return [];
@@ -101,7 +102,6 @@ const AddEditCardSection = ({
     });
 
     try {
-      debugger
       let response;
       if (mode === "add") {
         response = await crudOperations.create({
@@ -144,7 +144,13 @@ const AddEditCardSection = ({
   return (
     <>
       {mode === "add" ? (
-        <CustomButton onClick={handleOpen} mode={mode} />
+        <ActionButton
+          buttonText={`Add ${section}`}
+          handleOnClick={handleOpen}
+          textColor="#ffffff"
+          bgColor="rgb(41, 82, 255)"
+          icon={createIcon}
+        />
       ) : (
         <div
           onClick={handleOpen}
@@ -180,9 +186,7 @@ const AddEditCardSection = ({
                 <h3 className="text-[15px] mb-1">{field.label}</h3>
                 <TextField
                   fullWidth
-                  multiline={["shortDescription", "fullStoryUrl"].includes(
-                    field.key
-                  )}
+                  multiline={["shortDescription", "fullStoryUrl"].includes(field.key)}
                   rows={
                     ["shortDescription"].includes(field.key) ? 3 : undefined
                   }

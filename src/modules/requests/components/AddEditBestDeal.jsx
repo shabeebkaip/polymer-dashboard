@@ -11,13 +11,19 @@ import {
   InputLabel,
   Select,
   FormHelperText,
+  Alert,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { enqueueSnackbar } from "notistack";
 import { setLoader, setBestDealModal } from "../../../slices/sharedSlice";
-import { createBestDealApi, updateBestDealApi, getAdminProductsApi, getAdminUsersApi } from "../api";
+import {
+  createBestDealApi,
+  updateBestDealApi,
+  getAdminProductsApi,
+  getAdminUsersApi,
+} from "../api";
 
 const AddEditBestDeal = ({ getResponseBack }) => {
   const dispatch = useDispatch();
@@ -35,6 +41,11 @@ const AddEditBestDeal = ({ getResponseBack }) => {
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState(false);
 
+  const isEditable =
+    mode === "edit"
+      ? bestDealCrud?.sellerId?.user_type === "superAdmin"
+      : true;
+
   const closeModal = () => {
     dispatch(setBestDealModal(false));
     setData({});
@@ -48,23 +59,15 @@ const AddEditBestDeal = ({ getResponseBack }) => {
       if (response?.success) {
         setProducts(response.products || []);
       } else {
-        enqueueSnackbar("Failed to load products", {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
-        });
+        enqueueSnackbar("Failed to load products", { variant: "error" });
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
-      enqueueSnackbar("Error loading products", {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-      });
+      enqueueSnackbar("Error loading products", { variant: "error" });
     } finally {
       setLoadingProducts(false);
     }
   };
 
-  // Fetch users/sellers for dropdown
   const fetchUsers = async () => {
     setLoadingUsers(true);
     try {
@@ -72,17 +75,10 @@ const AddEditBestDeal = ({ getResponseBack }) => {
       if (response?.success) {
         setUsers(response.users || []);
       } else {
-        enqueueSnackbar("Failed to load users", {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
-        });
+        enqueueSnackbar("Failed to load users", { variant: "error" });
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
-      enqueueSnackbar("Error loading users", {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-      });
+      enqueueSnackbar("Error loading users", { variant: "error" });
     } finally {
       setLoadingUsers(false);
     }
@@ -91,10 +87,12 @@ const AddEditBestDeal = ({ getResponseBack }) => {
   const validateFields = () => {
     const newErrors = {};
     if (!data.productId) newErrors.productId = "Product is required";
-    if (!data.sellerId) newErrors.sellerId = "Seller is required";
+    if (mode === "add" && !data.sellerId)
+      newErrors.sellerId = "Seller is required";
     if (!data.offerPrice) newErrors.offerPrice = "Offer Price is required";
-    if (data.offerPrice && data.offerPrice <= 0) newErrors.offerPrice = "Offer Price must be greater than 0";
-    
+    if (data.offerPrice && data.offerPrice <= 0)
+      newErrors.offerPrice = "Offer Price must be greater than 0";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -105,37 +103,40 @@ const AddEditBestDeal = ({ getResponseBack }) => {
 
   const handleSave = async () => {
     if (!validateFields()) return;
-    
+
     dispatch(setLoader(true));
-    
     try {
       const payload = {
         ...data,
         offerPrice: Number(data.offerPrice),
       };
 
+      if (mode === "edit" && !isEditable) {
+        enqueueSnackbar("Only admin-created best deals can be edited.", {
+          variant: "error",
+        });
+        dispatch(setLoader(false));
+        return;
+      }
+
       const apiCall = mode === "add" ? createBestDealApi : updateBestDealApi;
       const res = await apiCall(payload);
 
       if (res?.success) {
-        enqueueSnackbar(res.message || `Best deal ${mode === "add" ? "created" : "updated"} successfully`, {
-          variant: "success",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
-        });
+        enqueueSnackbar(
+          res.message ||
+            `Best deal ${mode === "add" ? "created" : "updated"} successfully`,
+          { variant: "success" }
+        );
         getResponseBack();
         closeModal();
       } else {
         enqueueSnackbar(res?.message || "Something went wrong", {
           variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
         });
       }
     } catch (error) {
-      console.error("Save Error:", error);
-      enqueueSnackbar("Failed to save best deal", {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-      });
+      enqueueSnackbar("Failed to save best deal", { variant: "error" });
     } finally {
       dispatch(setLoader(false));
     }
@@ -152,10 +153,13 @@ const AddEditBestDeal = ({ getResponseBack }) => {
     if (bestDealCrud && Object.keys(bestDealCrud).length > 0) {
       setData({
         ...bestDealCrud,
-        productId: bestDealCrud.productId?._id || bestDealCrud.productId || "",
-        sellerId: bestDealCrud.sellerId?._id || bestDealCrud.sellerId || "",
+        productId:
+          bestDealCrud.productId?._id || bestDealCrud.productId || "",
+        sellerId:
+          bestDealCrud.sellerId?._id || bestDealCrud.sellerId || "",
         offerPrice: bestDealCrud.offerPrice || "",
         adminNote: bestDealCrud.adminNote || "",
+        status: bestDealCrud.status || "pending",
       });
     } else {
       setData({});
@@ -174,17 +178,24 @@ const AddEditBestDeal = ({ getResponseBack }) => {
         <h4 className="capitalize">{mode} Best Deal</h4>
       </DialogTitle>
       <DialogContent dividers>
+        {!isEditable && mode === "edit" && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            Only admin-created best deals can be edited.
+          </Alert>
+        )}
         <div className="grid grid-cols-12 gap-4">
-          <FormControl 
-            fullWidth 
-            className="col-span-12" 
+          <FormControl
+            fullWidth
+            className="col-span-12"
             error={!!errors.productId}
-            disabled={loadingProducts}
+            disabled={loadingProducts || (mode === "edit" && !isEditable)}
           >
             <InputLabel>Select Product</InputLabel>
             <Select
               value={data.productId || ""}
-              onChange={(e) => setData({ ...data, productId: e.target.value })}
+              onChange={(e) =>
+                setData({ ...data, productId: e.target.value })
+              }
               onFocus={() => handleFieldFocus("productId")}
               label="Select Product"
             >
@@ -205,35 +216,39 @@ const AddEditBestDeal = ({ getResponseBack }) => {
             )}
           </FormControl>
 
-          <FormControl 
-            fullWidth 
-            className="col-span-12" 
-            error={!!errors.sellerId}
-            disabled={loadingUsers}
-          >
-            <InputLabel>Select Seller</InputLabel>
-            <Select
-              value={data.sellerId || ""}
-              onChange={(e) => setData({ ...data, sellerId: e.target.value })}
-              onFocus={() => handleFieldFocus("sellerId")}
-              label="Select Seller"
+          {mode === "add" && (
+            <FormControl
+              fullWidth
+              className="col-span-12"
+              error={!!errors.sellerId}
+              disabled={loadingUsers}
             >
-              {loadingUsers ? (
-                <MenuItem disabled>
-                  <CircularProgress size={20} /> Loading users...
-                </MenuItem>
-              ) : (
-                users.map((user) => (
-                  <MenuItem key={user._id} value={user._id}>
-                    {getUserDisplayName(user)} ({user.email})
+              <InputLabel>Select Seller</InputLabel>
+              <Select
+                value={data.sellerId || ""}
+                onChange={(e) =>
+                  setData({ ...data, sellerId: e.target.value })
+                }
+                onFocus={() => handleFieldFocus("sellerId")}
+                label="Select Seller"
+              >
+                {loadingUsers ? (
+                  <MenuItem disabled>
+                    <CircularProgress size={20} /> Loading users...
                   </MenuItem>
-                ))
+                ) : (
+                  users.map((user) => (
+                    <MenuItem key={user._id} value={user._id}>
+                      {getUserDisplayName(user)} ({user.email})
+                    </MenuItem>
+                  ))
+                )}
+              </Select>
+              {errors.sellerId && (
+                <FormHelperText>{errors.sellerId}</FormHelperText>
               )}
-            </Select>
-            {errors.sellerId && (
-              <FormHelperText>{errors.sellerId}</FormHelperText>
-            )}
-          </FormControl>
+            </FormControl>
+          )}
 
           <TextField
             label="Offer Price"
@@ -241,13 +256,16 @@ const AddEditBestDeal = ({ getResponseBack }) => {
             className="col-span-6"
             type="number"
             value={data.offerPrice || ""}
-            onChange={(e) => setData({ ...data, offerPrice: e.target.value })}
+            onChange={(e) =>
+              setData({ ...data, offerPrice: e.target.value })
+            }
             onFocus={() => handleFieldFocus("offerPrice")}
             error={!!errors.offerPrice}
             helperText={errors.offerPrice}
             inputProps={{ min: 0, step: "0.01" }}
+            disabled={mode === "edit" && !isEditable}
           />
-          
+
           <TextField
             label="Status"
             fullWidth
@@ -255,30 +273,39 @@ const AddEditBestDeal = ({ getResponseBack }) => {
             select
             value={data.status || "pending"}
             onChange={(e) => setData({ ...data, status: e.target.value })}
+            disabled={mode === "edit" && !isEditable}
           >
             <MenuItem value="pending">Pending</MenuItem>
             <MenuItem value="approved">Approved</MenuItem>
             <MenuItem value="rejected">Rejected</MenuItem>
           </TextField>
-          
+
           <TextField
             label="Admin Note"
             fullWidth
             className="col-span-12"
             value={data.adminNote || ""}
-            onChange={(e) => setData({ ...data, adminNote: e.target.value })}
+            onChange={(e) =>
+              setData({ ...data, adminNote: e.target.value })
+            }
             multiline
             rows={3}
             placeholder="Add any admin notes here..."
+            disabled={mode === "edit" && !isEditable}
           />
         </div>
       </DialogContent>
       <DialogActions>
-        <Button 
-          onClick={handleSave} 
-          color="primary" 
-          variant="contained" 
-          disabled={loader || loadingProducts || loadingUsers}
+        <Button
+          onClick={handleSave}
+          color="primary"
+          variant="contained"
+          disabled={
+            loader ||
+            loadingProducts ||
+            loadingUsers ||
+            (mode === "edit" && !isEditable)
+          }
         >
           {loader ? (
             <CircularProgress size={20} style={{ color: "#fff" }} />
