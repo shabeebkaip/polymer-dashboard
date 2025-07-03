@@ -9,7 +9,7 @@ import PageLoader from "../../../shared/PageLoader";
 import PaginationContainer from "../../../shared/PaginationContainer";
 import ActionButton from "../../../shared/ActionButton";
 import createIcon from "../../../assets/create.svg";
-import BestDealModal from "../components/BestDealModal";
+// import BestDealModal from "../components/BestDealModal";
 
 const BestDeal = () => {
   const [pagination, setPagination] = useState({});
@@ -90,7 +90,7 @@ const BestDeal = () => {
         </>
       )}
       <AddEditBestDeal getResponseBack={refreshCurrentPage} />
-      <BestDealModal />
+      {/* <BestDealModal /> */}
     </div>
   );
 };

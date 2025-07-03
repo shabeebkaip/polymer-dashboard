@@ -10,7 +10,7 @@ import ActionButton from "../../../shared/ActionButton";
 import createIcon from "../../../assets/create.svg";
 import AddEditBulkOrder from "../components/addEditBulkOrder";
 import { setBulkOrderModal, setMode, setBulkOrderCrud } from "../../../slices/sharedSlice";
-import BulkOrderModal from "../components/BulkOrderModal";
+// import BulkOrderModal from "../components/BulkOrderModal";
 
 const BulkOrder = () => {
   const [pagination, setPagination] = useState({});
@@ -84,7 +84,7 @@ const BulkOrder = () => {
         </>
       )}
       <AddEditBulkOrder getResponseBack={refreshCurrentPage} />
-      <BulkOrderModal />
+      {/* <BulkOrderModal /> */}
     </div>
   );
 };

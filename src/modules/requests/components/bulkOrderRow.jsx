@@ -3,13 +3,13 @@ import TableRow from "../../../shared/TableRow";
 import ViewAction from "../../../shared/ViewAction";
 import EditAction from "../../../shared/EditAction";
 import { useDispatch } from "react-redux";
-import { setModal, setBulkOrder } from "../../../slices/requestSlice";
 import { useState, useEffect } from "react";
 import { Switch, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { enqueueSnackbar } from "notistack";
 import { PatchBulkOrderApi } from "../api";
 import { setBulkOrderCrud, setBulkOrderModal, setMode } from "../../../slices/sharedSlice";
+import { useNavigate } from "react-router-dom";
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -52,19 +52,20 @@ const IOSSwitch = styled((props) => (
 
 const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [localStatus, setLocalStatus] = useState(
     order?.status?.toLowerCase() === "approved"
   );
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Update local state when order status changes
   useEffect(() => {
     setLocalStatus(order?.status?.toLowerCase() === "approved");
   }, [order?.status]);
 
   const handleStatusUpdate = async (orderId, isApproved) => {
     if (isUpdating) return;
-    
+
     setIsUpdating(true);
     const payload = { status: isApproved ? "approved" : "rejected" };
 
@@ -80,8 +81,7 @@ const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
           }
         );
         setLocalStatus(isApproved);
-        
-        // Refresh data after successful update
+
         if (getResponseBack) {
           setTimeout(() => {
             getResponseBack();
@@ -104,6 +104,16 @@ const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
     }
   };
 
+  const handleViewClick = () => {
+    navigate(`/bulk-orders/${order._id}`);
+  };
+
+  const handleEditClick = () => {
+    dispatch(setBulkOrderModal(true));
+    dispatch(setMode("edit"));
+    dispatch(setBulkOrderCrud(order));
+  };
+
   return (
     <TableRow index={index} isLastRow={isLastRow}>
       <td className="p-4">{order.product?.productName || "—"}</td>
@@ -116,19 +126,8 @@ const BulkOrderRow = ({ order, index, isLastRow, getResponseBack }) => {
       <td>{order.status || "—"}</td>
       <td>
         <div className="flex items-center gap-2">
-          <ViewAction
-            handleClick={() => {
-              dispatch(setModal(true));
-              dispatch(setBulkOrder(order));
-            }}
-          />
-          <EditAction
-            handleClick={() => {
-              dispatch(setBulkOrderModal(true));
-              dispatch(setMode("edit"));
-              dispatch(setBulkOrderCrud(order));
-            }}
-          />
+          <ViewAction handleClick={handleViewClick} />
+          <EditAction handleClick={handleEditClick} />
         </div>
       </td>
       <td className="px-8">

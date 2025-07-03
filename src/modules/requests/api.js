@@ -244,3 +244,24 @@ export const updateBestDealApi = async (payload) => {
     return { success: false, message: error.response?.data?.message || error.message };
   }
 };
+
+// This fetches a single bulk order detail with offers
+export const getBulkOrderDetailApi = async (id) => {
+  try {
+    const response = await globalGetService(`/bulk-order/admin-list/${id}`);
+    return response.data; // returns { success, message, data: { order, offers } }
+  } catch (error) {
+    console.error("Error in getBulkOrderDetailApi:", error);
+    return { success: false, message: error.message };
+  }
+};
+
+export const getBestDealDetailApi = async (id) => {
+  try {
+    const response = await globalGetService(`/best-deal/list/${id}`);
+    return response.data; // returns { success, message, data: { order, offers } }
+  } catch (error) {
+    console.error("Error in getBestDealDetailApi:", error);
+    return { success: false, message: error.message };
+  }
+};

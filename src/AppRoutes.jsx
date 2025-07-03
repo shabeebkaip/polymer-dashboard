@@ -31,6 +31,8 @@ import SupplierOffer from "./modules/requests/containers/supplierOffer"
 import Testimonials from "./modules/cms/components/TestimonialSection"
 import ShippingMethod from "./modules/shipping-method/containers/ShippingMethod";
 import Dashboard from "./modules/dashboard/dashboard";
+import BulkOrderDetail from "./modules/requests/containers/BulkOrderDetail";
+import BestDealDetail from "./modules/requests/containers/BestDealDetail";
 
 
 
@@ -52,7 +54,9 @@ const AppRoutes = () => {
         <Route path="/enquiries/quote" exact element={<Quote />} />
         <Route path="/enquiries/finance" exact element={<Finance />} />
         <Route path="/enquiries/BulkOrder" exact element={<BulkOrder />} />
+        <Route path="/bulk-orders/:id" element={<BulkOrderDetail />} />
         <Route path="/enquiries/BestDeal" exact element={<BestDeal />} />
+        <Route path="/enquiries/BestDeal/:id" element={<BestDealDetail />} />
         <Route path="/enquiries/DealQuote" exact element={<DealQuote />} />
         <Route path="/enquiries/SupplierOffer" exact element={<SupplierOffer />} />
 

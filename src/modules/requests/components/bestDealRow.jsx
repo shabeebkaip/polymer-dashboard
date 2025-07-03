@@ -3,7 +3,6 @@ import TableRow from "../../../shared/TableRow";
 import ViewAction from "../../../shared/ViewAction";
 import EditAction from "../../../shared/EditAction";
 import { useDispatch } from "react-redux";
-import { setModal, setBestDeal } from "../../../slices/requestSlice";
 import {
   setBestDealCrud,
   setBestDealModal,
@@ -14,6 +13,7 @@ import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { enqueueSnackbar } from "notistack";
 import { PatchBestDealApi } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -56,6 +56,7 @@ const IOSSwitch = styled((props) => (
 
 const BestDealRow = ({ deal, index, isLastRow, getResponseBack }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [localStatus, setLocalStatus] = useState(
     deal?.status?.toLowerCase() === "approved"
   );
@@ -65,52 +66,47 @@ const BestDealRow = ({ deal, index, isLastRow, getResponseBack }) => {
     setLocalStatus(deal?.status?.toLowerCase() === "approved");
   }, [deal?.status]);
 
-const handleStatusUpdate = async (dealId, isApproved) => {
-  if (isUpdating) return;
+  const handleStatusUpdate = async (dealId, isApproved) => {
+    if (isUpdating) return;
 
-  const payload = { status: isApproved ? "approved" : "rejected" };
+    const payload = { status: isApproved ? "approved" : "rejected" };
 
-  setLocalStatus(isApproved);
-  setIsUpdating(true);
+    setLocalStatus(isApproved);
+    setIsUpdating(true);
 
-  try {
-    const res = await PatchBestDealApi(dealId, payload);
+    try {
+      const res = await PatchBestDealApi(dealId, payload);
 
-    console.log("API PATCH Response:", res);
+      const wasSuccessful =
+        res?.success === true || res?.message?.toLowerCase()?.includes("success");
 
-    const wasSuccessful =
-      res?.success === true || res?.message?.toLowerCase()?.includes("success");
-
-    if (wasSuccessful) {
-      enqueueSnackbar(
-        res.message || `Best deal ${payload.status} successfully.`,
-        {
+      if (wasSuccessful) {
+        enqueueSnackbar(res.message || `Best deal ${payload.status} successfully.`, {
           variant: "success",
           anchorOrigin: { horizontal: "right", vertical: "top" },
-        }
-      );
+        });
 
-      if (getResponseBack) {
-        getResponseBack();
+        if (getResponseBack) {
+          getResponseBack();
+        }
+      } else {
+        setLocalStatus(!isApproved);
+        enqueueSnackbar(res?.message || "Failed to update best deal.", {
+          variant: "error",
+          anchorOrigin: { horizontal: "right", vertical: "top" },
+        });
       }
-    } else {
+    } catch (error) {
+      console.error("Patch error:", error);
       setLocalStatus(!isApproved);
-      enqueueSnackbar(res?.message || "Failed to update best deal.", {
+      enqueueSnackbar("Something went wrong while updating the status.", {
         variant: "error",
         anchorOrigin: { horizontal: "right", vertical: "top" },
       });
+    } finally {
+      setIsUpdating(false);
     }
-  } catch (error) {
-    console.error("Patch error:", error);
-    setLocalStatus(!isApproved);
-    enqueueSnackbar("Something went wrong while updating the status.", {
-      variant: "error",
-      anchorOrigin: { horizontal: "right", vertical: "top" },
-    });
-  } finally {
-    setIsUpdating(false);
-  }
-};
+  };
 
   const getSellerName = (seller) => {
     if (!seller) return "N/A";
@@ -129,8 +125,7 @@ const handleStatusUpdate = async (dealId, isApproved) => {
         <div className="flex items-center gap-2">
           <ViewAction
             handleClick={() => {
-              dispatch(setModal(true));
-              dispatch(setBestDeal(deal));
+              navigate(`/enquiries/BestDeal/${deal._id}`);
             }}
           />
           <EditAction
