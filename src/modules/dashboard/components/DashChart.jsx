@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +10,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+
 
 ChartJS.register(
   CategoryScale,
@@ -37,11 +38,9 @@ const OverviewChart = ({ chartData = [], title = "Quote Enquiries", loading }) =
   const getLastSixMonths = (data) => {
     const now = new Date();
     const currentMonth = now.getMonth() + 1;
-
     const monthsRange = Array.from({ length: 6 }, (_, i) =>
       ((currentMonth - 6 + i + 12) % 12) + 1
     );
-
     return data.filter((item) => monthsRange.includes(item.month));
   };
 
@@ -51,9 +50,15 @@ const OverviewChart = ({ chartData = [], title = "Quote Enquiries", loading }) =
       {
         fill: true,
         data: filteredChartData.map(item => item.enquiries || 0),
-        borderColor: "rgb(59, 130, 246)",
-        backgroundColor: "rgba(59, 130, 246, 0.3)",
-        tension: 0.4,
+        borderColor: "#10B981", // emerald-500
+        backgroundColor: "rgba(16, 185, 129, 0.15)", // emerald-500 with opacity
+        pointBackgroundColor: "#10B981",
+        pointBorderColor: "#fff",
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        borderWidth: 3,
+        tension: 0.45,
+        pointStyle: "circle",
       },
     ],
   };
@@ -63,39 +68,66 @@ const OverviewChart = ({ chartData = [], title = "Quote Enquiries", loading }) =
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
+      tooltip: {
+        backgroundColor: "#10B981",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "#10B981",
+        borderWidth: 1,
+        padding: 12,
+        cornerRadius: 8,
+        displayColors: false, // Remove the colored square
+      },
+      title: {
+        display: false,
+      },
     },
     scales: {
       x: {
         grid: { display: false },
+        ticks: {
+          color: "#059669", // emerald-600
+          font: { weight: "bold", size: 14 },
+        },
       },
       y: {
-        grid: { color: "rgba(0, 0, 0, 0.1)" },
+        grid: { color: "rgba(16, 185, 129, 0.07)", borderDash: [4, 4] },
         ticks: {
           maxTicksLimit: 5,
-          callback: (value) => `${value} enquiries`,
+          color: "#94A3B8", // slate-400
+          font: { size: 13 },
+          callback: (value) => `${value}`,
         },
+      },
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10,
+      },
+    },
+    elements: {
+      line: {
+        borderJoinStyle: "round",
+      },
+      point: {
+        borderWidth: 2,
       },
     },
   };
 
   return (
     <div
-      className="relative bg-white rounded-lg p-5"
-      style={{
-        boxShadow:
-          "rgb(0 0 0 / 0.05) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
-        border: "1px solid #e2e8f0",
-        height: "400px",
-      }}
+      className="relative bg-white rounded-2xl p-6 shadow-lg border border-emerald-100"
+      style={{ minHeight: "400px" }}
     >
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">
-          {title}
-        </h2>
+        <h2 className="text-xl font-bold text-emerald-700">{title}</h2>
       </div>
-
-      <div style={{ height: "300px", width: "100%" }}>
-        {!loading ? <Line options={options} data={data} /> : <p>Loading chart...</p>}
+      <div className="w-full" style={{ height: "300px" }}>
+        {!loading ? <Line options={options} data={data} /> : <p className="text-center text-gray-400">Loading chart...</p>}
       </div>
     </div>
   );

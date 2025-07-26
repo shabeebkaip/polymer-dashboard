@@ -1,10 +1,8 @@
 import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { RxCaretDown, RxCaretRight } from "react-icons/rx";
-import { IoLogoPolymer } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 // Lucide icons
-import { LayoutDashboard, Package, Users, ClipboardList, FileText, ChevronDown, ChevronRight, LogOut, ArrowDownToLine, MessageCircle, Group, FileStack } from "lucide-react";
+import { LayoutDashboard, Package, Users, FileText, ChevronDown, ChevronRight, LogOut, MessageCircle, FileStack } from "lucide-react";
 
 const menuItems = [
   {
@@ -82,7 +80,7 @@ const menuItems = [
   },
 ];
 
-const Sidebar = ({ collapsed, user, onLogout }) => {
+const Sidebar = ({ collapsed, onLogout }) => {
   const navigate = useNavigate();
   const [openSubmenus, setOpenSubmenus] = useState({});
   const emeraldGradient = "bg-gradient-to-br from-emerald-500 to-emerald-600";

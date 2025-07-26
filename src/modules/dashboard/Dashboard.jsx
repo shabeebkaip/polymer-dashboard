@@ -34,20 +34,33 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
-        <DashCard cardCounts={cardCounts} />
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white py-8 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-emerald-700 mb-2">
+            Dashboard Overview
+          </h1>
+          <p className="text-gray-500 text-base">
+            Welcome to your admin dashboard. Here you can monitor key metrics and
+            recent activity.
+          </p>
+        </div>
+        {/* Modern Card Layout */}
+        <div className="flex flex-wrap gap-6 mb-8 justify-start">
+          <DashCard cardCounts={cardCounts} />
+        </div>
+        {/* Modern Chart Container */}
+        <div className="w-full rounded-2xl bg-white shadow-lg p-6 border border-emerald-100">
+          <OverviewChart
+            chartData={quoteEnquiryGraph}
+            chartType="quoteEnquiry"
+            title="Quote Enquiries"
+            loading={loading}
+            modern
+          />
+        </div>
       </div>
-
-      <div className="w-full">
-        <OverviewChart
-          chartData={quoteEnquiryGraph}
-          chartType="quoteEnquiry"
-          title="Quote Enquiries"
-          loading={loading}
-        />
-      </div>
-    </>
+    </div>
   );
 };
 
