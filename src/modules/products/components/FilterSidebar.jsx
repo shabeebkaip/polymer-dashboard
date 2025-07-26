@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Drawer,
   Box,
@@ -12,7 +12,6 @@ import {
   TextField,
   Button,
   Chip,
-  Divider,
   IconButton,
   FormControl,
   RadioGroup,
@@ -278,40 +277,51 @@ const FilterSidebar = ({
       onClose={onClose}
       sx={{
         '& .MuiDrawer-paper': {
-          width: 380,
+          width: 400,
           boxSizing: 'border-box',
+          background: 'linear-gradient(135deg,#f0fdf4 0%,#e0f7fa 100%)',
+          boxShadow: '0 4px 24px rgba(16,185,129,0.08)',
+          borderLeft: 'none',
+          borderTopLeftRadius: '20px',
+          borderBottomLeftRadius: '20px',
+          borderTopRightRadius: '0px', // Remove top right curve/space
         },
       }}
     >
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         {/* Header */}
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between', 
-          p: 2, 
-          borderBottom: '1px solid #e0e0e0',
-          backgroundColor: '#fafafa'
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          p: 2,
+          borderBottom: '1.5px solid #d1fae5',
+          background: 'linear-gradient(90deg,#34d399 0%,#059669 100%)',
+          color: '#fff',
+          borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <FilterListIcon sx={{ color: '#666', fontSize: '20px' }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '18px' }}>
+            <FilterListIcon sx={{ color: '#fff', fontSize: '22px' }} />
+            <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '19px', letterSpacing: '0.02em' }}>
               Filters
             </Typography>
           </Box>
-          <IconButton onClick={onClose} size="small">
+          <IconButton onClick={onClose} size="small" sx={{ color: '#fff', background: 'rgba(16,185,129,0.08)', borderRadius: 2 }}>
             <CloseIcon />
           </IconButton>
         </Box>
 
-        <Typography 
-          variant="body2" 
-          sx={{ 
-            color: '#666', 
-            px: 2, 
-            pt: 2, 
+        <Typography
+          variant="body2"
+          sx={{
+            color: '#059669',
+            px: 2,
+            pt: 2,
             pb: 1,
-            fontSize: '13px'
+            fontSize: '14px',
+            fontWeight: 500,
+            letterSpacing: '0.01em',
           }}
         >
           Refine your search
@@ -323,10 +333,12 @@ const FilterSidebar = ({
         </Box>
 
         {/* Footer Actions */}
-        <Box sx={{ 
-          borderTop: '1px solid #e0e0e0', 
-          p: 2, 
-          backgroundColor: '#fafafa'
+        <Box sx={{
+          borderTop: '1.5px solid #d1fae5',
+          p: 2,
+          background: 'linear-gradient(90deg,#f0fdf4 0%,#e0f7fa 100%)',
+          borderBottomLeftRadius: '16px',
+          borderBottomRightRadius: '16px',
         }}>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Button
@@ -334,7 +346,16 @@ const FilterSidebar = ({
               onClick={clearFilters}
               disabled={!hasActiveFilters}
               fullWidth
-              sx={{ textTransform: 'none' }}
+              sx={{
+                textTransform: 'none',
+                borderColor: '#10B981',
+                color: '#059669',
+                fontWeight: 600,
+                borderRadius: 2,
+                boxShadow: '0 1px 4px rgba(16,185,129,0.07)',
+                background: '#f0fdf4',
+                '&:hover': { background: '#d1fae5', borderColor: '#059669' },
+              }}
             >
               Clear All
             </Button>
@@ -343,7 +364,15 @@ const FilterSidebar = ({
               onClick={applyFilters}
               disabled={!hasActiveFilters}
               fullWidth
-              sx={{ textTransform: 'none' }}
+              sx={{
+                textTransform: 'none',
+                background: 'linear-gradient(90deg,#10B981 0%,#059669 100%)',
+                color: '#fff',
+                fontWeight: 600,
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(16,185,129,0.12)',
+                '&:hover': { background: 'linear-gradient(90deg,#059669 0%,#10B981 100%)' },
+              }}
             >
               Apply Filters
             </Button>
