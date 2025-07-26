@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { CircularProgress, IconButton } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const Navbar = () => {
   const { pageTitle } = useSelector((state) => state.sharedState);
@@ -20,32 +20,34 @@ const Navbar = () => {
     }, 1000);
   };
 
-  
   const handleBack = () => {
     navigate(-1);
   };
   const showBackButton = location.pathname !== "/" && location.pathname !== "/products";
 
   return (
-    <nav className="w-full bg-white shadow-custom h-[80px]">
-      <div className="flex items-center justify-between px-5 py-3.5">
-        <div className="flex items-center gap-3">
-        {showBackButton && (
-            <IconButton onClick={handleBack} size="small" className="mr-2">
-              <ArrowBackIcon sx={{ color: "#263238" }} />
-            </IconButton>
+    <nav className="w-full bg-white shadow-none border-b border-emerald-100 h-[72px]">
+      <div className="flex items-center justify-between px-6 py-4">
+        <div className="flex items-center gap-4">
+          {showBackButton && (
+            <button
+              onClick={handleBack}
+              className="rounded-full bg-emerald-50 hover:bg-emerald-100 p-2 transition-colors border border-emerald-100 shadow-sm"
+              aria-label="Go Back"
+            >
+              <ArrowLeft className="w-5 h-5 text-emerald-600" />
+            </button>
           )}
-          <h1 className="text-[#263238] text-2xl">{pageTitle}</h1>
+          <h1 className="text-emerald-700 text-2xl font-bold tracking-tight">{pageTitle}</h1>
         </div>
-
         <button
-          onClick={() => handleLogout()}
-          className="relative flex h-[55px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-6 py-2   md:flex-grow-0 md:gap-1 xl:gap-2 shadow-xl text-blue-700 font-medium  "
+          onClick={handleLogout}
+          className="relative flex items-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-700 px-6 py-2 shadow-lg text-white font-semibold transition-colors min-w-[110px] justify-center"
         >
           {loading ? (
-            <CircularProgress size={"25px"} style={{ color: "#2f50ff" }} />
+            <CircularProgress size={22} style={{ color: "#fff" }} />
           ) : (
-            "logout"
+            "Logout"
           )}
         </button>
       </div>
@@ -54,4 +56,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
- 

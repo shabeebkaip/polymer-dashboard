@@ -10,6 +10,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import PropTypes from "prop-types";
 
 
 ChartJS.register(
@@ -131,6 +132,12 @@ const OverviewChart = ({ chartData = [], title = "Quote Enquiries", loading }) =
       </div>
     </div>
   );
+};
+
+OverviewChart.propTypes = {
+  chartData: PropTypes.array,
+  title: PropTypes.string,
+  loading: PropTypes.bool,
 };
 
 export default OverviewChart;

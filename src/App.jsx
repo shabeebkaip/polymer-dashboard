@@ -54,7 +54,7 @@ function App() {
                       backgroundImage: `url(${gradientImage})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
-                      height: "calc(100dvh - 80px)",
+                      minHeight: "calc(100dvh - 80px)",
                       width: "100%",
                     }}
                   >
