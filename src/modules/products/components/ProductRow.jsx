@@ -7,46 +7,66 @@ import {
   setDeleteModal,
   setMode,
 } from "../../../slices/sharedSlice";
-import { setProductCrud, setProductModal } from "../../../slices/productSlice";
+import { setProductCrud } from "../../../slices/productSlice";
 import { Chip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const ProductRow = ({ index, isLastRow, product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { _id: id } = product;
   return (
     <tr
-      className={` border-b ${index % 2 === 1 ? "glass-card" : "dark-glass"} ${
-        isLastRow ? "border-b-[3px]" : ""
-      }`}
+      className={`transition-colors duration-200 border-b ${index % 2 === 1 ? "bg-white/60" : "bg-emerald-50/40"} ${isLastRow ? "border-b-emerald-400 border-b-2" : "border-b-gray-200"}`}
     >
-      <td className="p-4 ">{product.productName}</td>
-      <td>{product?.chemicalName || "--"}</td>
+      <td className="p-4 text-emerald-900 font-semibold text-base whitespace-nowrap">
+        {product.productName}
+      </td>
+      <td className="text-gray-700 font-medium whitespace-nowrap">
+        {product?.chemicalName || "--"}
+      </td>
       <td className="max-w-xs">
-        <div className="flex flex-wrap gap-2 w-24">
-          {product?.industry?.map((item, index) => (
-            <Chip label={item?.name} key={index} />
-          )) || "--"}
+        <div className="flex flex-wrap gap-2 w-32">
+          {product?.industry?.length > 0
+            ? product.industry.map((item, idx) => (
+                <Chip
+                  label={item?.name}
+                  key={idx}
+                  sx={{
+                    background: "#F3F4F6", // subtle gray background for less green
+                    color: "#059669", // emerald text for brand accent
+                    fontWeight: 500,
+                    fontSize: "0.85rem",
+                    borderRadius: "8px",
+                    boxShadow: "0 1px 4px rgba(52,211,153,0.08)",
+                    border: "1px solid #D1FAE5", // light emerald border for subtle branding
+                  }}
+                  size="small"
+                />
+              ))
+            : "--"}
         </div>
       </td>
-            <td className="p-4 ">{product.price}</td>
-
-            {product?.createdBy?.company_logo && (
-  <div className="px-10 py-1">
-    <img src={product?.createdBy?.company_logo} className="w-16 h-16 rounded-md" />
-  </div>
-)}
-      <td>
-        <div className="flex items-center gap-2">
+      <td className=" text-emerald-700 font-bold whitespace-nowrap">
+        {product.price}
+      </td>
+      <td className="px-4 py-2">
+        {product?.createdBy?.company_logo ? (
+          <img
+            src={product.createdBy.company_logo}
+            alt="Company Logo"
+            className="w-12 h-12 object-cover rounded-lg border border-emerald-200 shadow-sm bg-white"
+          />
+        ) : (
+          <span className="text-gray-400">--</span>
+        )}
+      </td>
+      <td className="px-4 py-2">
+        <div className="flex items-center gap-3">
           <EditAction
             handleClick={() => {
-              // dispatch(setProductModal(true));
-              // dispatch(setProductCrud(product));
               dispatch(setProductCrud({}));
               dispatch(setMode("edit"));
               navigate(`/edit-product/${product._id}`);
-              
             }}
           />
           <DeleteAction
@@ -60,6 +80,7 @@ const ProductRow = ({ index, isLastRow, product }) => {
     </tr>
   );
 };
+
 ProductRow.propTypes = {
   index: PropTypes.number.isRequired,
   isLastRow: PropTypes.bool.isRequired,

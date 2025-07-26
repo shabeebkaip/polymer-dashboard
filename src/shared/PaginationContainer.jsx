@@ -7,15 +7,13 @@ const PaginationContainer = ({ totalPages, handlePageChange, currentPage }) => {
   };
 
   return (
-    <div className="items-center justify-center bg-white h-15 drop-shadow-md">
-      <div className="flex justify-end px-6 py-4">
-        <div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePage}
-          />
-        </div>
+    <div className="flex items-center justify-center w-full ">
+      <div className="rounded-xl shadow-lg border border-emerald-200 bg-white/80 backdrop-blur-md px-8 py-4 flex justify-end w-full">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePage}
+        />
       </div>
     </div>
   );

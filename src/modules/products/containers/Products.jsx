@@ -5,12 +5,10 @@ import clearFilterIcon from "./../../../assets/clears.svg";
 import {
   setProductCrud,
   setProductLoader,
-  setProductModal,
   setProducts,
 } from "../../../slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PageLoader from "../../../shared/PageLoader";
-import Title from "../../../shared/Title";
 import ActionButton from "../../../shared/ActionButton";
 import ProductsList from "../components/ProductsList";
 import SearchIcon from "@mui/icons-material/Search";
@@ -336,14 +334,39 @@ const Products = () => {
         endAdornment: (
           <InputAdornment position="end">
             {searchQuery ? (
-              <IconButton onClick={handleClear} size="small">
-                <ClearIcon sx={{ fontSize: "20px" }} />
+              <IconButton onClick={handleClear} size="small" sx={{ bgcolor: '#f0fdf4', borderRadius: 2, boxShadow: 'none', p: 0.5 }}>
+                <ClearIcon sx={{ fontSize: 20, color: '#059669' }} />
               </IconButton>
             ) : (
-              <SearchIcon sx={{ color: "gray", fontSize: "24px" }} />
+              <SearchIcon sx={{ color: '#059669', fontSize: 22 }} />
             )}
           </InputAdornment>
         ),
+      }}
+      sx={{
+        backgroundColor: '#f0fdf4',
+        borderRadius: 2,
+        boxShadow: '0 2px 8px 0 rgba(16,185,129,0.07)',
+        '& .MuiOutlinedInput-root': {
+          borderRadius: 2,
+          fontWeight: 500,
+          fontSize: 15,
+          color: '#059669',
+          '& fieldset': {
+            borderColor: '#d1fae5',
+          },
+          '&:hover fieldset': {
+            borderColor: '#10B981',
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: '#10B981',
+          },
+        },
+        '& .MuiInputLabel-root': {
+          color: '#059669',
+          fontWeight: 600,
+          fontSize: 15,
+        },
       }}
     />
   </div>
@@ -352,16 +375,16 @@ const Products = () => {
   <div className="flex gap-2">
     <ActionButton
       buttonText={
-        filterActive 
-          ? `Clear Filter${activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}` 
+        filterActive
+          ? `Clear Filter${activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}`
           : "Filter"
       }
-      handleOnClick={
-        filterActive ? handleClearFilter : handleFilterToggle
-      }
-      textColor={filterActive ? "#fa1c1c" : "#ffffff"}
-      bgColor={filterActive ? "#f7f7f7" : "rgb(41, 82, 255)"}
+      handleOnClick={filterActive ? handleClearFilter : handleFilterToggle}
+      textColor={filterActive ? "#059669" : "#fff"} // emerald-600 for active
+      bgColor={filterActive ? "#f0fdf4" : "#10B981"} // light emerald for active, emerald-500 for default
+      borderColor="#10B981"
       icon={filterActive ? clearFilterIcon : filterIcon}
+      className={`rounded-lg shadow-md font-semibold px-5 py-2 transition-all duration-200 ${filterActive ? 'border border-emerald-600' : ''}`}
     />
     <ActionButton
       buttonText="Add Product"
@@ -370,9 +393,11 @@ const Products = () => {
         dispatch(setMode("add"));
         navigate("/add-product");
       }}
-      textColor="#ffffff"
-      bgColor="rgb(41, 82, 255)"
+      textColor="#fff"
+      bgColor="#10B981" // emerald-500
+      borderColor="#10B981"
       icon={createIcon}
+      className="rounded-lg shadow-md font-semibold px-5 py-2 transition-all duration-200"
     />
   </div>
 </div>

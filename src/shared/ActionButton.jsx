@@ -1,48 +1,44 @@
-import Proptypes from "prop-types";
+import PropTypes from "prop-types";
 
 const ActionButton = ({
   handleOnClick,
-  textColor,
-  bgColor,
+  textColor = "#fff",
+  bgColor = "#10B981",
+  borderColor = "#10B981",
   icon,
   buttonText,
+  className = "",
 }) => {
   return (
-    <div>
-      <button
-        onClick={handleOnClick}
-        style={{
-          display: "flex",
-          gap: "5px",
-          color: `${textColor}`,
-          backgroundColor: `${bgColor}`,
-          padding: "10px",
-          boxSizing: "border-box",
-          borderRadius: "20px",
-          justifyContent: "center",
-          border: "1px solid #D8D8D8",
-          minWidth: "110px",
-          cursor: "pointer",
-          alignItems: "center",
-        }}
-      >
-        <img
-          src={icon}
-          alt={buttonText}
-          style={{ height: "20px", width: "20px" }}
-        />
-        <div style={{ fontWeight: "400", fontSize: "14px" }}>{buttonText}</div>
-      </button>
-    </div>
+    <button
+      onClick={handleOnClick}
+      className={`flex items-center gap-2 justify-center px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-400 ${className}`}
+      style={{
+        color: textColor,
+        backgroundColor: bgColor,
+        border: `1.5px solid ${borderColor}`,
+        minWidth: "110px",
+        cursor: "pointer",
+      }}
+    >
+      {typeof icon === "string" ? (
+        <img src={icon} alt={buttonText} style={{ height: 20, width: 20 }} />
+      ) : (
+        icon
+      )}
+      <span className="font-medium tracking-tight">{buttonText}</span>
+    </button>
   );
 };
 
 ActionButton.propTypes = {
-  handleOnClick: Proptypes.func.isRequired,
-  textColor: Proptypes.string.isRequired,
-  bgColor: Proptypes.string.isRequired,
-  icon: Proptypes.string.isRequired,
-  buttonText: Proptypes.string.isRequired,
+  handleOnClick: PropTypes.func.isRequired,
+  textColor: PropTypes.string,
+  bgColor: PropTypes.string,
+  borderColor: PropTypes.string,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  buttonText: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
 export default ActionButton;
