@@ -1,276 +1,132 @@
 import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { RxCaretDown, RxCaretRight } from "react-icons/rx";
-import { MdCategory } from "react-icons/md";
 import { IoLogoPolymer } from "react-icons/io";
-import { GiFamilyTree } from "react-icons/gi";
-import { RiCustomerServiceLine } from "react-icons/ri";
-import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ForumIcon from '@mui/icons-material/Forum';
-import GroupIcon from '@mui/icons-material/Group';
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import { Dashboard } from "@mui/icons-material";
-
-
+// Lucide icons
+import { LayoutDashboard, Package, Users, ClipboardList, FileText, ChevronDown, ChevronRight, LogOut, ArrowDownToLine, MessageCircle, Group, FileStack } from "lucide-react";
 
 const menuItems = [
   {
     name: "dashboard",
     displayName: "Dashboard",
     route: "/dashboard",
-    icon: <Dashboard />,
+    icon: <LayoutDashboard size={20} />,
   },
   {
     name: "products",
     displayName: "Products",
     route: "/products",
-    icon: <IoLogoPolymer />,
+    icon: <Package size={20} />,
   },
   {
     name: "users",
     displayName: "Users",
     route: "/users",
-    icon: <GroupIcon />,
-
+    icon: <Users size={20} />,
     items: [
-      {
-        name: "buyers",
-        displayName: "Buyers",
-        route: "/buyers-list",
-      },
-      {
-        name: "sellers",
-        displayName: "Sellers",
-        route: "/sellers-list",
-      },
-            {
-        name: "experts",
-        displayName: "Experts",
-        route: "/experts-list",
-      }, 
+      { name: "buyers", displayName: "Buyers", route: "/buyers-list" },
+      { name: "sellers", displayName: "Sellers", route: "/sellers-list" },
+      { name: "experts", displayName: "Experts", route: "/experts-list" },
     ],
   },
   {
     name: "enquiries",
     displayName: "Enquiries",
     route: "/enquiries",
+    icon: <MessageCircle size={20} />,
     items: [
-      {
-        name: "Sample Requests",
-        displayName: "Sample Requests",
-        route: "/enquiries/sample",
-        
-      },
-      {
-        name: "Quote Requests",
-        displayName: "Quote Requests",
-        route: "/enquiries/quote",
-      },
-      {
-        name: "finance Requests",
-        displayName: "Finance Requests",
-        route: "/enquiries/finance",
-      },
-      {
-        name: "Bulk Order Requests",
-        displayName: "Bulk Order Requests",
-        route: "/enquiries/BulkOrder",
-      },
-      {
-        name: "Best Deal Requests",
-        displayName: "Best Deal Requests",
-        route: "/enquiries/BestDeal",
-      },
-      {
-        name: "Best Deal Quote Requests",
-        displayName: "Best Deal Quote Requests",
-        route: "/enquiries/DealQuote",
-      },
-      {
-        name: "Supplier Offer Requests",
-        displayName: "Supplier Offer Requests",
-        route: "/enquiries/SupplierOffer",
-      },
-
-
-
-
+      { name: "Sample Requests", displayName: "Sample Requests", route: "/enquiries/sample" },
+      { name: "Quote Requests", displayName: "Quote Requests", route: "/enquiries/quote" },
+      { name: "finance Requests", displayName: "Finance Requests", route: "/enquiries/finance" },
+      { name: "Bulk Order Requests", displayName: "Bulk Order Requests", route: "/enquiries/BulkOrder" },
+      { name: "Best Deal Requests", displayName: "Best Deal Requests", route: "/enquiries/BestDeal" },
+      { name: "Best Deal Quote Requests", displayName: "Best Deal Quote Requests", route: "/enquiries/DealQuote" },
+      { name: "Supplier Offer Requests", displayName: "Supplier Offer Requests", route: "/enquiries/SupplierOffer" },
     ],
-    icon: <ForumIcon />,
   },
-
-    {
+  {
     name: "cms",
     displayName: "Cms",
     route: "/cms",
+    icon: <FileText size={20} />,
     items: [
-      {
-        name: "Privacy & policy",
-        displayName: "Privacy & policy",
-        route: "/cms/privacyPolicy",
-        
-      },
-      {
-        name: "Terms & Conditions",
-        displayName: "Terms & Conditions",
-        route: "/cms/termsAndConditions",
-      },
-      {
-        name: "social Media",
-        displayName: "Social Media",
-        route: "/cms/socialMedia",
-      },
-      {
-        name: "Benefits For Buyer",
-        displayName: "Benefits For Buyer",
-        route: "/cms/BenefitsForBuyer",
-      },
-      {
-        name: "Benefits For Suplier",
-        displayName: "Benefits For Suplier",
-        route: "/cms/BenefitsForSuplier",
-      },
-      {
-        name: "Hero Section",
-        displayName: "Hero Section",
-        route: "/cms/HeroSection",
-      },
-      {
-        name: "Footer Contact Info",
-        displayName: "Footer Contact Info",
-        route: "/cms/FooterMailNumber",
-      },
-      {
-        name: "Polymer Advantages",
-        displayName: "Polymer Advantages",
-        route: "/cms/PolymerAdvantages",
-      },
-      {
-        name: "testimonials",
-        displayName: "Testimonials",
-        route: "/cms/Testimonials",
-      },
-
+      { name: "Privacy & policy", displayName: "Privacy & policy", route: "/cms/privacyPolicy" },
+      { name: "Terms & Conditions", displayName: "Terms & Conditions", route: "/cms/termsAndConditions" },
+      { name: "social Media", displayName: "Social Media", route: "/cms/socialMedia" },
+      { name: "Benefits For Buyer", displayName: "Benefits For Buyer", route: "/cms/BenefitsForBuyer" },
+      { name: "Benefits For Suplier", displayName: "Benefits For Suplier", route: "/cms/BenefitsForSuplier" },
+      { name: "Hero Section", displayName: "Hero Section", route: "/cms/HeroSection" },
+      { name: "Footer Contact Info", displayName: "Footer Contact Info", route: "/cms/FooterMailNumber" },
+      { name: "Polymer Advantages", displayName: "Polymer Advantages", route: "/cms/PolymerAdvantages" },
+      { name: "testimonials", displayName: "Testimonials", route: "/cms/Testimonials" },
     ],
-    icon: < InsertDriveFileIcon/>,
   },
-
   {
     name: "dropdown",
     displayName: "Master Data",
     route: "/dropdown",
-    icon:  <ArrowDropDownIcon/>,
+    icon: <FileStack size={20} />,
     items: [
-      {
-        name: "products_family",
-        displayName: "Product Families",
-        route: "/product-families",
-      },
-      {
-        name: "Industries",
-        displayName: "industries",
-        route: "/industries",
-      },
-      {
-        name: "polymer_type",
-        displayName: "Polymer Types",
-        route: "/polymer-type",      },
-      {
-        name: "payment_terms",
-        displayName: "Payment Terms",
-        route: "/payment-terms",
-      },
-      {
-        name: "packaging_type",
-        displayName: "Packaging Types",
-        route: "/packaging-type",
-      },
-      {
-        name: "physical_form",
-        displayName: "Physical Form",
-        route: "/physical-form",
-      },
-      {
-        name: "grade",
-        displayName: "Grade",
-        route: "/grade",
-      },
-      {
-        name: "incoterm",
-        displayName: "Incoterm",
-        route: "/incoterm",
-      },
-      {
-        name: "chemical_family",
-        displayName: "Chemical Family",
-        route: "/chemical-family",
-      },
-            {
-        name: "shipping-method",
-        displayName: "Shipping Method",
-        route: "/shipping-method",
-      },
-
+      { name: "products_family", displayName: "Product Families", route: "/product-families" },
+      { name: "Industries", displayName: "industries", route: "/industries" },
+      { name: "polymer_type", displayName: "Polymer Types", route: "/polymer-type" },
+      { name: "payment_terms", displayName: "Payment Terms", route: "/payment-terms" },
+      { name: "packaging_type", displayName: "Packaging Types", route: "/packaging-type" },
+      { name: "physical_form", displayName: "Physical Form", route: "/physical-form" },
+      { name: "grade", displayName: "Grade", route: "/grade" },
+      { name: "incoterm", displayName: "Incoterm", route: "/incoterm" },
+      { name: "chemical_family", displayName: "Chemical Family", route: "/chemical-family" },
+      { name: "shipping-method", displayName: "Shipping Method", route: "/shipping-method" },
     ],
   },
 ];
 
-const Sidebar = ({ collapsed }) => {
+const Sidebar = ({ collapsed, user, onLogout }) => {
   const navigate = useNavigate();
   const [openSubmenus, setOpenSubmenus] = useState({});
+  const emeraldGradient = "bg-gradient-to-br from-emerald-500 to-emerald-600";
 
   const toggleSubmenu = (name) => {
     setOpenSubmenus((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
   const baseItemClasses =
-    "flex items-center p-3 m-1 rounded-lg cursor-pointer transition-colors";
-  const selectedClasses = "bg-[#F6F7F6] text-[#004CFF]";
-  const hoverClasses = "text-[#363535] hover:bg-[#F6F7F6] hover:text-[#004CFF]";
+    "flex items-center p-3 m-1 rounded-xl cursor-pointer transition-colors duration-200 min-w-0";
+  const selectedClasses = "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm";
+  const hoverClasses = "text-gray-700 hover:bg-emerald-50 hover:text-emerald-700";
 
   const renderMenuItems = useMemo(() => {
     return menuItems.map((item, index) => {
       const isSelected = location.pathname === item.route;
       const hasItems = item.items?.length > 0;
       const isSubmenuOpen = openSubmenus[item.name];
-
-      const itemClasses = `${baseItemClasses} ${
-        collapsed ? "justify-center" : "justify-between"
-      } ${isSelected ? selectedClasses : hoverClasses}`;
-
+      const itemClasses = `${baseItemClasses} ${collapsed ? "justify-center" : "justify-between"} ${isSelected ? selectedClasses : hoverClasses}`;
       if (hasItems) {
         return (
-          <div key={`${item.name}-${index}`}>
+          <div key={`${item.name}-${index}`} className="space-y-1 min-w-0">
             <div
               className={itemClasses}
               onClick={() => toggleSubmenu(item.name)}
             >
               <div className="flex items-center">
-                <div className="mr-2">{item.icon}</div>
-                {!collapsed && <span>{item.displayName}</span>}
+                <div className={`mr-2 ${isSelected ? "text-emerald-600" : "text-gray-500"}`}>{item.icon}</div>
+                {!collapsed && <span className="font-medium text-sm truncate">{item.displayName}</span>}
               </div>
-              {!collapsed &&
-                (isSubmenuOpen ? <RxCaretDown /> : <RxCaretRight />)}
+              {!collapsed && (isSubmenuOpen ? <ChevronDown className="text-gray-400" size={16} /> : <ChevronRight className="text-gray-400" size={16} />)}
             </div>
-
             {!collapsed && isSubmenuOpen && (
-              <div className="ml-4">
+              <div className="ml-4 space-y-1 pr-2 min-w-0">
                 {item.items.map((subItem) => {
                   const isSubSelected = location.pathname === subItem.route;
-                  const subItemClasses = `${baseItemClasses} ${
-                    isSubSelected ? selectedClasses : hoverClasses
-                  }`;
-
+                  const subItemClasses = `${baseItemClasses} ${isSubSelected ? selectedClasses : hoverClasses}`;
                   return (
                     <div
                       key={subItem.name}
                       className={subItemClasses}
                       onClick={() => navigate(subItem.route)}
                     >
-                      <span>{subItem.displayName}</span>
+                      <span className="text-sm font-medium truncate">{subItem.displayName}</span>
                     </div>
                   );
                 })}
@@ -279,7 +135,6 @@ const Sidebar = ({ collapsed }) => {
           </div>
         );
       }
-
       return (
         <div
           key={`${item.name}-${index}`}
@@ -287,8 +142,8 @@ const Sidebar = ({ collapsed }) => {
           onClick={() => navigate(item.route)}
         >
           <div className="flex items-center">
-            <div className="mr-2">{item.icon}</div>
-            {!collapsed && <span>{item.displayName}</span>}
+            <div className={`mr-2 ${isSelected ? "text-emerald-600" : "text-gray-500"}`}>{item.icon}</div>
+            {!collapsed && <span className="font-medium text-sm truncate">{item.displayName}</span>}
           </div>
         </div>
       );
@@ -297,20 +152,39 @@ const Sidebar = ({ collapsed }) => {
 
   return (
     <div
-      className={`h-screen bg-white transition-all duration-300 ease-in-out ${
-        collapsed ? "w-20" : "w-[270px]"
-      }`}
+      className={`h-screen bg-white border-r border-gray-200 flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${collapsed ? "w-20" : "w-[270px]"}`}
     >
-      <div className="flex flex-col items-center justify-center shadow-sm ">
-        <img
-          src={"/polymer.svg"}
-          alt="Logo"
-          className="object-contain w-20 h-20 transition-transform duration-300 ease-in-out"
-        />
-        <Typography color="primary">Polymers Hub</Typography>
+      {/* Profile Section */}
+      <div className="p-4 border-b border-gray-100 bg-gray-50/50 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className={`w-12 h-12 ${emeraldGradient} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
+            <img src={"/polymer.svg"} alt="Logo" className="object-contain w-8 h-8" />
+          </div>
+          {!collapsed && (
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-gray-900 text-base truncate">Admin</h3>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-100 text-emerald-700 capitalize">Admin</span>
+                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse flex-shrink-0" title="Online"></div>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* No email for admin */}
       </div>
-      <div className="mt-4 overflow-y-auto h-[calc(100vh-140px)] customScrollbar">
-        {renderMenuItems}
+      {/* Navigation */}
+      <div className="flex-1 overflow-y-auto py-2">
+        <nav className="space-y-1 px-3 min-w-0">{renderMenuItems}</nav>
+      </div>
+      {/* Logout Button */}
+      <div className="flex-shrink-0 p-3 border-t border-gray-100">
+        <button
+          onClick={onLogout}
+          className="w-full flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-3 py-2.5 rounded-lg font-medium text-sm justify-start"
+        >
+          <LogOut size={20} className="flex-shrink-0" />
+          {!collapsed && <span className="truncate">Sign Out</span>}
+        </button>
       </div>
     </div>
   );
@@ -318,7 +192,8 @@ const Sidebar = ({ collapsed }) => {
 
 Sidebar.propTypes = {
   collapsed: PropTypes.bool,
-  setCollapsed: PropTypes.func,
+  user: PropTypes.object,
+  onLogout: PropTypes.func,
 };
 
 export default Sidebar;
