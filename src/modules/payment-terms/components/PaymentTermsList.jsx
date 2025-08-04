@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import TableUI from "../../../shared/TableUI";
-import PaymentTermsRow from "./paymentTermsRow";
+import PaymentTermsRow from "./PaymentTermsRow";
 
 const PaymentTermsList = () => {
   const { paymentTerms } = useSelector((state) => state.sharedState);
@@ -8,12 +8,7 @@ const PaymentTermsList = () => {
   return (
     <div>
       <TableUI
-        tableHeader={[
-          "Name",
-          "Description",
-          "",
-          "Actions",
-        ]}
+        tableHeader={["Name", "Description", "", "Actions"]}
         noRecord={paymentTerms.length === 0}
       >
         {paymentTerms?.map((paymentTerms, index) => {
