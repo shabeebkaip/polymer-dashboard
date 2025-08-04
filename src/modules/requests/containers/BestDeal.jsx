@@ -15,14 +15,14 @@ const BestDeal = () => {
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
   const [currentQuery, setCurrentQuery] = useState({ page: 1 });
-  const [refreshKey, setRefreshKey] = useState(0); 
+  const [refreshKey, setRefreshKey] = useState(0);
   const dispatch = useDispatch();
   const { bestDeals } = useSelector((state) => state.requestState);
 
   const fetchDeals = async (query = {}) => {
     setLoading(true);
     setCurrentQuery(query);
-    
+
     try {
       const response = await dispatch(getBestDealApi(query));
       if (response?.success) {
@@ -57,38 +57,42 @@ const BestDeal = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <Title
-        description="Display all the Best Deal Submissions"
-        actions={
-          <div className="flex items-center justify-between">
-            <ActionButton
-              buttonText="Add Best Deal"
-              handleOnClick={handleCreateDeal}
-              textColor="#ffffff"
-              bgColor="rgb(41, 82, 255)"
-              icon={createIcon}
+      <div className="rounded-xl shadow-lg border border-emerald-200 bg-white/80 backdrop-blur-md p-6 mb-8">
+        <Title
+          description="Display all the Best Deal Submissions"
+          actions={
+            <div className="flex items-center justify-between">
+              <ActionButton
+                buttonText="Add Best Deal"
+                handleOnClick={handleCreateDeal}
+                textColor="#fff"
+                bgColor="#10B981"
+                borderColor="#10B981"
+                icon={createIcon}
+                className="rounded-lg shadow-md font-semibold px-5 py-2 transition-all duration-200"
+              />
+            </div>
+          }
+        />
+        {loading ? (
+          <PageLoader message="Loading Best Deals..." />
+        ) : (
+          <>
+            <div className="mt-4">
+              <BestDealList
+                key={refreshKey}
+                bestDeals={bestDeals}
+                getResponseBack={refreshCurrentPage}
+              />
+            </div>
+            <PaginationContainer
+              totalPages={pagination?.totalPages}
+              currentPage={pagination?.currentPage}
+              handlePageChange={(page) => fetchDeals({ page })}
             />
-          </div>
-        }
-      />
-      {loading ? (
-        <PageLoader />
-      ) : (
-        <>
-          <div className="mt-4">
-            <BestDealList 
-              key={refreshKey} 
-              bestDeals={bestDeals} 
-              getResponseBack={refreshCurrentPage} 
-            />
-          </div>
-          <PaginationContainer
-            totalPages={pagination?.totalPages}
-            currentPage={pagination?.currentPage}
-            handlePageChange={(page) => fetchDeals({ page })}
-          />
-        </>
-      )}
+          </>
+        )}
+      </div>
       <AddEditBestDeal getResponseBack={refreshCurrentPage} />
       {/* <BestDealModal /> */}
     </div>
