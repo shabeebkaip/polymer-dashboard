@@ -8,18 +8,27 @@ const SupplierOfferRow = ({ offer, index, isLastRow, getResponseBack }) => {
   const dispatch = useDispatch();
 
   const supplierName = `${offer?.supplierId?.name || ""}`.trim();
+  const supplierEmail = offer?.supplierId?.email || "";
   const productName = offer?.bulkOrderId?.product?.productName || "—";
+  const quantityWithUOM = offer?.bulkOrderId?.uom
+    ? `${offer?.availableQuantity || "—"} ${offer?.bulkOrderId?.uom}`
+    : offer?.availableQuantity || "—";
 
   return (
     <TableRow index={index} isLastRow={isLastRow}>
       <td className="p-4">{productName}</td>
-      <td className="p-4">{offer?.pricePerUnit || "—"}</td>
-      <td className="p-4">{offer?.availableQuantity || "—"}</td>
-      <td className="p-4">{offer?.deliveryTimeInDays || "—"}</td>
-      <td className="p-4">{offer?.incotermAndPackaging || "—"}</td>
-      <td className="p-4">{offer?.message || "—"}</td>
-      <td className="p-4">{supplierName || "—"}</td>
-      <td className="p-4">{offer?.supplierId?.email || "—"}</td>
+      <td className="">${offer?.pricePerUnit || "—"}</td>
+      <td className="">{quantityWithUOM}</td>
+      <td className="">{offer?.deliveryTimeInDays || "—"} days</td>
+      <td className="">{offer?.incotermAndPackaging || "—"}</td>
+      <td className="">
+        {supplierName || "—"}
+        {supplierEmail && (
+          <span className="block text-xs text-gray-500 truncate">
+            {supplierEmail}
+          </span>
+        )}
+      </td>
       <td className="p-4">{offer?.status || "—"}</td>
       <td className="p-4">
         <ViewAction

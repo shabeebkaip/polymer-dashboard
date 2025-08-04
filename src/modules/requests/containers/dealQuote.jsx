@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPageTitle } from "../../../slices/sharedSlice";
 import Title from "../../../shared/Title";
-import { getDealQuoteListApi } from "../api"; 
+import { getDealQuoteListApi } from "../api";
 import DealQuoteList from "../components/dealQuoteList";
 import PageLoader from "../../../shared/PageLoader";
 import PaginationContainer from "../../../shared/PaginationContainer";
@@ -12,7 +12,6 @@ const DealQuote = () => {
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const { dealQuotes } = useSelector((state) => state.requestState);
 
   const fetchDealQuotes = (query = {}) => {
     setLoading(true);
@@ -45,7 +44,11 @@ const DealQuote = () => {
         <PageLoader />
       ) : (
         <>
-          <div className="mt-4">
+          <div className="grid gap-4">
+            <Title
+              title="Deal Quote Requests"
+              description="Display all the Deal Quote Requests"
+            />
             <DealQuoteList getResponseBack={() => fetchDealQuotes()} />
           </div>
           <PaginationContainer
@@ -55,7 +58,7 @@ const DealQuote = () => {
           />
         </>
       )}
-      <DealQuoteModal/>
+      <DealQuoteModal />
     </div>
   );
 };

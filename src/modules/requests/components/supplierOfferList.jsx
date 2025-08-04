@@ -14,12 +14,10 @@ const SupplierOfferList = ({ getResponseBack }) => {
           "Price/Unit",
           "Available Qty",
           "Delivery (Days)",
-          "Incoterm & Packaging",
-          "Message",
+          "Incoterm",
           "Supplier Name",
-          "Supplier Email",
           "Status",
-          "Action"
+          "Action",
         ]}
         noRecord={supplierOffers?.length === 0}
       >

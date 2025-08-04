@@ -40,7 +40,11 @@ const SupplierOffer = () => {
         <PageLoader />
       ) : (
         <>
-          <div className="mt-4">
+          <div className="grid gap-4">
+            <Title
+              title="Supplier Offer Requests"
+              description="Display all the Supplier Offer Requests"
+            />
             <SupplierOfferList getResponseBack={() => fetchOffers()} />
           </div>
           <PaginationContainer
@@ -49,9 +53,8 @@ const SupplierOffer = () => {
             handlePageChange={(page) => fetchOffers({ page })}
           />
         </>
-        
       )}
-      <SupplierOfferModal/>
+      <SupplierOfferModal />
     </div>
   );
 };

@@ -5,22 +5,19 @@ import PropTypes from "prop-types";
 
 const DealQuoteList = ({ getResponseBack }) => {
   const { dealQuotes } = useSelector((state) => state.requestState);
-
   return (
     <div>
       <TableUI
-  tableHeader={[
-    "Product Name",
-    "Seller Name", 
-    "Buyer Name",
-    "Email",
-    "Desired Qty",
-    "Shipping Country",
-    "Payment Terms",
-    "Status",
-    "Action"
-  ]}
-
+        tableHeader={[
+          "Product Name",
+          "Seller Name",
+          "Buyer Name",
+          "Desired Qty",
+          "Shipping Country",
+          "Payment Terms",
+          "Status",
+          "Action",
+        ]}
         noRecord={dealQuotes?.length === 0}
       >
         {dealQuotes?.map((quote, index) => {
