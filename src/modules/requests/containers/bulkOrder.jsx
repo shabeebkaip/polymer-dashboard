@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPageTitle } from "../../../slices/sharedSlice";
 import Title from "../../../shared/Title";
 import { getBulkOrderApi } from "../api";
@@ -9,8 +9,11 @@ import PaginationContainer from "../../../shared/PaginationContainer";
 import ActionButton from "../../../shared/ActionButton";
 import createIcon from "../../../assets/create.svg";
 import AddEditBulkOrder from "../components/addEditBulkOrder";
-import { setBulkOrderModal, setMode, setBulkOrderCrud } from "../../../slices/sharedSlice";
-// import BulkOrderModal from "../components/BulkOrderModal";
+import {
+  setBulkOrderModal,
+  setMode,
+  setBulkOrderCrud,
+} from "../../../slices/sharedSlice";
 
 const BulkOrder = () => {
   const [pagination, setPagination] = useState({});
@@ -21,7 +24,7 @@ const BulkOrder = () => {
   const fetchBulkOrders = async (query = {}) => {
     setLoading(true);
     setCurrentQuery(query);
-    
+
     try {
       const response = await dispatch(getBulkOrderApi(query));
       if (response?.success) {

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPageTitle, setBestDealModal, setMode, setBestDealCrud } from "../../../slices/sharedSlice";
+import {
+  setPageTitle,
+  setBestDealModal,
+  setMode,
+  setBestDealCrud,
+} from "../../../slices/sharedSlice";
 import { getBestDealApi } from "../api";
 import BestDealList from "../components/bestDealList";
 import AddEditBestDeal from "../components/addEditBestDeal";
@@ -31,7 +36,7 @@ const BestDeal = () => {
           currentPage: response.page,
           totalPages: response.totalPages,
         });
-        setRefreshKey(prev => prev + 1);
+        setRefreshKey((prev) => prev + 1);
       }
     } catch (error) {
       console.error("Error fetching best deals:", error);
@@ -57,8 +62,9 @@ const BestDeal = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      <div className="rounded-xl shadow-lg border border-emerald-200 bg-white/80 backdrop-blur-md p-6 mb-8">
+      <div className="rounded-xl shadow-lg backdrop-blur-md mb-8">
         <Title
+          title="Best Deal Requests"
           description="Display all the Best Deal Submissions"
           actions={
             <div className="flex items-center justify-between">
