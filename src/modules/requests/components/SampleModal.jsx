@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "../../../slices/requestSlice";
 import PropTypes from "prop-types";
 import LabelValue from "../../../shared/LabelValue";
-import { Package, User, Building2, Truck, MapPin } from "lucide-react";
+import { Package, User, Building2, MapPin } from "lucide-react";
 
 const SampleModal = () => {
   const dispatch = useDispatch();

@@ -1,10 +1,8 @@
-import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import TableUI from "../../../shared/TableUI";
 import FinanceRow from "./FinanceRow";
 
-const FinanceList = ({finances, getResponseBack}) => {
-  
-
+const FinanceList = ({ finances, getResponseBack }) => {
   return (
     <div>
       <TableUI
@@ -13,13 +11,10 @@ const FinanceList = ({finances, getResponseBack}) => {
           "Product",
           "EMI Duration",
           "Quantity",
-          "Total Price",
-        //   "Notes",
+          //   "Notes",
           "Requested On",
           "Status",
           "View",
-          "Verification",
-          
         ]}
         noRecord={finances?.length === 0}
       >
@@ -38,6 +33,16 @@ const FinanceList = ({finances, getResponseBack}) => {
       </TableUI>
     </div>
   );
+};
+
+FinanceList.propTypes = {
+  finances: PropTypes.arrayOf(PropTypes.object),
+  getResponseBack: PropTypes.func,
+};
+
+FinanceList.defaultProps = {
+  finances: [],
+  getResponseBack: () => {},
 };
 
 export default FinanceList;

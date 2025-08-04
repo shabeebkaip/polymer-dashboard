@@ -14,7 +14,6 @@ const Finance = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
-
   const fetchFinances = (query = {}) => {
     setLoading(true);
     dispatch(getFinanceRequestApi(query))
@@ -47,18 +46,27 @@ const Finance = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      {loading ? <PageLoader /> :
+      {loading ? (
+        <PageLoader />
+      ) : (
         <>
-          <div className="mt-4">
-            <FinanceList finances={finances} getResponseBack={() => fetchFinances()} />
+          <div className="grid gap-4">
+            <Title
+              title="Finance Enquiries"
+              description="Manage and view all finance-related enquiries."
+            />
+            <FinanceList
+              finances={finances}
+              getResponseBack={() => fetchFinances()}
+            />
           </div>
           <PaginationContainer
             totalPages={pagination?.totalPages}
             currentPage={pagination?.currentPage}
-            handlePageChange={(page) => fetchSamples({ page })}
+            handlePageChange={(page) => fetchFinances({ page })}
           />
         </>
-      }
+      )}
       <FinanceModal />
     </div>
   );
