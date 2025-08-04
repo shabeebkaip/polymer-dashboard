@@ -1,5 +1,5 @@
 import TableUI from "../../../shared/TableUI";
-import BestDealRow from "./BestDealRow";
+import BestDealRow from "./bestDealRow";
 import PropTypes from "prop-types";
 
 const BestDealList = ({ bestDeals, getResponseBack }) => {
