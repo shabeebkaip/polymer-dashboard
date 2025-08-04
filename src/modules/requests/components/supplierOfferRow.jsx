@@ -4,7 +4,7 @@ import ViewAction from "../../../shared/ViewAction";
 import { useDispatch } from "react-redux";
 import { setModal, setSupplierOffer } from "../../../slices/requestSlice";
 
-const SupplierOfferRow = ({ offer, index, isLastRow, getResponseBack }) => {
+const SupplierOfferRow = ({ offer, index, isLastRow }) => {
   const dispatch = useDispatch();
 
   const supplierName = `${offer?.supplierId?.name || ""}`.trim();
