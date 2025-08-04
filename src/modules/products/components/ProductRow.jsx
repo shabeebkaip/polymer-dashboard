@@ -8,7 +8,7 @@ import {
   setMode,
 } from "../../../slices/sharedSlice";
 import { setProductCrud } from "../../../slices/productSlice";
-import { Chip } from "@mui/material";
+import { Chip, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const ProductRow = ({ index, isLastRow, product }) => {
@@ -16,7 +16,9 @@ const ProductRow = ({ index, isLastRow, product }) => {
   const navigate = useNavigate();
   return (
     <tr
-      className={`transition-colors duration-200 border-b ${index % 2 === 1 ? "bg-white/60" : "bg-emerald-50/40"} ${isLastRow ? "border-b-emerald-400 border-b-2" : "border-b-gray-200"}`}
+      className={`transition-colors duration-200 border-b ${
+        index % 2 === 1 ? "bg-white/60" : "bg-emerald-50/10"
+      } ${isLastRow ? "border-b-emerald-400 border-b-2" : "border-b-gray-200"}`}
     >
       <td className="p-4 text-emerald-900 font-semibold text-base whitespace-nowrap">
         {product.productName}
@@ -27,22 +29,32 @@ const ProductRow = ({ index, isLastRow, product }) => {
       <td className="max-w-xs">
         <div className="flex flex-wrap gap-2 w-32">
           {product?.industry?.length > 0
-            ? product.industry.map((item, idx) => (
-                <Chip
-                  label={item?.name}
-                  key={idx}
-                  sx={{
-                    background: "#F3F4F6", // subtle gray background for less green
-                    color: "#059669", // emerald text for brand accent
-                    fontWeight: 500,
-                    fontSize: "0.85rem",
-                    borderRadius: "8px",
-                    boxShadow: "0 1px 4px rgba(52,211,153,0.08)",
-                    border: "1px solid #D1FAE5", // light emerald border for subtle branding
-                  }}
-                  size="small"
-                />
-              ))
+            ? product.industry.map((item, idx) => {
+                const label = item?.name || "";
+                const chip = (
+                  <Chip
+                    label={label}
+                    key={idx}
+                    sx={{
+                      background: "#F3F4F6",
+                      color: "#059669",
+                      fontWeight: 500,
+                      fontSize: "0.85rem",
+                      borderRadius: "8px",
+                      boxShadow: "0 1px 4px rgba(52,211,153,0.08)",
+                      border: "1px solid #D1FAE5",
+                    }}
+                    size="small"
+                  />
+                );
+                return label.length > 16 ? (
+                  <Tooltip title={label} key={idx} arrow>
+                    {chip}
+                  </Tooltip>
+                ) : (
+                  chip
+                );
+              })
             : "--"}
         </div>
       </td>

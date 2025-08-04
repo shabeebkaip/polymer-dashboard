@@ -38,7 +38,9 @@ const IOSSwitch = styled((props) => (
     opacity: 1,
     backgroundColor: "#E9E9EA",
     boxSizing: "border-box",
-    transition: theme.transitions.create(["background-color"], { duration: 300 }),
+    transition: theme.transitions.create(["background-color"], {
+      duration: 300,
+    }),
   },
 }));
 
@@ -79,16 +81,24 @@ const UserList = ({ users, getResponseBack }) => {
   ];
 
   return (
-    <div className="mt-4">
-      <div className="rounded-xl shadow-lg border border-emerald-200 bg-white/80 backdrop-blur-md p-6">
-        <table className="w-full border-separate" style={{ borderSpacing: "0 12px" }}>
+    <div className="">
+      <div className="rounded-xl shadow-lg   backdrop-blur-md ">
+        <table
+          className="w-full border-separate"
+          style={{ borderSpacing: "0 12px" }}
+        >
           <thead>
             <tr className="sticky top-0 z-20 bg-white">
               {tableHeader.map((head, index) => (
                 <th
                   key={index}
                   className="px-6 py-4 text-left border-b h-[56px] font-semibold align-middle whitespace-nowrap"
-                  style={{ color: "#263238", fontSize: "16px", fontWeight: "500", background: "#fff" }}
+                  style={{
+                    color: "#263238",
+                    fontSize: "16px",
+                    fontWeight: "500",
+                    background: "#fff",
+                  }}
                 >
                   {head}
                 </th>
@@ -102,18 +112,37 @@ const UserList = ({ users, getResponseBack }) => {
                 return (
                   <tr
                     key={row._id}
-                    className={`transition-colors duration-200 border-b ${index % 2 === 1 ? "bg-white/60" : "bg-emerald-50/40"} ${isLastRow ? "border-b-emerald-400 border-b-2" : "border-b-gray-200"}`}
+                    className={`transition-colors duration-200 border-b ${
+                      index % 2 === 1 ? "bg-white/60" : "bg-emerald-50/40"
+                    } ${
+                      isLastRow
+                        ? "border-b-emerald-400 border-b-2"
+                        : "border-b-gray-200"
+                    }`}
                   >
-                    <td className="px-6 py-4 border-b text-gray-700 font-medium">{index + 1}</td>
-                    <td className="px-6 py-4 capitalize border-b text-emerald-900 font-semibold">{row.name}</td>
-                    <td className="px-6 py-4 border-b text-gray-700">{row.email}</td>
-                    <td className="px-6 py-4 border-b text-gray-700">{row.company || "—"}</td>
+                    <td className="px-6 py-4 border-b text-gray-700 font-medium">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 capitalize border-b text-emerald-900 font-semibold">
+                      {row.name}
+                    </td>
+                    <td className="px-6 py-4 border-b text-gray-700">
+                      {row.email}
+                    </td>
+                    <td className="px-6 py-4 border-b text-gray-700">
+                      {row.company || "—"}
+                    </td>
                     {row?.company_logo && (
                       <td className="px-6 py-4 border-b">
-                        <img src={row.company_logo} className="w-14 h-14 object-cover rounded-lg border border-emerald-200 shadow-sm bg-white" />
+                        <img
+                          src={row.company_logo}
+                          className="w-14 h-14 object-cover rounded-lg border border-emerald-200 shadow-sm bg-white"
+                        />
                       </td>
                     )}
-                    <td className="px-6 py-4 border-b text-emerald-700 font-bold capitalize">{localStatus[row._id]}</td>
+                    <td className="px-6 py-4 border-b text-emerald-700 font-bold capitalize">
+                      {localStatus[row._id]}
+                    </td>
                     <td className="px-6 py-4 border-b">
                       <div className="flex items-center gap-3 justify-center">
                         <Tooltip title="Toggle status" arrow>

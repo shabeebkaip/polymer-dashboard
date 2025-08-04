@@ -8,7 +8,6 @@ import { setPageTitle } from "../../../slices/sharedSlice";
 import { useDispatch } from "react-redux";
 
 const Users = () => {
-
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(false);
@@ -19,7 +18,7 @@ const Users = () => {
   const fetchUsers = (query) => {
     setLoading(true);
     dispatch(setPageTitle("Buyers List"));
-    const updatedQuery = { ...query, type: 'buyer' };
+    const updatedQuery = { ...query, type: "buyer" };
     getUsersApi(updatedQuery).then((response) => {
       setLoading(false);
       if (response.success) {
@@ -39,12 +38,12 @@ const Users = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      {/* <Title
-        title="Users"
+      <Title
+        title="Buyers"
         description={
           "A comprehensive list of all registered users within the system."
         }
-      /> */}
+      />
 
       {loading ? (
         <PageLoader />

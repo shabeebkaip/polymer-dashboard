@@ -184,7 +184,6 @@ const menuItems = [
 const Sidebar = ({ collapsed }) => {
   const navigate = useNavigate();
   const [openSubmenus, setOpenSubmenus] = useState({});
-  const emeraldGradient = "bg-gradient-to-br from-emerald-500 to-emerald-600";
 
   const toggleSubmenu = (name) => {
     setOpenSubmenus((prev) => ({ ...prev, [name]: !prev[name] }));
