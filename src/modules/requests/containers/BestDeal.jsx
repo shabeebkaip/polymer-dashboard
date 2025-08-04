@@ -8,7 +8,7 @@ import {
 } from "../../../slices/sharedSlice";
 import { getBestDealApi } from "../api";
 import BestDealList from "../components/bestDealList";
-import AddEditBestDeal from "../components/addEditBestDeal";
+import AddEditBestDeal from "../components/AddEditBestDeal";
 import Title from "../../../shared/Title";
 import PageLoader from "../../../shared/PageLoader";
 import PaginationContainer from "../../../shared/PaginationContainer";
