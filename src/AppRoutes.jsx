@@ -7,7 +7,7 @@ import Quote from "./modules/requests/containers/Quote";
 import Sample from "./modules/requests/containers/Sample";
 import AddEditProductPage from "./modules/products/components/AddEditProductPage";
 import PolymerType from "./modules/polymer-type/containers/PolymerType";
-import PaymentTerms from "./modules/payment-terms/containers/Paymentterms";
+import PaymentTerms from "./modules/payment-terms/containers/PaymentTerms";
 import PackagingType from "./modules/packaging-type/containers/PackagingType";
 import PhysicalForm from "./modules/physical-form/containers/PhysicalForm";
 import ChemicalFamily from "./modules/chemical-family/containers/ChemicalFamily";
