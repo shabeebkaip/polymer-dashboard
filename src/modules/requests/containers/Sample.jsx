@@ -125,9 +125,15 @@ const Sample = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      {loading ? <PageLoader /> :
+      {loading ? (
+        <PageLoader />
+      ) : (
         <>
-          <div className="mt-4">
+          <div className="grid gap-2">
+            <Title
+              title="Sample Enquiries"
+              description="Display all the Sample Requests"
+            />
             <SampleList data={samples} />
           </div>
           <PaginationContainer
@@ -136,7 +142,7 @@ const Sample = () => {
             handlePageChange={(page) => fetchSamples({ page })}
           />
         </>
-      }
+      )}
       <SampleModal />
     </div>
   );

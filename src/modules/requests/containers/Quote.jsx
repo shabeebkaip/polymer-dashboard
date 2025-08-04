@@ -20,12 +20,12 @@ const Quote = () => {
       .then((response) => {
         if (response?.success) {
           const paginationData = {
-            total: response.total,
-            currentPage: response.page,
-            totalPages: response.totalPages,
+            total: response.meta?.pagination?.total || 0,
+            currentPage: response.meta?.pagination?.page || 1,
+            totalPages: response.meta?.pagination?.totalPages || 1,
           };
           setPagination(paginationData);
-          setQuotes(response.data);
+          setQuotes(response.data || []);
         }
       })
       .catch((error) => {
@@ -46,10 +46,15 @@ const Quote = () => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-auto">
-      {loading ? <PageLoader />
-        :
+      {loading ? (
+        <PageLoader />
+      ) : (
         <>
-          <div className="mt-4">
+          <div className="grid gap-4">
+            <Title
+              title="Quote Enquiries"
+              description="Manage and review all quote requests from customers."
+            />
             <QuoteList data={quotes} />
           </div>
           <PaginationContainer
@@ -58,7 +63,7 @@ const Quote = () => {
             handlePageChange={(page) => fetchQuotes({ page })}
           />
         </>
-      }
+      )}
 
       <QuoteModal />
     </div>
